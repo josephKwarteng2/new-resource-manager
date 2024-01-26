@@ -9,11 +9,12 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { DepartmentService } from '../../../../accounts/admin/services/department.service';
 import { CommonModule } from '@angular/common';
+import { GenericResponse } from '../../../types/types';
 
 @Component({
   selector: 'app-department-modal',
   standalone: true,
-  imports: [ReactiveFormsModule, HttpClientModule, CommonModule],
+  imports: [ReactiveFormsModule, HttpClientModule, CommonModule, ],
   templateUrl: './department-modal.component.html',
   styleUrls: ['./department-modal.component.css'],
 })
@@ -21,6 +22,7 @@ export class DepartmentModalComponent implements OnInit {
   @Output() saveDepartment = new EventEmitter<string>();
   @Input() formGroup!: FormGroup;
   @Input() isOpen = true;
+ departmentStoringError: string = '';
   modalForm: FormGroup;
 
   constructor(
@@ -38,25 +40,42 @@ export class DepartmentModalComponent implements OnInit {
       const newDepartment: string = this.modalForm.value.newDepartment;
 
       this.departmentService.addDepartment(newDepartment).subscribe(
-        (response: ResponseType) => {
-          console.log('New department added to the backend:', newDepartment);
-
+        (response: GenericResponse) => {
           this.saveDepartment.emit(newDepartment);
           this.closeModal();
         },
         err => {
-          console.error('Error adding department to the backend:', err);
+          this.handleDepartmentStoringError(err);
         }
       );
     }
   }
+  clearErrorMessagesAfterDelay() {
+    setTimeout(() => {
+      this.departmentStoringError= '';
+    }, 3000); 
+  }
+
+  private handleDepartmentStoringError(error: GenericResponse) {
+
+ 
+    if (error.status === 404) {
+      
+      this.departmentStoringError = 'Unable to save new department';
+    } else {
+      
+      this.departmentStoringError = 'Please try again or contact IT support';
+    }
+    this.clearErrorMessagesAfterDelay();
+  }
+
   fetchDepartments() {
     this.departmentService.getDepartments().subscribe(
       (departments: string[]) => {
-        console.log('Fetched specializations from the backend:', departments);
+        
       },
       err => {
-        console.error('Error fetching specializations from the backend:', err);
+
       }
     );
   }
