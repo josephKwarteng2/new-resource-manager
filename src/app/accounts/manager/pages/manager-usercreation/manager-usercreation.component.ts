@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import {
   FormGroup,
   Validators,
@@ -12,9 +11,8 @@ import { SpecializationService } from '../../../admin/services/specialization.se
 import { SpecializationModalComponent } from '../../../../shared/components/modals/specialization-modal/specialization-modal.component';
 import { DepartmentModalComponent } from '../../../../shared/components/modals/department-modal/department-modal.component';
 import { DepartmentService } from '../../../admin/services/department.service';
-import { HttpClientModule } from '@angular/common/http';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { finalize } from 'rxjs/operators';
+import { GenericResponse } from '../../../../shared/types/types';
 
 @Component({
   selector: 'app-manager-usercreation',
@@ -23,7 +21,6 @@ import { finalize } from 'rxjs/operators';
     CommonModule,
     ReactiveFormsModule,
     SpecializationModalComponent,
-    // SpecializationModalComponent,
     DepartmentModalComponent,
   ],
   templateUrl: './manager-usercreation.component.html',
@@ -34,15 +31,21 @@ export class ManagerUsercreationComponent implements OnInit {
 
   specializationModalOpen = false;
   departmentModalOpen = false;
-
+  formInvalidMessage: string = '';
+  nullFormControlMessage: string = '';
   formData: FormGroup;
   loading = false;
   success = false;
   error = false;
-  errorMessages: { roles?: string; email?: string } = {};
+  errorMessagesForRolesandEmails: { roles?: string; email?: string } = {};
   selectedDepartment: string = '';
   selectedSpecialization: string = '';
   selectedRoles: string = '';
+  errorMessage: string = '';
+  specializationsErrorMessage: string = '';
+  deparmentsErrorMessage: string = '';
+  successMessage: string = '';
+
 
   specializationDropdownOpen = false;
   rolesDropdownOpen = false;
@@ -52,11 +55,10 @@ export class ManagerUsercreationComponent implements OnInit {
   roles: string[] = [];
 
   constructor(
-    private router: Router,
+    
     private adminService: AdminService,
     private specializationService: SpecializationService,
     private fb: FormBuilder,
-    private modalService: NgbModal,
     private departmentService: DepartmentService
   ) {
     this.formData = this.fb.group({
@@ -82,9 +84,11 @@ export class ManagerUsercreationComponent implements OnInit {
   SpecializationDropdown() {
     this.specializationDropdownOpen = false;
   }
+
   DepartmentDropdown() {
     this.departmentDropdownOpen = false;
   }
+
   RolesDropdown() {
     this.rolesDropdownOpen = false;
   }
@@ -97,6 +101,7 @@ export class ManagerUsercreationComponent implements OnInit {
       this.DepartmentDropdown();
     }
   }
+
   selectRole(role: string) {
     const rolesControl = this.formData.get('roles');
     if (rolesControl) {
@@ -109,15 +114,16 @@ export class ManagerUsercreationComponent implements OnInit {
   toggleSpecializationDropdown() {
     this.specializationDropdownOpen = !this.specializationDropdownOpen;
   }
+
   toggleDepartmentDropdown() {
     this.departmentDropdownOpen = !this.departmentDropdownOpen;
   }
+
   toggleRolesDropdown() {
     this.rolesDropdownOpen = !this.rolesDropdownOpen;
   }
 
   selectOption(option: string) {
-    console.log('Selected Option:', option);
     this.SpecializationDropdown();
     this.DepartmentDropdown();
     this.RolesDropdown();
@@ -132,8 +138,8 @@ export class ManagerUsercreationComponent implements OnInit {
     }
   }
 
-  onSpecializationChange(event: any) {
-    const selectedValue = event.target.value;
+  onSpecializationChange(event: Event) {
+    const selectedValue = (event.target as HTMLInputElement).value;
     if (selectedValue === 'add_new_specialization') {
       this.openSpecializationModal();
     }
@@ -162,32 +168,32 @@ export class ManagerUsercreationComponent implements OnInit {
       this.specializationService.setSpecializations(updatedSpecializations);
       specializationControl.setValue(newSpecialization);
     } else {
-      console.error('Specialization control is null');
+      this.nullFormControlMessage = 'Please enter a specialization';
     }
   }
+
   private fetchSpecializations() {
     this.specializationService.getSpecializations().subscribe(
       (specializations: string[]) => {
-        console.log(
-          'Fetched specializations from the backend:',
-          specializations
-        );
+   
       },
       err => {
-        console.error('Error fetching specializations from the backend:', err);
+        this.handleSpecializationFetchError(err);
       }
     );
   }
 
-  onDepartmentChange(event: any) {
-    const selectedValue = event.target.value;
+  onDepartmentChange(event: Event) {
+    const selectedValue = (event.target as HTMLInputElement).value;
     if (selectedValue === 'add_new_department') {
       this.openDepartmentModal();
     }
   }
+
   openDepartmentModal() {
     this.departmentModalOpen = true;
   }
+
   handleAddDepartment(newDepartmentEvent: string) {
     if (typeof newDepartmentEvent === 'string') {
       const newDepartment = newDepartmentEvent;
@@ -205,32 +211,71 @@ export class ManagerUsercreationComponent implements OnInit {
       this.departmentService.setDepartments(updatedDepartments);
       departmentControl.setValue(newDepartment);
     } else {
-      console.error('Department control is null');
+      this.nullFormControlMessage = 'Please enter a department';
     }
   }
 
   fetchDepartments() {
     this.departmentService.getDepartments().subscribe(
       (departments: string[]) => {
-        console.log('Fetched departments from the backend:', departments);
+
       },
       err => {
-        console.error('Error fetching departments from the backend:', err);
+        this.handleDepartmentFetchError(err);
       }
     );
+
   }
+
+  clearErrorMessagesAfterDelay() {
+    setTimeout(() => {
+      this.errorMessage = '';
+      this.specializationsErrorMessage = '';
+      this.deparmentsErrorMessage = '';
+      this.formInvalidMessage = '';
+      this.nullFormControlMessage = '';
+    }, 3000); 
+  }
+
+  private handleDepartmentFetchError(error: GenericResponse) {
+
+
+    
+    if (error.status === 404) {
+      
+      this.deparmentsErrorMessage = 'Unable to process new department added. Please try again';
+    } else {
+      
+      this.deparmentsErrorMessage = 'Please try again or contact IT support';
+    }
+    this.clearErrorMessagesAfterDelay();
+  }
+
+  private handleSpecializationFetchError(error: GenericResponse) {
+
+ 
+    if (error.status === 404) {
+      
+      this.specializationsErrorMessage = 'Unable to process new specialization added. Please try again';
+    } else {
+      
+      this.specializationsErrorMessage = 'Please try again or contact IT support';
+    }
+    this.clearErrorMessagesAfterDelay();
+  }
+
 
   onUserCreate() {
     this.loading = false;
     this.success = false;
     this.error = false;
-    this.errorMessages = {};
+    this. errorMessagesForRolesandEmails = {};
 
     if (this.formData.valid) {
       this.loading = true;
 
       this.adminService
-        .addNew(this.formData.value)
+        .addNewUser(this.formData.value)
         .pipe(
           finalize(() => {
             this.loading = false;
@@ -238,30 +283,39 @@ export class ManagerUsercreationComponent implements OnInit {
         )
         .subscribe(
           response => {
-            console.log('Post request successful', response);
-
-            this.success = true;
+                 this.success = true;
+                 this.successMessage = 'User created successfully!';
           },
           error => {
-            console.error('Error in post request', error);
-
-            this.error = true;
+                        this.error = true;
 
             if (error.error && typeof error.error === 'object') {
-              this.errorMessages = error.error;
+              this. errorMessagesForRolesandEmails = error.error;
             }
+            if (error.status === 400) {
+              this.errorMessage = '  User with this email already exists';
+            } else if (error.status === 401) {
+              this.errorMessage = '  Unauthorized. Please log in as an Admin or Manager.';
+            } else if (error.status === 403) {
+              this.errorMessage = '  You do not have the necessary permission to perfom this task.';
+            } else if (error.status === 404) {
+              this.errorMessage = '  Resource not found, please contact IT support.';
+            } else if (error.status >= 500) {
+              this.errorMessage = '  Server error. Please try again later.';
+            } else {
+              this.errorMessage = '  An error occurred. Please try again.';
+            }
+            this.clearErrorMessagesAfterDelay();
           }
         );
     } else {
-      console.error('Form is not valid');
+      this.formInvalidMessage = 'Please complete the form or enter valid inputs';
+      this.clearErrorMessagesAfterDelay();
     }
   }
-  closeManagerUsercreationModal() {
-    this.isOpen = false;
-  }
 
-  exitPage() {
-    this.router.navigate(['/admin/dashboard']);
+  closeUsercreationModal() {
+    this.isOpen = false;
   }
 
   ngOnInit(): void {}

@@ -2,12 +2,12 @@
   <div
     *ngIf="isOpen"
     class="items-center form-size flex flex-col justify-center px-16 py-10 max-md:px-5">
-    <div class="messages-container mt-1 flex items-center">
+    <div class="messages-container flex items-center">
       <ul
-        class="max-w-md space-y-2 text-gray-500 list-inside dark:text-gray-400">
+        class="max-w-md space-y-3 text-lg text-gray-500 list-inside dark:text-gray-400">
         <li *ngIf="success" class="flex items-center">
           <svg
-            class="w-4 h-8 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
+            class="w-6 h-10 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
@@ -15,11 +15,11 @@
             <path
               d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
           </svg>
-          <span class="whitespace-nowrap">User Created Successfully </span>
+          <span class="whitespace-nowrap">{{ successMessage }}</span>
         </li>
-        <li *ngIf="error" class="flex items-center mt-4">
+        <li *ngIf="nullFormControlMessage" class="flex items-center">
           <svg
-            class="w-4 h-8 text-red-800 dark:text-red"
+            class="w-6 h-10 text-red-800 dark:text-red"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -31,7 +31,39 @@
               stroke-width="2"
               d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
           </svg>
-          <span class="whitespace-nowrap">Error Creating User </span>
+          <span class="whitespace-nowrap">{{ nullFormControlMessage }}</span>
+        </li>
+        <li *ngIf="error" class="flex items-center">
+          <svg
+            class="w-6 h-10 pt-2 text-red-800 dark:text-red"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 18">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
+          </svg>
+          <span class="whitespace-nowrap">{{ errorMessage }}</span>
+        </li>
+        <li *ngIf="formInvalidMessage" class="flex items-center">
+          <svg
+            class="w-6 h-10 mt-2 me-1 text-red-800 dark:text-red"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 18">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
+          </svg>
+          <span class="whitespace-nowrap">{{ formInvalidMessage }}</span>
         </li>
         <li *ngIf="loading" class="flex items-center">
           <div role="status">
@@ -50,15 +82,20 @@
             </svg>
             <span class="sr-only">Loading...</span>
           </div>
-          <span class="whitespace-nowrap">Creating User </span>
+          <span class="whitespace-nowrap text-base">Creating User </span>
         </li>
       </ul>
     </div>
-    <div *ngIf="errorMessages.roles" class="text-red-500 text-sm leading-5">
-      {{ errorMessages.roles }}
+
+    <div
+      *ngIf="errorMessagesForRolesandEmails.roles"
+      class="text-red-500 text-sm leading-5">
+      {{ errorMessagesForRolesandEmails.roles }}
     </div>
-    <div *ngIf="errorMessages.email" class="text-red-500 text-sm leading-5">
-      {{ errorMessages.email }}
+    <div
+      *ngIf="errorMessagesForRolesandEmails.email"
+      class="text-red-500 text-sm leading-5">
+      {{ errorMessagesForRolesandEmails.email }}
     </div>
     <form [formGroup]="formData">
       <div
@@ -71,7 +108,7 @@
           </div>
           <button>
             <img
-              (click)="closeManagerUsercreationModal()"
+              (click)="closeUsercreationModal()"
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/050c97bbe6a9bf7a65d1fdc9144a50f0141edf534cb48f78a8700baca522cd54?apiKey=ec472716d2e845e4bd782a888378d8ff&"
               class="aspect-square object-contain object-center w-3 overflow-hidden shrink-0 max-w-full" />
@@ -98,6 +135,7 @@
             <li value="basic_user " (click)="selectRole('Basic User')">
               Basic User
             </li>
+           
           </ul>
         </div>
         <div
@@ -134,19 +172,7 @@
           click the link they can choose their own password. then they will be
           able to log in to their own account
         </div>
-        <!-- <div
-          class="items-stretch self-stretch flex justify-between gap-5 mr-2.5 mt-3 pr-4 max-md:max-w-full max-md:flex-wrap"
-        >
-          <div class="items-stretch flex grow basis-[0%] flex-col">
-            <div class="text-slate-700 text-sm leading-5">Bookable</div>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" value="" class="sr-only peer" />
-              <div
-                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
-              ></div>
-            </label>
-          </div>
-          </div> -->
+
         <div
           class="items-stretch self-stretch flex justify-between gap-5 mt-2 max-md:max-w-full max-md:flex-wrap">
           <div class="">
@@ -199,7 +225,6 @@
               (click)="selectDepartment(department)">
               {{ department }}
             </li>
-
             <li
               value="service_center "
               (click)="selectDepartment('Service Center')">
@@ -207,6 +232,11 @@
             </li>
             <li value="operations " (click)="selectDepartment('Operations')">
               Operations
+            </li>
+            <li
+              value="Training Center"
+              (click)="selectDepartment('Training Center')">
+              Training Center
             </li>
           </ul>
         </div>
@@ -251,7 +281,6 @@
               (click)="selectSpecialization(specialization)">
               {{ specialization }}
             </li>
-
             <li
               value="ui_ux_designer"
               (click)="selectSpecialization('UI/UX Designer')">
@@ -302,7 +331,7 @@
             <button
               type="button"
               class="text-sky-950 text-xs leading-6 whitespace-nowrap justify-center items-stretch border border-[color:var(--outline-input-enabled,#9AA8BC)] bg-white bg-opacity-0 grow px-3 py-1 rounded-xl border-solid"
-              (click)="closeManagerUsercreationModal()">
+              (click)="closeUsercreationModal()">
               Cancel
             </button>
             <button
@@ -316,6 +345,7 @@
         </div>
       </div>
     </form>
+
     <app-specialization-modal
       [isOpen]="specializationModalOpen"
       (saveSpecialization)="
