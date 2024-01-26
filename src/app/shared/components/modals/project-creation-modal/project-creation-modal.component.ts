@@ -1,6 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
-
 import {
   FormGroup,
 
@@ -15,29 +13,32 @@ import { finalize, debounceTime, distinctUntilChanged  } from 'rxjs/operators';
 import { ProjectCreationModalService } from '../../../../accounts/admin/services/project-creation-modal.service';
 import { ClientCreationModalService } from '../../../../accounts/admin/services/client-creation-modal.service';
 import { ClientDetails } from '../../../types/types';
-// import { CalenderComponent } from '../calender/calender.component';
+import { ClientCreationModalComponent } from '../client-creation-modal/client-creation-modal.component';
+import { GlobalInputComponent } from '../../global-input/global-input.component';
+
 
 @Component({
   selector: 'app-project-creation-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,ClientCreationModalComponent, GlobalInputComponent],
   templateUrl: './project-creation-modal.component.html',
   styleUrl: './project-creation-modal.component.css'
 })
 export class ProjectCreationModalComponent implements OnInit{
   @Input() isOpen = true;
+  clientCreationModalOpen = false;
   showClientDropdown = false;
   formData: FormGroup;
   loading = false;
   success = false;
   error = false;
-  errorMessages: { roles?: string; email?: string } = {};
+  errorMessages: { serverError?: string } = {};
+  successMessage: string = '';
   clients: ClientDetails[] = [];
   filteredClients: ClientDetails[] = [];
   date: Date | undefined;
-
+  newClientDetails: ClientDetails = {} as ClientDetails;
   constructor(
-    private router: Router,
     private projectcreationService: ProjectCreationModalService,
     private clientService: ClientCreationModalService,
     private fb: FormBuilder,
@@ -54,14 +55,16 @@ export class ProjectCreationModalComponent implements OnInit{
       endDate: [''],
       projectType: [''],
       billable: [''],
+      
     });
   }
 
   OnCreateProject(){
-    this.loading = false;
+    this.loading = true;
     this.success = false;
     this.error = false;
     this.errorMessages = {};
+
     if (this.formData.valid) {
       const formDataValue = this.formData.value;
       const startDate = formDataValue['start-date'];
@@ -69,10 +72,9 @@ export class ProjectCreationModalComponent implements OnInit{
       const projectStatus = formDataValue['project-status'];
       const billable = formDataValue['billable'];
 
-      // Convert 'billable' to boolean
+
       const isBillable = billable === 'on';
 
-      // Prepare data to be sent to the service
       const projectData = {
         details: formDataValue['details'],
         name: formDataValue['name'],
@@ -83,46 +85,71 @@ export class ProjectCreationModalComponent implements OnInit{
         projectStatus: projectStatus,
         billable: isBillable,
       };
-      // this.loading = true;
+      this.loading = true;
 
       this.projectcreationService
         .addNewProject(this.formData.value)
         .pipe(
           finalize(() => {
-            // this.loading = false;
+            this.loading = false;
           })
         )
         .subscribe(
           response => {
-            console.log('Post request successful', response);
-
-            // this.success = true;
+            this.formData.reset();
+            this.success = true;
+            this.successMessage = 'Project created successfully!';
           },
           error => {
-            console.error('Error in post request', error);
 
             this.error = true;
-
-            if (error.error && typeof error.error === 'object') {
-              this.errorMessages = error.error;
+            if (error.status === 400) {
+              this.errorMessages.serverError = 'Invalid inputs. Please check your input.';
+            } else if (error.status === 401) {
+              this.errorMessages.serverError = 'Unauthorized. Please log in as Admin or Manager.';
+            } else if (error.status === 403) {
+              this.errorMessages.serverError = 'You do not have the necessary permission to perform this task.';
+            } else if (error.status === 404) {
+              this.errorMessages.serverError = 'Resource not found. Please try again or contact IT support';
+            } else if (error.status >= 500) {
+              this.errorMessages.serverError = 'Server error. Please try again later.';
+            } else {
+              this.errorMessages.serverError = 'An error occurred. Please try again.';
             }
+            this.formData.markAsTouched();
           }
         );
     } else {
-      console.error('Form is not valid');
+       this.errorMessages.serverError= 'Please enter valid inputs or complete the form';
     }
   }
-  closeUsercreationModal() {
+  closeProjectcreationModal() {
     this.isOpen = false;
 
   }
+  openClientCreationModal() {
+    this.clientService.openClientCreationModal();
+  
+
+  }
+  
+
+  handleClientCreated(clientDetails: ClientDetails): void {
+     this.newClientDetails = clientDetails;
+  }
+  
   ngOnInit(): void {
     this.fetchClients();
+
     
     this.formData.get('clientSearch')?.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
     ).subscribe(value => this.filterClients());
+
+    this.clientService.clientCreated.subscribe((newClient: ClientDetails) => {
+      this.handleClientCreated(newClient);
+    });
 
   }
   fetchClients(): void {
@@ -132,33 +159,33 @@ export class ProjectCreationModalComponent implements OnInit{
           if (Array.isArray(response.clients)) {
             this.clients = response.clients;
           } else {
-            console.error('Invalid clients array in API response:', response);
+            this.handleError('Error retrieving clients. Please try again later.');
           }
-        },
-        error => {
-          console.error('Error fetching clients:', error);
         }
       );
+  }
+  private handleError(errorMessage: string): void {
+    this.error = true;
+    this.errorMessages.serverError = errorMessage;
+
   }
   
     
   
   filterClients(): void {
     const searchTerm = this.formData.get('clientSearch')!.value;
-    // Implement client filtering logic based on the searchTerm
     this.filteredClients = this.clients.filter(client =>
       client.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }
   selectClient(client: ClientDetails): void {
     if (this.formData.get('clientSearch')) {
-      // Update the form control 'clientId' with the selected client's ID
+   
       this.formData.get('clientId')!.setValue(client.clientId);
   
-      // Update the 'clientSearch' control to display the client's name
+
       this.formData.get('clientSearch')!.setValue(client.name);
-  
-      // Hide the client dropdown
+
       this.showClientDropdown = false;
     }
   }

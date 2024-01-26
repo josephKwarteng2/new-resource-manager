@@ -57,17 +57,25 @@ export type ClientDetails = {
   name: string;
   clientId: string;
   details: string;
+  projects: Projects[];
   employees: string[];
   totalProjects: number;
+  created_at: Date;
 };
 export type ProjectDetails = Pick<ClientDetails, 'name' | 'details'> & {
-  date: Date;
   client: string;
   projectCode: string;
   projectName: string;
   billable: Boolean;
+  projectType: string;
+  employees: EmployeeDetails[];
+  startDate: Date | undefined;
+  endDate: Date | undefined;
 };
-
+export interface EmployeeDetails {
+  name: string;
+  picture: string;
+}
 export interface UserNotifications {
   created_by: string;
   time: string;

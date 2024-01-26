@@ -1,0 +1,49 @@
+<div class="modal-overlay" *ngIf="project">
+    <div class="fixed inset-0 flex items-center justify-center">
+        <div class="relative bg-white rounded-lg shadow-md  m-4 p-6 w-[575px] ">
+        <div class="px-6 py-4 flex justify-between items-center">
+          <h2 class="text-xl font-medium text-gray-600">{{ project.name }}</h2>
+          <button (click)="closeModal()">
+            <img src="https://file.rendit.io/n/tmm4zjNT0bW3nKcuijif.svg" alt="Close" class="h-6 w-6 border-none"/>
+          </button>
+        </div>
+        <div class="px-6 py-4 flex pl-6 items-center gap-4">
+          <div class="rounded-full bg-gray-100 text-gray-400 font-semibold uppercase p-5 pl-6">
+            {{ generateClientInitials(project.client) }}
+          </div>
+          <div>
+            <h3 class="font-normal text-sm ">{{ project.client }}</h3>
+            <p class="text-sm text-gray-600">Client</p>
+          </div>
+        </div>
+        <hr class="mb-4" />
+        <div class="px-6 py-4">
+          <h4 class="font-normal text-sm text-gray-700 mb-2">Details</h4>
+          <p class="text-xs text-gray-500">{{ project.details }}</p>
+        </div>
+        <div class="px-6 py-4 grid grid-cols-2 gap-4">
+          <div>
+            <h4 class="font-normal text-sm text-gray-700">Project code</h4>
+            <p class="text-xs text-gray-500 ">{{ project.projectCode }}</p>
+          </div>
+          <div>
+            <h4 class="font-normal text-sm text-gray-700">Billable</h4>
+            <p class="text-sm text-gray-600">{{ project.billable ? 'Yes' : 'No' }}</p>
+          </div>
+        </div>
+        <div class="px-6 py-4">
+          <h4 class="font-normal text-sm text-gray-700 mb-3">Assigned people</h4>
+          <div class="flex gap-4">
+            <div *ngFor="let employee of project.employees">
+              <img [src]="employee.picture" alt="{{ employee.name }}" class="w-12 h-12 rounded-full" />
+              <div>
+                <p class="text-sm font-semibold">{{ employee.name }}</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

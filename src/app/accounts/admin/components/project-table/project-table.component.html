@@ -27,14 +27,29 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let project of projects">
-          <td class="grid-item">{{ project.client }}</td>
-          <td class="grid-item">{{ project.name }}</td>
+        <tr *ngFor="let project of projects " (click)="openProjectDetailsModal(project)">
+          <td class="grid-item" (click)="openProjectDetailsModal(project)">{{ project.client }}</td>
+          <td class="grid-item"  >{{ project.name }}</td>
           <td class="grid-item">{{ project.projectCode }}</td>
-          <td class="grid-item"></td>
-          <td class="grid-item" style="text-transform: capitalize">
-            {{ project.billable }}
+          <td class="grid-item">
+            <div class="flex -space-x-4 rtl:space-x-reverse">
+              <ng-container *ngFor="let employee of project.employees">
+                <div class="relative">
+                  <img
+                    class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800"
+                    [src]="employee.picture"
+                    alt="Employee image"
+                  />
+                  <div
+                    class="absolute bottom-0 left-0 right-0 bg-gray-700 text-xs text-white opacity-0 transition-opacity duration-300 hover:opacity-100 rounded-b-full hidden group"
+                  >
+                    <p class="p-2">{{ employee.name }}</p>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
           </td>
+          <td class="grid-item">{{ project.billable ? 'Yes' : 'No' }}</td>
           <td class="grid-item">
             <!-- <button class="actions-btn">
               <div class="actions-dot" (click)="openAssignModal(project)">
@@ -64,4 +79,8 @@
       </tbody>
     </table>
   </div>
+  <pagination
+[currentPage]="currentPage"
+[totalPages]="totalPages"
+(pageChange)="onPageChange($event)"></pagination>
 </ng-template>

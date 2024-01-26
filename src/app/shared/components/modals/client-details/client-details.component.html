@@ -1,0 +1,66 @@
+<div class="modal-overlay" *ngIf="client">
+    <div class="fixed inset-0 flex items-center justify-center">
+    <div class="relative bg-white rounded-lg shadow-md  m-4 p-6 w-[575px] ">
+
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-semibold  text-gray-600">Client</h2>
+        <button class="focus:outline-none">
+          <img src="https://file.rendit.io/n/tmm4zjNT0bW3nKcuijif.svg" alt="Close" class="w-4 h-4"  (click)="closeModal()"/>
+        </button>
+      </div>
+
+
+      <div class="flex items-center mb-4 pl-6">
+        <img src="https://file.rendit.io/n/zuv22h4ojTVto5JMmKMv.svg" alt="Client" class="w-16 h-16 rounded-full bg-gray-200 p-4 mr-4" />
+        <span class="font-normal text-base">{{ client.name}}</span>
+      </div>
+
+      <hr class="mb-4" />
+
+
+      <div class="mb-4">
+        <h3 class="font-normal text-sm mb-2">Details</h3>
+        <p class="text-sm font-thin text-gray-400">
+{{client.details}}
+        </p>
+      </div>
+
+
+      <div class="mb-4">
+        <h4 class="font-medium text-sm mb-2">Date</h4>
+        <p class="text-gray-500 text-xs mb-4">{{client.created_at}}</p>
+
+        <div class="flex items-center mb-2">
+          <h4 class="font-medium text-sm mr-2">Project</h4>
+          <span class="bg-blue-600 text-white text-xs rounded-lg px-2 py-1">{{ client.totalProjects}}</span>
+        </div>
+        <ul class="list-disc text-sm list-inside text-gray-400">
+          <p>{{client.projects}}</p>
+         
+            <ng-container *ngFor="let project of client.projects">
+
+                  <li class="p-2">{{ project.name }}</li>
+              
+        
+            </ng-container>
+        
+        </ul>
+      </div>
+<!-- 
+      {/* Assigned People */} -->
+      <div>
+        <h4 class="font-normal text-sm mb-2">Assigned people</h4>
+        <div class="flex -space-x-2 mb-4">
+          <img src="https://file.rendit.io/n/jacXxVuz5795PVZoyo80.png" alt="Person 1" class="w-8 h-8 rounded-full border-2 border-white" />
+          <img src="https://file.rendit.io/n/LGp4EyTTwkW2zAAld6QS.png" alt="Person 2" class="w-8 h-8 rounded-full border-2 border-white" />
+          <img src="https://file.rendit.io/n/4cQLLUvrbbvGtGV11E7Y.png" alt="Person 3" class="w-8 h-8 rounded-full border-2 border-white" />
+          <img src="https://file.rendit.io/n/lDpjTXT2eb4IlKLD3VEV.png" alt="Person 4" class="w-8 h-8 rounded-full border-2 border-white" />
+          <img src="https://file.rendit.io/n/MD7UYXXXaYNn0vlSQF13.png" alt="Person 5" class="w-8 h-8 rounded-full border-2 border-white" />
+          <button class="w-8 h-8 bg-gray-200 rounded-full flex justify-center items-center border-2 border-white">
+            <img src="https://file.rendit.io/n/352lQjPyRPRU9WybuCJC.svg" alt="Add Person" class="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+</div>
+</div>

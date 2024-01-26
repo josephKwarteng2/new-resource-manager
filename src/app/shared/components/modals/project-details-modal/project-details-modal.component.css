@@ -1,0 +1,334 @@
+.modal-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--Background-Overlay, rgba(203, 212, 225, 0.4));
+    backdrop-filter: blur(8px);
+  }
+  
+  .modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    z-index: 1000;
+  }
+  
+  
+  .modal .div-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    position: relative;
+    align-self: stretch;
+    width: 100%;
+    flex: 0 0 auto;
+  }
+  
+  .modal .text {
+    position: relative;
+    width: 360px;
+    margin-top: -1px;
+    font-family: var(--title-large-font-family);
+    font-weight: var(--title-large-font-weight);
+    color: var(--colorsprimaryslate-700);
+    font-size: var(--title-large-font-size);
+    letter-spacing: var(--title-large-letter-spacing);
+    line-height: var(--title-large-line-height);
+    font-style: var(--title-large-font-style);
+  }
+  
+  .modal .frame {
+    display: flex;
+    width: 512px;
+    height: 118px;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 48px;
+    position: relative;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-color: var(--colorsprimaryslate-100);
+  }
+  
+  .modal .avatar-wrap {
+    position: relative;
+    width: 94.5px;
+    height: 94.5px;
+    margin-top: -4.25px;
+    margin-bottom: -4.25px;
+    margin-left: -6.75px;
+  }
+  
+  .modal .frame-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  
+  .modal .frame-2 {
+    display: flex;
+    flex-direction: column;
+    width: 238px;
+    height: 82px;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+  }
+  
+  .modal .text-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 238px;
+    height: 24px;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 4px 0px;
+    position: relative;
+  }
+  
+  .modal .text-2 {
+    position: relative;
+    width: 154px;
+    margin-top: -1px;
+    margin-bottom: -7px;
+    font-family: var(--label-large-font-family);
+    font-weight: var(--label-large-font-weight);
+    color: var(--colorsprimaryslate-700);
+    font-size: var(--label-large-font-size);
+    letter-spacing: var(--label-large-letter-spacing);
+    line-height: var(--label-large-line-height);
+    font-style: var(--label-large-font-style);
+  }
+  
+  .modal .frame-3 {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  
+  .modal .div-wrapper {
+    display: flex;
+    width: 238px;
+    align-items: flex-start;
+    gap: 40px;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  
+  .modal .text-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    flex: 1;
+    flex-grow: 1;
+  }
+  
+  .modal .supportive-text {
+    position: relative;
+    width: fit-content;
+    margin-top: -1px;
+    font-family: var(--body-medium-font-family);
+    font-weight: var(--body-medium-font-weight);
+    color: var(--colorsprimaryslate-500);
+    font-size: var(--body-medium-font-size);
+    letter-spacing: var(--body-medium-letter-spacing);
+    line-height: var(--body-medium-line-height);
+    white-space: nowrap;
+    font-style: var(--body-medium-font-style);
+  }
+  
+  .modal .textarea-input-field {
+    display: flex;
+    flex-direction: column;
+    width: 512px;
+    height: 152px;
+    align-items: flex-start;
+    gap: 8px;
+    position: relative;
+  }
+  
+  .modal .label-text {
+    align-self: stretch;
+    height: 24px;
+    margin-top: -1px;
+    font-family: var(--body-medium-font-family);
+    font-weight: var(--body-medium-font-weight);
+    color: var(--colorsprimaryslate-700);
+    font-size: var(--body-medium-font-size);
+    line-height: var(--body-medium-line-height);
+    position: relative;
+    letter-spacing: var(--body-medium-letter-spacing);
+    white-space: nowrap;
+    font-style: var(--body-medium-font-style);
+  }
+  
+  .modal .p {
+    position: relative;
+    width: 512px;
+    height: 24px;
+    font-family: var(--body-large-font-family);
+    font-weight: var(--body-large-font-weight);
+    color: var(--textsecondary);
+    font-size: var(--body-large-font-size);
+    letter-spacing: var(--body-large-letter-spacing);
+    line-height: var(--body-large-line-height);
+    white-space: nowrap;
+    font-style: var(--body-large-font-style);
+  }
+  
+  .modal .frame-4 {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 20px;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  
+  .modal .textarea-input-field-2 {
+    display: flex;
+    flex-direction: column;
+    width: 366px;
+    height: 56px;
+    align-items: flex-start;
+    gap: 8px;
+    position: relative;
+  }
+  
+  .modal .text-4 {
+    position: relative;
+    width: 441px;
+    height: 24px;
+    margin-right: -75px;
+    font-family: var(--body-large-font-family);
+    font-weight: var(--body-large-font-weight);
+    color: var(--textsecondary);
+    font-size: var(--body-large-font-size);
+    letter-spacing: var(--body-large-letter-spacing);
+    line-height: var(--body-large-line-height);
+    white-space: nowrap;
+    font-style: var(--body-large-font-style);
+  }
+  
+  .modal .frame-5 {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  
+  .modal .label {
+    width: fit-content;
+    margin-top: -1px;
+    font-family: var(--label-medium-font-family);
+    font-weight: var(--label-medium-font-weight);
+    color: var(--colorsprimaryslate-700);
+    font-size: var(--label-medium-font-size);
+    line-height: var(--label-medium-line-height);
+    position: relative;
+    letter-spacing: var(--label-medium-letter-spacing);
+    white-space: nowrap;
+    font-style: var(--label-medium-font-style);
+  }
+  
+  .modal .label-2 {
+    width: fit-content;
+    font-family: var(--body-medium-font-family);
+    font-weight: var(--body-medium-font-weight);
+    color: var(--colorsprimaryslate-500);
+    font-size: var(--body-medium-font-size);
+    line-height: var(--body-medium-line-height);
+    position: relative;
+    letter-spacing: var(--body-medium-letter-spacing);
+    white-space: nowrap;
+    font-style: var(--body-medium-font-style);
+  }
+  
+  .modal .frame-6 {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    position: relative;
+    flex: 0 0 auto;
+    margin-right: -3px;
+  }
+  
+  .modal .frame-7 {
+    display: flex;
+    flex-wrap: wrap;
+    width: 530px;
+    align-items: flex-start;
+    gap: 16px 16px;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  
+  .modal .frame-8 {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 16px;
+    position: relative;
+    flex: 0 0 auto;
+  }
+  
+  .modal .img {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    margin-top: -2px;
+    margin-left: -2px;
+    object-fit: cover;
+  }
+  
+  .modal .label-3 {
+    width: fit-content;
+    font-family: var(--body-small-font-family);
+    font-weight: var(--body-small-font-weight);
+    color: var(--colorsprimaryslate-500);
+    font-size: var(--body-small-font-size);
+    line-height: var(--body-small-line-height);
+    position: relative;
+    letter-spacing: var(--body-small-letter-spacing);
+    white-space: nowrap;
+    font-style: var(--body-small-font-style);
+  }
+  
+  .modal .button-close-x {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    position: absolute;
+    top: 16px;
+    left: 515px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .modal .x-close {
+    position: relative;
+    width: 24px;
+    height: 24px;
+  }
+  
