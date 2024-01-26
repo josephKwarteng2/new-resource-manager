@@ -43,9 +43,6 @@ export class SpecializationService {
 
   addSpecialization(specialization: string): Observable<specializationResponse> {
     const currentSpecializations = this._specializations.getValue();
-    // const updatedSpecializations = [...currentSpecializations, specialization];
-    // console.log('Updated Specializations:', updatedSpecializations);
-    // this._specializations.next(updatedSpecializations);
 
     return this.http
       .post<any>(`${BASE_URL}/specialization/store`, { name: specialization })

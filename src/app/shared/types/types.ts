@@ -50,6 +50,7 @@ export interface User extends CurrentUser {}
 export type GenericResponse = {
   success: boolean;
   message: string;
+  status: number;
 };
 
 export type ClientDetails = {

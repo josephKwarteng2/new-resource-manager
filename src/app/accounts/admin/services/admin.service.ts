@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BASE_URL } from '../../../../environment/config';
+import { AdminUser } from '../../../shared/types/types';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { BASE_URL } from '../../../../environment/config';
 export class AdminService {
   constructor(private http: HttpClient) {}
 
-  addNew(data: any): Observable<any> {
-    return this.http.post(`${BASE_URL}/users/store`, data);
+  addNewUser(data: AdminUser): Observable<AdminUser> {
+    return this.http.post<AdminUser>(`${BASE_URL}/users/store`, data);
   }
 }

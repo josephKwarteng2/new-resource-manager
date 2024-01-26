@@ -6,13 +6,10 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { SpecializationService } from '../../../../accounts/admin/services/specialization.service';
-//import { SpecializationResponse } from '../reponse.model';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { specializationResponse } from '../../../../accounts/admin/interfaces';
 import { CommonModule } from '@angular/common';
+import { GenericResponse } from '../../../types/types';
 
 @Component({
   selector: 'app-specialization-modal',
@@ -26,6 +23,7 @@ export class SpecializationModalComponent implements OnInit {
   @Input() formGroup!: FormGroup;
   @Input() isOpen = true;
   modalForm: FormGroup;
+  specializationStoringError: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -39,7 +37,7 @@ export class SpecializationModalComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onSave() {
+  onSaveSpecialization() {
     if (this.modalForm.valid) {
       const newSpecialization = this.modalForm.value.newSpecialization;
 
@@ -47,33 +45,46 @@ export class SpecializationModalComponent implements OnInit {
         .addSpecialization(newSpecialization)
         .subscribe({
           next: () => {
-            console.log(
-              'New specialization added to the backend:',
-              newSpecialization
-            );
             this.saveSpecialization.emit(newSpecialization);
             this.closeModal();
           },
           error: err => {
-            console.error('Error adding specialization to the backend:', err);
+            this.handleSpecializationStoringError(err);
           },
         });
     }
   }
+  clearErrorMessagesAfterDelay() {
+    setTimeout(() => {
+      this.specializationStoringError= '';
+    }, 3000); 
+  }
+
+  private handleSpecializationStoringError(error: GenericResponse) {
+
+ 
+    if (error.status === 404) {
+      
+      this.specializationStoringError = 'Unable to save new specialization';
+    } else {
+      
+      this.specializationStoringError = 'Please try again or contact IT support';
+    }
+    this.clearErrorMessagesAfterDelay();
+  }
+
   fetchSpecializations() {
     this.specializationService.getSpecializations().subscribe({
       next: (specializations: string[]) => {
-        console.log(
-          'Fetched specializations from the backend:',
-          specializations
-        );
+
       },
       error: err => {
-        console.error('Error fetching specializations from the backend:', err);
       },
       complete: () => {},
     });
   }
 
-  closeModal() {}
+  closeModal() {
+    this.isOpen = false;
+  }
 }
