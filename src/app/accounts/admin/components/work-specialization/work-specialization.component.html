@@ -1,0 +1,92 @@
+<h4>Work Specialization</h4>
+<p>Update your work Specialization and Department here</p>
+<form (submit)="submitForm($event)" [formGroup]="userSpecializationForm">
+  <div class="message-container">
+    @if (signalValues.success) {
+    <div class="success-message">
+      {{ signalValues.success.message }}
+    </div>
+    } @if (signalValues.error) {
+    <div class="error-message">
+      {{ signalValues.error.message }}
+    </div>
+    }
+  </div>
+  <div class="d-block">
+    <div>
+      <label for="department">Department</label>
+      <select
+        name="department"
+        class="input-settings {{ getDepartmentErrors() ? 'error' : '' }}"
+        id="department"
+        formControlName="department">
+        <option *ngFor="let dept of departments" [value]="dept">
+          {{ dept }}
+        </option>
+      </select>
+      @if(getDepartmentErrors()) {
+      <div class="validation-error-message">
+        {{ getDepartmentErrors() }}
+      </div>
+      }
+    </div>
+
+    <div>
+      <label for="specialization">Specialization</label>
+      <select
+        name="specialization"
+        class="input-settings {{ getSpecializationErrors() ? 'error' : '' }}"
+        id="specialization"
+        formControlName="specialization">
+        <option *ngFor="let spec of specializations" [value]="spec">
+          {{ spec }}
+        </option>
+      </select>
+      @if(getSpecializationErrors()) {
+      <div class="validation-error-message">
+        {{ getSpecializationErrors() }}
+      </div>
+      }
+    </div>
+    <div>
+      <div>
+        <label for="skills">Skills</label>
+        <div class="skills-container">
+          <input
+            class="input-settings"
+            formControlName="skills"
+            placeholder="Enter skill, rate and add" />
+          <!-- <option *ngFor="let skill of skills" [value]="skill">
+              {{ skill }}
+            </option> -->
+
+          <button>Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="separator"></div>
+  <label class="text-added-skill">Added skills </label>
+  <div class="skill-cards-container">
+    <div class="skill-card" *ngFor="let skill of enteredSkills">
+      {{ skill }}
+
+      <button (click)="removeSkill(skill)">
+        <img src="assets/images/user/x-close.svg" />
+      </button>
+    </div>
+  </div>
+  <div class="buttons">
+    <button
+      type="reset"
+      class="button-settings bg-[#FFFFFF] text-[#022F54] hover:bg-[#e6e6e6]">
+      Reset
+    </button>
+    <button
+      type="submit"
+      [disabled]="loading || !userSpecializationForm.valid"
+      class="button-settings bg-[#022F54] text-white hover:bg-[#1b4465]">
+      {{ loading ? 'Updating...' : 'Update Profile' }}
+    </button>
+  </div>
+</form>

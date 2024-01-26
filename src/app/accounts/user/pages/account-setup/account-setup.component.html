@@ -1,0 +1,17 @@
+<div class="global-pages-auth">
+  <div class="global-illustration-left">
+    <login-side-illustration
+      imgUrl="../../../../../assets/images/auth/Man Working on laptop.png"></login-side-illustration>
+  </div>
+  <div class="global-formfield-right">
+    <div class="global-forms-auth">
+      @if (setupProgress === 'password') {
+      <new-password-form [userDetails]="userDetails"></new-password-form>
+      } @else if (setupProgress === 'details') {
+      <account-setup-form
+        [email]="userDetails.email"
+        [userId]="userDetails.userId"></account-setup-form>
+      }
+    </div>
+  </div>
+</div>

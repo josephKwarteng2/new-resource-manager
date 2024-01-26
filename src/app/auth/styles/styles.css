@@ -1,0 +1,93 @@
+.global-pages-auth {
+  padding: 28px;
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.global-forms-auth {
+  margin: auto;
+  width: 45%;
+}
+
+.global-formfield-right {
+  grid-column: 4 / 13;
+  display: flex;
+  align-items: center;
+}
+
+.global-illustration-left {
+  grid-column: 1 / 4;
+}
+
+.form-label {
+  display: block;
+  font-size: 1rem;
+  margin: 12px 0px;
+}
+
+.global-button-auth {
+  padding: 0.75rem 1rem;
+  width: 100%;
+  font-size: 1rem;
+  color: #fff;
+  background: #1f26a8;
+  border: none;
+  border-radius: 16px;
+  margin-top: 28px;
+  cursor: pointer;
+  font-family: 'LexendMedium';
+  text-transform: capitalize;
+}
+
+.global-button-auth:disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  background: rgb(95, 99, 171);
+}
+
+.global-input-auth {
+  padding: 0.75rem 1rem;
+  width: 100%;
+  font-size: 1rem;
+  color: #5e718d;
+  border: none;
+  outline: 1.5px solid #9aa8bc;
+  border-radius: 16px;
+}
+
+.global-input-auth:focus {
+  outline: 2px solid #4a72ff;
+}
+
+.global-input-auth.error {
+  outline: 2px solid #dc3545;
+}
+
+@media only screen and (max-height: 700px) {
+  .validation-error-message {
+    font-size: 0.85rem;
+  }
+
+  .form-label {
+    font-size: 1rem;
+  }
+
+  .global-input-auth {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 12px;
+  }
+
+  .global-button-auth {
+    padding: 0.7rem 0.85rem;
+    margin-top: 20px;
+    border-radius: 12px;
+  }
+
+  .global-forms-auth {
+    margin: auto;
+    width: 50%;
+  }
+}

@@ -1,0 +1,24 @@
+<div>
+  <div class="validation-error-message backend">{{ errorMessage }}</div>
+  <div class="validation-success-message backend">{{ successMessage }}</div>
+  <h2>Password reset</h2>
+  <p>
+    We sent a code to <span>{{ this.resBody.user.email }}</span>
+  </p>
+  <form (ngSubmit)="submitForm()">
+    <div class="otp-container">
+      <ng-otp-input [formCtrl]="otp" [config]="{ length: 6 }"></ng-otp-input>
+    </div>
+
+    <button
+      type="submit"
+      class="global-button-auth"
+      style="font-family: 'LexendMedium'">
+      CONTINUE
+    </button>
+  </form>
+
+  <p class="drl">
+    Didn't recieve the link? <span href="">Click to resend</span>
+  </p>
+</div>

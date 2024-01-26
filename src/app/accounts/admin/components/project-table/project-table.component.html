@@ -1,0 +1,67 @@
+<ng-container *ngIf="loading; else projectList">
+  <div class="spinner-dots">
+    <div class="custom-spinner">
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+    </div>
+  </div>
+</ng-container>
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+<ng-template #projectList>
+  <div class="project-list-container">
+    <table class="project-table">
+      <thead>
+        <tr>
+          <th>Client Name</th>
+          <th>Project Name</th>
+          <th>Project Code</th>
+          <th>Assigned People</th>
+          <th>Billable</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let project of projects">
+          <td class="grid-item">{{ project.client }}</td>
+          <td class="grid-item">{{ project.name }}</td>
+          <td class="grid-item">{{ project.projectCode }}</td>
+          <td class="grid-item"></td>
+          <td class="grid-item" style="text-transform: capitalize">
+            {{ project.billable }}
+          </td>
+          <td class="grid-item">
+            <!-- <button class="actions-btn">
+              <div class="actions-dot" (click)="openAssignModal(project)">
+                <div class="dropdown-container"></div>
+                Assign
+              </div>
+            </button> -->
+
+            <div
+              class="dropdown-container"
+              *ngIf="showDropdownForProject === project">
+              <ul class="dropdown-details-container">
+                <li>Edit</li>
+                <li>View</li>
+                <li>Archive</li>
+                <li (click)="openAssignModal(project)">Assign</li>
+              </ul>
+            </div>
+
+            <button class="actions-btn" (click)="toggleDropdown(project)">
+              <div class="actions-dot">
+                <img src="assets/images/user/dots-v.svg" alt="dots" />
+              </div>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>

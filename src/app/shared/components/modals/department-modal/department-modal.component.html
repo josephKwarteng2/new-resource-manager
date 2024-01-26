@@ -1,0 +1,39 @@
+<div class="modal-container" *ngIf="isOpen">
+  <div class="modal-modal">
+    <div class="modal-content">
+      <div class="modal-textandsupportingtext">
+        <span class="modal-text TitleLarge">
+          <span>Add Department</span>
+          <button class="modal-buttonclose-x" (click)="closeModal()">
+            <img
+              src="../../../../../assets/images/admin/x-close.svg"
+              alt="xcloseI973"
+              class="modal-xclose" />
+          </button>
+        </span>
+      </div>
+      <div class="modal-form">
+        <form [formGroup]="modalForm" (ngSubmit)="onSaveDepartment()">
+          <div class="modal-select-field">
+            <input
+              type="text"
+              id="name"
+              class="modal-input"
+              name="newDepartment"
+              formControlName="newDepartment" />
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <div class="modal-frame1">
+        <button class="modal-button" (click)="closeModal()">
+          <span class="modal-text2 LabelLarge"><span>Cancel</span></span>
+        </button>
+        <button class="modal-button1" (click)="onSaveDepartment()">
+          <span class="modal-text4 LabelLarge"><span>Add</span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="clients page">
+    <header>
+      <h1>Clients</h1>
+      <div class="buttons-wrapper">
+
+        <button-new (click)="openClientCreationModal()"></button-new>
+        <app-client-creation-modal [isOpen]="clientCreationModalOpen"></app-client-creation-modal>
+      </div>
+    </header>
+   <app-client-table></app-client-table>
+  </div>
+  

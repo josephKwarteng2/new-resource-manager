@@ -1,0 +1,81 @@
+<h4>Work Specialization</h4>
+<p>Update your work Specialization and Department here</p>
+<form (submit)="submitForm($event)" [formGroup]="userSpecializationForm">
+  <div class="message-container">
+    @if (signalValues.success) {
+    <div class="success-message">
+      {{ signalValues.success.message }}
+    </div>
+    @if (signalValues.error) {
+    <div class="error-message">
+      {{ signalValues.error.message }}
+    </div>
+    } }
+  </div>
+  <div class="d-grid">
+    <div>
+      <label for="department">DEPARTMENT</label>
+      <input
+        name="department"
+        class="input-settings {{ getDepartmentErrors() ? 'error' : '' }}"
+        id="department"
+        formControlName="department" />
+      @if(getDepartmentErrors()){
+      <div class="validation-error-message">
+        {{ getDepartmentErrors() }}
+      </div>
+      }
+    </div>
+
+    <div>
+      <label for="specialization">SPECIALIZATION</label>
+      <input
+        name="specialization"
+        class="input-settings {{ getSpecializationErrors() ? 'error' : '' }}"
+        id="specialization"
+        formControlName="specialization" />
+
+      @if(getSpecializationErrors()) {
+      <div class="validation-error-message">
+        {{ getSpecializationErrors() }}
+      </div>
+      }
+    </div>
+    <!-- <div>
+      <label for="skills">SKILLS</label>
+      <select id="skills" class="skill-input" formControlName="skills">
+        <option *ngFor="let skill of skills" [value]="skill">
+          {{ skill }}
+        </option>
+      </select>
+    </div> -->
+    <!-- <div formArrayName="skills" class="skills">
+      <h2>SKILLS</h2>
+      <button type="button" (click)="addSkill()" class="skill-button">
+        Add
+      </button> -->
+    <!-- <div
+        *ngFor="
+          let skillControl of getSkillsFormArray().controls;
+          let i = index
+        ">
+        <label for="skill-{{ i }}">Skill {{ i }}:</label>
+        <div
+          id="skill-{{ i }}"
+          class="skill-input"
+          contenteditable="true"></div>
+      </div> -->
+  </div>
+  <div class="buttons">
+    <button
+      type="reset"
+      class="button-settings bg-[#FFFFFF] text-[#022F54] hover:bg-[#e6e6e6]">
+      Reset
+    </button>
+    <button
+      type="submit"
+      class="button-settings bg-[#022F54] text-white hover:bg-[#1b4465]">
+      Update Profile
+    </button>
+  </div>
+</form>

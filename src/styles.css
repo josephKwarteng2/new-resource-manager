@@ -1,0 +1,97 @@
+@import '@angular/cdk/overlay-prebuilt.css';
+
+@font-face {
+  font-family: 'LexendBlack';
+  src: url('./assets/fonts/Lexend-Black.ttf'), format('truetype');
+}
+
+@font-face {
+  font-family: 'LexendExtrabold';
+  src: url('./assets/fonts/Lexend-ExtraBold.ttf');
+}
+
+@font-face {
+  font-family: 'LexendBold';
+  src: url('./assets/fonts/Lexend-Bold.ttf'), format('truetype');
+}
+
+@font-face {
+  font-family: 'LexendSemibold';
+  src: url('./assets/fonts/Lexend-SemiBold.ttf'), format('truetype');
+}
+
+@font-face {
+  font-family: 'LexendMedium';
+  src: url('./assets/fonts/Lexend-Medium.ttf'), format('truetype');
+}
+
+@font-face {
+  font-family: 'LexendRegular';
+  src: url('./assets/fonts/Lexend-Regular.ttf'), format('truetype');
+}
+
+:root {
+  --color-primary: #1f26a8;
+  --colors-primary-slate-500: #5e718d;
+  --colors-primary-primary-600: #0f3cd9;
+  --colors-primary-slate-700: #3d4a5c;
+  --outline-input-enabled: #9aa8bc;
+  --colors-primary-slate-500: #5e718d;
+  --bg-primary: #ffff;
+  --bg-color: #f9fafb;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'LexendRegular';
+  background: #f9fafb;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+
+.visibly-hidden {
+  display: none;
+}
+
+.validation-error-message {
+  color: #dc3545;
+  font-size: 1rem;
+  display: block;
+  margin: 6px 0;
+}
+
+.validation-error-message.backend {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.validation-success-message.backend {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: rgb(20, 183, 20);
+}
+
+.page {
+  min-height: 100vh;
+  padding: 10vh 40px 40px calc(16% + 40px);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

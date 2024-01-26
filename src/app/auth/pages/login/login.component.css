@@ -1,0 +1,98 @@
+h2,
+p,
+label {
+  color: #3d4a5c;
+}
+
+a {
+  color: #4a72ff;
+}
+
+h2,
+p {
+  margin-bottom: 28px;
+}
+
+p {
+  font-size: 1rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+  font-family: 'LexendBold';
+}
+
+.password-input {
+  position: relative;
+  margin-bottom: 28px;
+}
+
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear {
+  display: none;
+}
+
+input[type='password']::-webkit-inner-spin-button,
+input[type='password']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='password']::-webkit-search-cancel-button,
+input[type='password']::-webkit-search-decoration,
+input[type='password']::-webkit-search-results-button,
+input[type='password']::-webkit-search-results-decoration {
+  display: none;
+}
+
+.password-input img {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+}
+
+#remember {
+  color: #4a72ff;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+form div:last-of-type {
+  display: flex;
+  justify-content: space-between;
+}
+
+input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  outline: none;
+  background: #4a72ff;
+}
+
+.global-input-auth {
+  padding: 0.75rem 1rem;
+  width: 100%;
+  font-size: 1rem;
+  color: #5e718d;
+  border: none;
+  outline: 1.5px solid #9aa8bc;
+  border-radius: 16px;
+}
+
+/* SMALLER DESKTOP */
+@media only screen and (max-height: 700px) {
+  .password-input img {
+    top: 4px;
+  }
+
+  h2,
+  p {
+    margin-bottom: 20px;
+  }
+
+  .password-input {
+    margin-bottom: 20px;
+  }
+}

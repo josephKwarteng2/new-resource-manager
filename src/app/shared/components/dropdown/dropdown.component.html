@@ -1,0 +1,10 @@
+<ul
+  class="dropdown"
+  [style.top.px]="position?.top"
+  [style.left.px]="position?.left">
+  <!-- <li (click)="openAssignModal(user)">Assign</li> -->
+  <li>Edit</li>
+  <li (click)="openViewModal(user)">View</li>
+  <li (click)="archiveUser(user)">Archive</li>
+</ul>
+<div class="background" (click)="close()"></div>

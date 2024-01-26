@@ -1,0 +1,17 @@
+.global-input-auth {
+  padding: 0.6rem 1rem;
+  width: 100%;
+  font-size: 1rem;
+  color: #5e718d;
+  border: none;
+  outline: 1.5px solid #9aa8bc;
+  border-radius: 16px;
+}
+
+.global-input-auth:focus {
+  outline: 2px solid #4a72ff;
+}
+
+.global-input-auth.error {
+  outline: 2px solid #dc3545;
+}

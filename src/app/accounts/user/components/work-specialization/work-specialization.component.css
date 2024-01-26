@@ -1,0 +1,86 @@
+h4 {
+  color: #022f54;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+p {
+  margin-bottom: 12px;
+}
+
+label {
+  margin-bottom: 4px;
+}
+
+p,
+label:not(.visibly-hidden) {
+  color: #728197;
+  font-size: 0.8rem;
+  font-weight: 400;
+  display: block;
+}
+
+.skill-input {
+  border-radius: 8px;
+  border: 1px solid #9aa8bc;
+  padding: 11px 13.941px 11px 14px;
+  color: #728197;
+  width: 40%;
+}
+
+.d-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: auto;
+  column-gap: 46px;
+  row-gap: 28px;
+  margin-bottom: 40px;
+  padding-top: 30px;
+}
+
+.buttons {
+  display: flex;
+  gap: 40px;
+}
+
+.validation-error-message {
+  position: absolute;
+  font-size: 12px;
+}
+
+.message-container {
+  position: fixed;
+  top: 20%;
+  /* left: 80%; */
+  right: -2%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.success-message,
+.error-message {
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.success-message {
+  color: #76bf4c;
+}
+
+.error-message {
+  color: #fc2e20;
+}
+
+.skill-button {
+  width: 47px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #ececec;
+}
+
+.skills {
+  display: flex;
+  gap: 100px;
+}

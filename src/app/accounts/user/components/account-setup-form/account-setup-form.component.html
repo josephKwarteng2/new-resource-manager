@@ -1,0 +1,70 @@
+<h2>Welcome</h2>
+<p>Finish setting up your RM.io account</p>
+<form (submit)="submitForm($event)" [formGroup]="userDetails">
+  <div class="profile-picture">
+    <img [src]="imgUrl" alt="profile picture" />
+    <label for="image" class="visibly-hidden">Profile picture</label>
+    <global-input
+      [type]="'file'"
+      [id]="'image'"
+      [name]="'image'"
+      (change)="onFileChange($event)"
+      accept=".jpg,.jpeg,.png" />
+  </div>
+
+  <label for="email" class="form-label">Email</label>
+  <global-input
+    [id]="'email'"
+    [type]="'email'"
+    class="global-input-auth {{ getEmailErrors() ? 'error' : '' }}"
+    [placeholder]="'something@example.com'"
+    [ngModel]="email"
+    formControlName="email" />
+  @if(getEmailErrors()){
+  <div class="validation-error-message">
+    {{ getEmailErrors() }}
+  </div>
+  }
+
+  <label for="firsName" class="form-label">First Name</label>
+  <global-input
+    [id]="'firsName'"
+    [type]="'text'"
+    class="global-input-auth {{ getNameErrors('firstName') ? 'error' : '' }}"
+    [placeholder]="'Enter FirstName'"
+    [control]="userDetails.get('firstName')" />
+  @if(getNameErrors('firstName')){
+  <div class="validation-error-message">
+    {{ getNameErrors('firstName') }}
+  </div>
+  }
+
+  <label for="lastName" class="form-label">Last Name</label>
+  <global-input
+    [id]="'lastName'"
+    [type]="'text'"
+    class="global-input-auth {{ getNameErrors('lastName') ? 'error' : '' }}"
+    [placeholder]="'Enter LastName'"
+    [control]="userDetails.get('lastName')" />
+  @if(getNameErrors('lastName')){
+  <div class="validation-error-message">
+    {{ getNameErrors('lastName') }}
+  </div>
+  }
+
+  <label for="phoneNumber" class="form-label">Phone number</label>
+  <global-input
+    [id]="'phoneNumber'"
+    [type]="'tel'"
+    class="global-input-auth {{ getNumberErrors() ? 'error' : '' }}"
+    pattern="[0-9]{10}"
+    maxlength="10"
+    [placeholder]="'0512345678'"
+    [control]="userDetails.get('phoneNumber')" />
+  @if(getNumberErrors()){
+  <div class="validation-error-message">
+    {{ getNumberErrors() }}
+  </div>
+  }
+  <button type="submit" class="global-button-auth">GET STARTED</button>
+</form>

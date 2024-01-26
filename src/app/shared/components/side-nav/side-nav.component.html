@@ -1,0 +1,55 @@
+<div class="overlay" *ngIf="loggingOut">
+  <div class="custom-spinner">
+    <div class="spinner"></div>
+    <div class="spinner"></div>
+    <div class="spinner"></div>
+  </div>
+</div>
+<div class="side-nav">
+  <div class="logo-container">
+    <div class="logo">
+      <img src="assets/images/user/logo.svg" alt="RM.io" />
+    </div>
+  </div>
+  <ul class="sidenav-nav">
+    <li class="sidenav-nav-item" *ngFor="let data of navData">
+      <a
+        class="sidenav-nav-link"
+        [routerLink]="[userRoute, data.routeLink]"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+        <img
+          class="sidenav-link-icon"
+          src="assets/images/user/{{ data.icon }}"
+          alt="{{ data.label }}" />
+        <span class="sidenav-link-text">{{ data.label }}</span>
+      </a>
+    </li>
+  </ul>
+  <div class="sidenav-bottom">
+    <ul class="sidenav-nav">
+      <li class="sidenav-nav-item" *ngFor="let bottomData of bottomData">
+        <a
+          class="sidenav-nav-link"
+          [routerLink]="[userRoute, bottomData.routeLink]"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <img
+            class="sidenav-link-icon"
+            src="assets/images/user/{{ bottomData.icon }}"
+            alt="{{ bottomData.label }}" />
+          <span class="sidenav-link-text">{{ bottomData.label }}</span>
+        </a>
+      </li>
+      <li class="sidenav-nav-item" (click)="handleLogout($event)">
+        <div class="sidenav-nav-link">
+          <img
+            class="sidenav-link-icon"
+            src="assets/images/user/logout-icon.svg"
+            alt="logout" />
+          <span class="sidenav-link-text">Logout</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

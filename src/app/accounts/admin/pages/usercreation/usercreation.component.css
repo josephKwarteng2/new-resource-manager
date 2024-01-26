@@ -1,0 +1,131 @@
+.modal-overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--Background-Overlay, rgba(203, 212, 225, 0.40));
+  backdrop-filter: blur(8px);
+
+}
+
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.form-size{
+ width: 100px;
+ height: 40px;
+}
+.messages-container{
+  margin-top: 25px;
+  font-size: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+
+
+
+.custom-dropdown {
+position: relative;
+
+}
+
+.custom-dropdown input {
+display: block;
+width: 380px;
+ 
+height: 35px;
+background: #fff;
+padding: 10px;
+
+font-size: 12px;
+
+
+border-radius: 12px;
+border: 1px solid #9AA8BC;
+cursor: pointer;
+
+}
+
+.custom-dropdown input:focus{
+  outline: 1px solid #4a72ff;
+
+}
+
+.custom-dropdown .dropdown-sign {
+position: absolute;
+top: 50%;
+right: 20px;
+transform: translateY(-50%);
+width: 14px;
+}
+
+.custom-dropdown .dropdown-list {
+position: absolute;
+top: 100%;
+right: 1px;
+width: 50%;
+background: #fff;
+
+
+display: none;
+z-index: 1;
+}
+
+.custom-dropdown .dropdown-list li {
+display: flex;
+font-size: 12px;
+height: 28px;
+cursor: pointer;
+padding: 8px 24px;
+
+align-items: center;
+
+}
+.custom-dropdown .add_new_button{
+  border-radius: 8px 8px 0px 0px;
+  background: var(--Colors-Primary-Slate-50, #F0F3F9);
+}
+
+.custom-dropdown .dropdown-list li:hover {
+background: #4A72FF;
+color: white;
+}
+
+.custom-dropdown.active .dropdown-list {
+display: block;
+}
+.custom-dropdown .add-new-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px 8px 0px 0px;
+  background: var(--Colors-Primary-Slate-50, #F0F3F9);
+}
+
+.custom-dropdown .add-new-button .plus-icon {
+  margin-left: 8px; 
+}
+
+.custom-dropdown .add-new-button svg {
+  width: 12px; 
+  height: 12px; 
+  fill: currentColor; 
+}

@@ -1,0 +1,12 @@
+.assign-button {
+  display: flex;
+  font-family: 'LexendMedium';
+  width: 120px;
+  height: 47px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 10px;
+  border: 1px solid #1f26a8;
+  cursor: pointer;
+}

@@ -1,0 +1,81 @@
+<div class="global-pages-auth">
+  <div class="global-illustration-left">
+    <login-side-illustration
+      imgUrl="../../../../assets/images/auth/Man Working on laptop.png"></login-side-illustration>
+  </div>
+  <div class="global-formfield-right">
+    <div class="global-forms-auth">
+      @if (storeData.error) {
+      <div class="validation-error-message backend">
+        {{ storeData.error.message }}
+      </div>
+      }
+
+      <h2>Login</h2>
+      <!-- <div class="validation-success-message backend">{{ successMessage }}</div> -->
+      <p>
+        Welcome back, Enter your details to open your account. Don't have an
+        account yet,
+        <a href="/" (click)="$event.preventDefault()">create account</a>.
+      </p>
+      <form (submit)="submitForm($event)" [formGroup]="loginForm">
+        <label for="email" class="form-label">Email</label>
+
+        <!-- <global-input
+          [id]="'email'"
+          [control]="loginForm.get('email')"
+          [placeholder]="'something@example.com'"
+          [type]="'email'"
+          [errorMessage]="'Email field is required'" />
+        @if(getEmailErrors()){
+        <div class="validation-error-message">
+          {{ getEmailErrors() }}
+        </div>
+        } -->
+
+        <input
+          id="email"
+          type="email"
+          class="global-input-auth {{ getEmailErrors() ? 'error' : '' }}"
+          formControlName="email"
+          placeholder="something@example.com" />
+        @if(getEmailErrors()){
+        <div class="validation-error-message">
+          {{ getEmailErrors() }}
+        </div>
+        }
+        <label for="password" class="form-label">Password</label>
+        <div class="password-input">
+          <global-input
+            [id]="'password'"
+            [type]="showPassword ? 'text' : passwordField"
+            class="global-input-auth {{ getPasswordErrors() ? 'error' : '' }}"
+            [control]="loginForm.get('password')"
+            [placeholder]="'Enter password'" />
+          @if(getPasswordErrors()){
+          <div class="validation-error-message">
+            {{ getPasswordErrors() }}
+          </div>
+          }
+          <img
+            (click)="showPassword = !showPassword"
+            src="../../../../assets/images/auth/EyeSlash.svg"
+            alt="show password" />
+        </div>
+        <div>
+          <label id="remember">
+            <input type="checkbox" name="rememberMe" />
+            Remember me
+          </label>
+          <a routerLink="/forgot-password">Forgot Password?</a>
+        </div>
+        <button
+          type="submit"
+          class="global-button-auth"
+          [disabled]="storeData.pending">
+          LOGIN
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

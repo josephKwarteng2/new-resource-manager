@@ -1,0 +1,53 @@
+<ng-container *ngIf="loading; else clientTable" >
+    <div class="spinner-dots">
+      <div class="custom-spinner">
+        <div class="spinner-dot"></div>
+        <div class="spinner-dot"></div>
+        <div class="spinner-dot"></div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #clientTable>
+    <div class="user-list-container" >
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Assigned People</th>
+            <th>Number of Projects</th>
+         
+  
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let client of clients">
+            <td style="display: flex">
+              <input
+                type="checkbox"
+                [checked]="false"
+                style="
+                  width: 20px;
+                  height: 20px;
+                  margin-right: 8px;
+                  font-family: 'LexendMedium';
+                  color: #022F54;
+                "
+              />
+             
+              {{ client.name}} </td>
+              <td>
+                <!-- <div class="flex -space-x-4 rtl:space-x-reverse">
+                  <img class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="{{ client.employees}}" alt="">
+                  <a class="flex items-center justify-center w-10 h-10 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full hover:bg-gray-600 dark:border-gray-800" href="#">+99</a>
+              </div> -->
+              </td>
+             
+              <td> {{ client.totalProjects}} </td>
+              <!-- <td> {{ client.totalProjects}} </td> -->
+           
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>

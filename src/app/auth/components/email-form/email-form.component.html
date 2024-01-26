@@ -1,0 +1,37 @@
+<div>
+  @if (storeData.error) {
+  <div class="validation-error-message backend">
+    {{ storeData.error.message }}
+  </div>
+  @if (storeData.response) {
+  <div class="validation-success-message backend">
+    {{ storeData.response.message }}
+  </div>
+  } }
+
+  <h2>Forgot password?</h2>
+  <p>No worries, we'll send you reset instructions</p>
+  <form [formGroup]="emailForm" (submit)="submitForm($event)">
+    <label for="email" class="form-label">Email</label>
+    <global-input
+      [id]="'email'"
+      [control]="emailForm.get('email')"
+      [placeholder]="'something@example.com'"
+      [class]="'global-input-auth'"
+      [type]="'email'"
+      [errorMessage]="'Email field is required'">
+    </global-input>
+    @if(getEmailErrors()) {
+    <div class="validation-error-message">
+      {{ getEmailErrors() }}
+    </div>
+    }
+    <button
+      type="submit"
+      class="global-button-auth"
+      [disabled]="storeData.isSubmitting"
+      style="font-family: 'LexendMedium'">
+      RESET PASSWORD
+    </button>
+  </form>
+</div>

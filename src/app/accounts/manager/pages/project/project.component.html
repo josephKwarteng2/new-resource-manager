@@ -1,0 +1,11 @@
+<div class="project page">
+  <header>
+    <h1>Projects</h1>
+    <div class="buttons-wrapper">
+      <button-new (click)="openProjectCreationModal()"></button-new>
+      <app-project-creation-modal
+        [isOpen]="projectCreationModalOpen"></app-project-creation-modal>
+    </div>
+  </header>
+  <app-project-table></app-project-table>
+</div>

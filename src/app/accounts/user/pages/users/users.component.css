@@ -1,0 +1,22 @@
+/*put user page styles here if neccessary*/
+/* .users.page {
+} */
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+h1 {
+  padding: 14px 24px 14px 0px;
+  font-size: 2rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'LexendBold';
+}
+
+.buttons-wrapper {
+  display: flex;
+  gap: 10px;
+}

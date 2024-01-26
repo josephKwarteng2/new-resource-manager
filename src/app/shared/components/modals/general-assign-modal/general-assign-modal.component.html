@@ -1,0 +1,92 @@
+<div [class]="modalClasses">
+  <div *ngIf="successMessage" class="validation-success-message backend">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="validation-error-message backend">
+    {{ errorMessage }}
+  </div>
+  <header>
+    <h2>Assign Resources</h2>
+    <span (click)="close()">
+      <img src="assets/images/user/x-close.svg" alt="close icon" />
+    </span>
+  </header>
+  <div>
+    <div>
+      <global-input [id]="'name'" [placeholder]="'Enter project'" />
+    </div>
+  </div>
+  <input
+    type="search"
+    class="search-input"
+    id="search"
+    placeholder="Search for individuals or specialization"
+    [(ngModel)]="searchQuery"
+    (input)="onSearchChange($event)" />
+  <div *ngFor="let user of selectedUsers">
+    {{ user.firstName }} {{ user.lastName }}
+  </div>
+  <div *ngIf="loading; else userList">
+    <div class="spinner-dots">
+      <div class="custom-spinner">
+        <div class="spinner-dot"></div>
+        <div class="spinner-dot"></div>
+        <div class="spinner-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #userList>
+    <div
+      *ngIf="bookableUsers.length > 0; else noUsersFound"
+      class="dropdown-list-item">
+      <div
+        *ngFor="let user of bookableUsers"
+        class="group-item"
+        [ngClass]="{ selected: user.selected }">
+        <img
+          src="assets/images/user/avatar.svg"
+          class="profile-picture"
+          alt="profile" />
+        <div class="info">
+          <p class="name">{{ user.firstName }} {{ user.lastName }}</p>
+          <p class="position">
+            <span
+              *ngFor="let specialization of user.specializations[0] | keyvalue">
+              {{ specialization.value }}
+            </span>
+          </p>
+        </div>
+        <input
+          type="checkbox"
+          name="userId[]"
+          value="{{ user.userId }}"
+          [(ngModel)]="user.selected" />
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #noUsersFound>
+    <img src="assets/images/user/searchh.svg" class="search" />
+    <div class="no-users-message">
+      <p>No users found.</p>
+    </div>
+  </ng-template>
+
+  <div class="buttons-wrapper">
+    <button
+      type="reset"
+      class="button bg-[#FFFFFF] text-[#022F54] hover:bg-[#e6e6e6]">
+      Cancel
+    </button>
+    <button
+      type="submit"
+      (click)="submit()"
+      class="button bg-[#1F26A8] text-white hover:bg-[#353cb1]">
+      Assign
+    </button>
+  </div>
+</div>
+
+<div [class]="backdropClasses" (click)="close()"></div>

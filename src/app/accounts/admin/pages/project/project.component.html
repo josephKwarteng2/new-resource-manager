@@ -1,0 +1,26 @@
+<div class="project page">
+  <header>
+    <h1>Projects</h1>
+    <div class="buttons-wrapper">
+      <button-new (click)="openProjectCreationModal()"></button-new>
+      <app-project-creation-modal
+        [isOpen]="projectCreationModalOpen"></app-project-creation-modal>
+    </div>
+  </header>
+  <div class="toggles">
+    <h3
+      [class]="display === 'all' ? 'active' : ''"
+      (click)="toggleDisplay('all')">
+      All
+    </h3>
+    <h3
+      [class]="display !== 'all' ? 'active' : ''"
+      (click)="toggleDisplay('archives')">
+      Archives
+    </h3>
+  </div>
+  @if (display === 'all') { <app-project-table></app-project-table>
+
+  } @else if (display === 'archives') {
+  <app-archived-projects></app-archived-projects> }
+</div>

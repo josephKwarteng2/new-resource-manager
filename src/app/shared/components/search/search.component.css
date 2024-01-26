@@ -1,0 +1,16 @@
+.search input {
+  background: #f9fafb;
+  width: 400px;
+  height: 40px;
+  border-radius: 11px;
+  padding: 10px 14px;
+  padding-left: 50px !important;
+  border: 1px solid var(--border-grey);
+  color: var(--grey-500);
+  margin-left: 40px;
+}
+
+.search input[type='search']:focus {
+  outline: none;
+  color: #1b293a;
+}

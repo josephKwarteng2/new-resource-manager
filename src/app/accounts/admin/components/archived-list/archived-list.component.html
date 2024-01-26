@@ -1,0 +1,130 @@
+<!-- <div
+  *ngIf="successMessage"
+  class="validation-success-message backend"
+  style="font-size: 14px">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="validation-error-message backend">
+  {{ errorMessage }}
+</div> -->
+<div class="message-container">
+  <div class="alert-error" *ngIf="errorMessage">
+    <span class="closebtn"></span>
+    {{ errorMessage }}
+  </div>
+
+  <div class="alert-success" *ngIf="successMessage">
+    <span class="closebtn"></span>
+    {{ successMessage }}
+  </div>
+</div>
+<!-- <p>{{ totalUsers }}</p> -->
+<ng-container *ngIf="loading; else userListOrNoUsers">
+  <div class="spinner-dots">
+    <div class="custom-spinner">
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+    </div>
+  </div>
+</ng-container>
+<ng-template #userListOrNoUsers>
+  <div class="user-list-container">
+    <ng-container *ngIf="archivedUsers.length > 0; else noUsersInArchive">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Department</th>
+            <th>Specialization</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let archiveduser of archivedUsers">
+            <td style="display: flex">
+              <input
+                type="checkbox"
+                [checked]="false"
+                style="
+                  width: 20px;
+                  height: 20px;
+                  margin-right: 8px;
+                  font-family: 'LexendMedium';
+                  color: #022f54;
+                " />
+              {{ archiveduser.firstName }} {{ archiveduser.lastName }}
+            </td>
+            <td>{{ archiveduser.email }}</td>
+            <td>{{ archiveduser.roles }}</td>
+            <td>{{ archiveduser.department }}</td>
+            <td
+              *ngIf="
+                archiveduser.specializations &&
+                archiveduser.specializations.length > 0
+              ">
+              <span
+                *ngFor="
+                  let specialization of archiveduser.specializations[0]
+                    | keyvalue
+                ">
+                {{ specialization.value }}
+              </span>
+            </td>
+            <td
+              *ngIf="
+                !archiveduser.specializations ||
+                archiveduser.specializations.length === 0
+              "></td>
+            <td
+              *ngIf="
+                !archiveduser.specializations ||
+                archiveduser.specializations.length === 0
+              "></td>
+
+            <td>
+              <div
+                class="dropdown-container"
+                *ngIf="showDropdownForUser === archiveduser">
+                <ul class="dropdown-details-container">
+                  <li (click)="restoreUser(archiveduser.email)">Restore</li>
+                  <li>Delete</li>
+                </ul>
+              </div>
+
+              <button
+                class="actions-btn"
+                (click)="toggleDropdown(archiveduser)">
+                <div class="actions-dot">
+                  <img src="assets/images/user/dots-v.svg" alt="dots" />
+                </div>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <ng-template #noUsersInArchive>
+      <div class="no-user-container">
+        <div class="no-user">
+          <p class="nuf">
+            No User<br />
+            Added Yet.
+          </p>
+          <p style="font-size: 12px; color: #5e718d">
+            It looks like there are no users in your list. <br />Start managing
+            your archived users by adding a new one.
+          </p>
+        </div>
+        <div class="image-illustration">
+          <img
+            src="assets/images/admin/add-users-illustration.svg"
+            alt="No user add" />
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</ng-template>

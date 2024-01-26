@@ -1,0 +1,54 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    }
+  
+.header {
+    margin-left: 220px;
+    position: fixed;
+    max-width: 100%;
+    width: 85%;
+    z-index: 10; 
+    
+  }
+  @media screen and (min-width: 320px) {
+ 
+    .header{
+      margin-left: 100px;
+    }
+  }
+  
+  @media screen and (min-width: 1200px) {
+    
+    .header {
+      margin-left: 255px;
+    }
+  }
+  
+  @media screen and (min-width: 1600px) {
+ 
+    .header {
+      margin-left: 255px;
+      width: 88%;
+    }
+  }
+  
+.main.container{
+  
+  flex-direction: row;
+   
+  }
+
+.main{
+    flex-grow: 1;
+    padding: 20px;
+    
+    margin-top: 50px;
+
+}
+  
+
+  
+
+  

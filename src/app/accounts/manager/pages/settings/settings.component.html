@@ -1,0 +1,19 @@
+<div class="settings page">
+  <div class="toggle">
+    <h3
+      [class]="settingsField === 'profile' ? 'active' : ''"
+      (click)="changeField($event, 'profile')">
+      My Profile
+    </h3>
+    <h3
+      [class]="settingsField === 'password' ? 'active' : ''"
+      (click)="changeField($event, 'password')">
+      Password
+    </h3>
+  </div>
+  @if (settingsField === 'profile') {
+  <user-profile></user-profile>
+  } @else {
+  <user-password></user-password>
+  }
+</div>

@@ -1,0 +1,76 @@
+<!-- <p class="total-users">{{ totalUsers }}</p> -->
+<!-- <div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div> -->
+
+<ng-container *ngIf="loading; else userList">
+  <div class="spinner-dots">
+    <div class="custom-spinner">
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #userList>
+  <div class="user-list-container">
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Department</th>
+          <th>Specialization</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td class="grid-item" (click)="openViewModal(user)">
+            <input
+              type="checkbox"
+              (change)="toggleUserSelection(user)"
+              class="checkbox-input" />
+            {{ user.firstName }} {{ user.lastName }}
+          </td>
+          <td class="grid-item" (click)="openViewModal(user)">
+            {{ user.email }}
+          </td>
+          <td class="grid-item">{{ user.roles }}</td>
+          <td class="grid-item">{{ user.department }}</td>
+          <td
+            class="grid-item"
+            *ngIf="user.specializations && user.specializations.length > 0">
+            <span
+              *ngFor="let specialization of user.specializations[0] | keyvalue">
+              {{ specialization.value }}
+            </span>
+          </td>
+          <td
+            class="grid-item"
+            *ngIf="
+              !user.specializations || user.specializations.length === 0
+            "></td>
+          <td class="grid-item">
+            <button
+              class="actions-btn"
+              (click)="openDropdown($event, user); $event.stopPropagation()">
+              <div class="actions-dot">
+                <img src="assets/images/user/dots-v.svg" alt="dots" />
+              </div>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <pagination
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+    (pageChange)="onPageChange($event)"></pagination>
+</ng-template>

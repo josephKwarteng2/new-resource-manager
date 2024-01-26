@@ -1,0 +1,49 @@
+h2,
+p,
+a,
+label {
+  color: #3d4a5c;
+}
+
+a {
+  display: flex;
+  align-items: center;
+  margin-top: 34px;
+  justify-content: center;
+  gap: 10px;
+  margin-left: -10px;
+  text-decoration: none;
+}
+
+h2 {
+  margin-bottom: 28px;
+  font-family: 'LexendBold';
+}
+
+button {
+  /* global button margin + custom */
+  margin-top: calc(28px + 10px) !important;
+}
+
+p {
+  margin-bottom: 34px;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+/* SMALLER DESKTOP */
+@media only screen and (max-height: 700px) {
+  h2 {
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin-bottom: 26px;
+  }
+
+  a {
+    margin-top: 26px;
+  }
+}

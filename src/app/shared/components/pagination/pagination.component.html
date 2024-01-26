@@ -1,0 +1,22 @@
+<div class="pagination">
+  <button
+    (click)="onPageChange(currentPage - 1)"
+    [disabled]="currentPage === 1">
+    <img src="assets/images/user/pagination-item-arrow-left.svg" />
+  </button>
+
+  <ng-container *ngFor="let page of getPages()">
+    <button
+      (click)="onPageChange(page)"
+      [disabled]="currentPage === page"
+      [ngClass]="{ active: currentPage === page }">
+      {{ page }}
+    </button>
+  </ng-container>
+
+  <button
+    (click)="onPageChange(currentPage + 1)"
+    [disabled]="currentPage === totalPages">
+    <img src="assets/images/user/pagination-item-arrow-right.svg" />
+  </button>
+</div>

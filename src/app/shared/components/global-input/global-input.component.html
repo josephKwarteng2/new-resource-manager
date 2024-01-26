@@ -1,0 +1,13 @@
+<div [class.error]="classError()">
+  <label for="{{ id }}">{{ label }}</label>
+  <input
+    [class.global-input-auth]="true"
+    [id]="id"
+    [type]="showPassword ? 'text' : type"
+    [formControl]="control"
+    [placeholder]="placeholder"
+    class="global-input-auth{{ class }}" />
+  <div *ngIf="showErrorMessage()">
+    <!-- {{ getEmailErrors() }} -->
+  </div>
+</div>

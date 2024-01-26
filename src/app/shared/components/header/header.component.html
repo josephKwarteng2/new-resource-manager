@@ -1,0 +1,70 @@
+<div class="header">
+  <div></div>
+  <div class="profile-container">
+    <search></search>
+    <div class="head-menu-item">
+      <button
+        class="head-menu-item-btn ripple"
+        [cdkMenuTriggerFor]="notificationOverlay"
+        [ngClass]="{ pulse: hasNewNotifications }">
+        <img
+          src="assets/images/user/alarm-icon.svg"
+          alt="Alarm Icon"
+          class="alarm-icon" />
+      </button>
+    </div>
+    <img src="assets/images/user/avatar.svg" alt="Avatar" class="avatar" />
+    <div
+      class="circle-indicator"
+      [ngClass]="{ pulse: isOnline, offline: !isOnline }"></div>
+  </div>
+</div>
+<ng-template #searchOverlay></ng-template>
+
+<ng-template #notificationOverlay>
+  <div class="notification-container">
+    <div class="overlay overlay-notification overlay-fall" cdkMenu>
+      <ul>
+        <li class="notification-head-container">
+          <div class="notification-head">Notifications</div>
+          <span class="view-all-link">
+            <button (click)="markAllAsRead()">Mark all as read</button>
+          </span>
+        </li>
+        <div class="info-container">
+          <div class="info">
+            <img
+              src="assets/images/user/info-icon.svg"
+              alt="info icon"
+              class="" />
+            <p>
+              Notifications here will be permanently deleted in the next 30 days
+            </p>
+          </div>
+        </div>
+        <li
+          class="notification-message-container"
+          *ngFor="let notification of notifications"
+          cdkMenuItem>
+          <img
+            src="assets/images/user/avatar-3.svg"
+            alt="avatar"
+            class="src alt" />
+          <div>
+            <div class="notif-msg">
+              <div class="notification-subject">
+                {{ notification.created_by }}
+              </div>
+              <p class="notification-time">
+                {{ notification.time }}
+              </p>
+            </div>
+            <p class="notification-desc">
+              {{ notification.message }}
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</ng-template>
