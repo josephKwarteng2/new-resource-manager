@@ -13,7 +13,7 @@
         </span>
       </div>
       <div class="modal-form">
-        <form [formGroup]="modalForm" (ngSubmit)="onSave()">
+        <form [formGroup]="modalForm" (ngSubmit)="onSaveSpecialization()">
           <div class="modal-select-field">
             <input
               type="text"
@@ -30,7 +30,7 @@
         <button class="modal-button" (click)="closeModal()">
           <span class="modal-text2 LabelLarge"><span>Cancel</span></span>
         </button>
-        <button class="modal-button1" (click)="onSave()">
+        <button class="modal-button1" (click)="onSaveSpecialization()">
           <span class="modal-text4 LabelLarge"><span>Add</span></span>
         </button>
       </div>
