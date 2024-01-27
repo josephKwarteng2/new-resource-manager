@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
 import { ProjectDetailsModalComponent } from '../../../../shared/components/modals/project-details-modal/project-details-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
-
+import { ProjectsService } from '../../services/projects.service';
 
 @Component({
   selector: 'app-project-table',
@@ -51,7 +51,8 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
     private dropdownService: DropdownService,
     private viewContainerRef: ViewContainerRef,
     private modalService: NgbModal,
-    private assignModalService: AssignModalService
+    private assignModalService: AssignModalService,
+    private projectsService: ProjectsService
   ) {}
 
   ngOnInit(): void {
@@ -84,7 +85,6 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
     this.fetchProjects();
   }
 
-
   fetchProjects(): void {
     this.loading = true;
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -93,11 +93,12 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
 
     this.projectService.getProjects().subscribe(
       (response: any) => {
-
-
         const projects = response.projects || response;
         if (Array.isArray(projects)) {
-          this.projects = projects.slice(startIndex, endIndex) as ProjectDetails[];
+          this.projects = projects.slice(
+            startIndex,
+            endIndex
+          ) as ProjectDetails[];
           this.totalProjects = projects.length;
           this.totalPages = Math.ceil(projects.length / this.itemsPerPage);
         } else {
@@ -112,7 +113,6 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
       }
     );
   }
-
 
   deleteProject(projectCode: string): void {
     this.projectService.deleteProject(projectCode).subscribe({
@@ -139,5 +139,31 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.project = project;
   }
 
-  
+  archiveProject(projects: ProjectDetails): void {
+    this.projectsService.archiveProject(projects.projectId).subscribe({
+      next: (response: GenericResponse) => {
+        this.successMessage = response.message;
+        this.fetchProjects();
+        setTimeout(() => {
+          this.successMessage = null;
+        }, 3000);
+      },
+
+      error: (error: any) => {
+        if (error.status >= 500) {
+          this.errorMessage =
+            'Server Error: Something went wrong on the server.';
+        } else {
+          if (error.error && error.error.message) {
+            this.errorMessage = error.error.message;
+          } else {
+            this.errorMessage = 'An unexpected error occured';
+          }
+        }
+        setTimeout(() => {
+          this.errorMessage = null;
+        }, 3000);
+      },
+    });
+  }
 }

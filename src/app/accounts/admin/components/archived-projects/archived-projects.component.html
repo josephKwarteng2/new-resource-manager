@@ -1,1 +1,90 @@
-<p>archived-projects works!</p>
+<div class="message-container">
+  <div class="alert-error" *ngIf="errorMessage">
+    <span class="closebtn"></span>
+    {{ errorMessage }}
+  </div>
+
+  <div class="alert-success" *ngIf="successMessage">
+    <span class="closebtn"></span>
+    {{ successMessage }}
+  </div>
+</div>
+
+<ng-container *ngIf="loading; else projectTableOrNoProjects">
+  <div class="spinner-dots">
+    <div class="custom-spinner">
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #projectTableOrNoProjects>
+  <div class="project-list-container">
+    <ng-container *ngIf="archivedProjects.length > 0; else noProjectsInArchive">
+      <table>
+        <thead>
+          <tr>
+            <th>Client Name</th>
+            <th>Project Name</th>
+            <th>Project Code</th>
+            <th>Assigned People</th>
+            <th>Billable</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let archivedproject of archivedProjects">
+            <td class="grid-item">{{ archivedproject.name }}</td>
+            <td class="grid-item">{{ archivedproject.name }}</td>
+            <td class="grid-item">{{ archivedproject.projectCode }}</td>
+            <td class="grid-item"></td>
+            <td class="grid-item" style="text-transform: capitalize">
+              {{ archivedproject.billable }}
+            </td>
+            <td>
+              <div
+                class="dropdown-container"
+                *ngIf="showDropdownForProject === archivedproject">
+                <ul class="dropdown-details-container">
+                  <li (click)="restoreProject(archivedproject.projectId)">
+                    Restore
+                  </li>
+                  <li>Delete</li>
+                </ul>
+              </div>
+
+              <button
+                class="actions-btn"
+                (click)="toggleDropdown(archivedproject)">
+                <div class="actions-dot">
+                  <img src="assets/images/user/dots-v.svg" alt="dots" />
+                </div>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <ng-template #noProjectsInArchive>
+      <div class="no-project-container">
+        <div class="no-project">
+          <p class="nuf">
+            No User<br />
+            Added Yet.
+          </p>
+          <p style="font-size: 12px; color: #5e718d">
+            It looks like there are no projects in your list. <br />Start
+            managing your archived projects by adding a new one.
+          </p>
+        </div>
+        <div class="image-illustration">
+          <img
+            src="assets/images/admin/add-users-illustration.svg"
+            alt="No project added" />
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</ng-template>

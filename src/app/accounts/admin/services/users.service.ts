@@ -55,25 +55,11 @@ export class UsersService {
   }
 
   archivedUsers(): Observable<User[]> {
-    return new Observable(observer => {
-      this.http
-        .get<User[]>(`${BASE_URL}/users/archives/fetch`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'skip-browser-warning',
-          },
-        })
-        .subscribe({
-          next: (archivedUsers: User[]) => {
-            observer.next(archivedUsers);
-          },
-          error: error => {
-            observer.error(error);
-          },
-          complete: () => {
-            observer.complete();
-          },
-        });
+    return this.http.get<User[]>(`${BASE_URL}/users/archives/fetch`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'skip-browser-warning',
+      },
     });
   }
 

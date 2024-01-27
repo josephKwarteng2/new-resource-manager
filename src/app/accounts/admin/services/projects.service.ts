@@ -19,7 +19,7 @@ export class ProjectsService {
     });
   }
 
-  archiveProject(projectCode: string): Observable<GenericResponse> {
+  archiveProject(projectId: string): Observable<GenericResponse> {
     return this.http.delete<GenericResponse>(
       `${BASE_URL}/project/archives/store`,
       {
@@ -28,32 +28,28 @@ export class ProjectsService {
           'ngrok-skip-browser-warning': 'skip-browser-warning',
         },
         params: {
-          projectCode: projectCode,
+          projectId: projectId,
         },
       }
     );
   }
 
   archivedProjects(): Observable<ProjectDetails[]> {
-    return new Observable(observer => {
-      this.http
-        .get<ProjectDetails[]>(`${BASE_URL}/project/archives/fetch`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'ngrok-skip-browser-warning': 'skip-browser-warning',
-          },
-        })
-        .subscribe({
-          next: (archivedProjects: ProjectDetails[]) => {
-            observer.next(archivedProjects);
-          },
-          error: (error: any) => {
-            observer.error(error);
-          },
-          complete: () => {
-            observer.complete();
-          },
-        });
-    });
+    return this.http.get<ProjectDetails[]>(
+      `${BASE_URL}/project/archives/fetch`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'skip-browser-warning',
+        },
+      }
+    );
+  }
+
+  restoreProject(projectId: string): Observable<GenericResponse> {
+    return this.http.post<GenericResponse>(
+      `${BASE_URL}/project/archives/restore`,
+      { projectId }
+    );
   }
 }

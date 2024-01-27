@@ -54,9 +54,9 @@ export class GeneralAssignModalService {
     /**
      * This timer is to make the modal fade out before destroying it
      */
-    // setTimeout(() => {
-    //   modalComponentRef.destroy();
-    // }, 5000);
+    setTimeout(() => {
+      modalComponentRef.destroy();
+    }, 400);
   }
 
   submitModal(modalComponentRef: ComponentRef<GeneralAssignModalComponent>) {

@@ -1,12 +1,26 @@
 <div class="clients page">
-    <header>
-      <h1>Clients</h1>
-      <div class="buttons-wrapper">
-
-        <button-new (click)="openClientCreationModal()"></button-new>
-        <app-client-creation-modal [isOpen]="clientCreationModalOpen"></app-client-creation-modal>
-      </div>
-    </header>
-   <app-client-table></app-client-table>
+  <header>
+    <h1>Clients</h1>
+    <div class="buttons-wrapper">
+      <button-new (click)="openClientCreationModal()"></button-new>
+      <app-client-creation-modal
+        [isOpen]="clientCreationModalOpen"></app-client-creation-modal>
+    </div>
+  </header>
+  <div class="toggles">
+    <h3
+      [class]="display === 'all' ? 'active' : ''"
+      (click)="toggleDisplay('all')">
+      All
+    </h3>
+    <h3
+      [class]="display !== 'all' ? 'active' : ''"
+      (click)="toggleDisplay('archives')">
+      Archives
+    </h3>
   </div>
-  
+  @if (display === 'all') { <app-client-table></app-client-table>
+
+  } @else if (display === 'archives') {
+  <app-archived-clients-list></app-archived-clients-list> }
+</div>

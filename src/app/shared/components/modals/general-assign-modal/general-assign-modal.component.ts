@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -8,21 +9,27 @@ import {
   AfterViewInit,
   ElementRef,
 } from '@angular/core';
+
 import { User, ProjectDetails } from '../../../types/types';
 import { UsersService } from '../../../../accounts/admin/services/users.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { GlobalInputComponent } from '../../global-input/global-input.component';
+import { ChangeDetectorRef } from '@angular/core';
 import { ProjectsService } from '../../../../accounts/admin/services/projects.service';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+  FormControl,
+  FormGroup,
+} from '@angular/forms';
 
 @Component({
-  selector: 'app-general-assign-modal',
+  selector: 'general-assign-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule, GlobalInputComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './general-assign-modal.component.html',
   styleUrl: './general-assign-modal.component.css',
 })
-export class GeneralAssignModalComponent {
+export class GeneralAssignModalComponent implements AfterViewInit, OnInit {
   @Input() user!: User;
   @Input() users: User[] = [];
   @Input() project!: ProjectDetails;
@@ -35,7 +42,9 @@ export class GeneralAssignModalComponent {
   successMessage: string | null = null;
   errorMessage: string | null = null;
   response: string | null = null;
-  projects: any;
+  selectedProject: string = '';
+  projects: ProjectDetails[] = [];
+  projectForm!: FormGroup;
 
   @Output() closeAssignEvent = new EventEmitter<void>();
   @Output() submitEvent = new EventEmitter<void>();
@@ -44,8 +53,17 @@ export class GeneralAssignModalComponent {
 
   constructor(
     private usersService: UsersService,
-    private projectsService: ProjectsService // private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private projectsService: ProjectsService
   ) {}
+
+  closeErrorMessage(): void {
+    this.errorMessage = null;
+  }
+
+  closeSuccessMessage(): void {
+    this.successMessage = null;
+  }
 
   close() {
     this.closed = true;
@@ -65,29 +83,33 @@ export class GeneralAssignModalComponent {
       .subscribe({
         next: (response: any) => {
           if (response.status === 201) {
-            this.successMessage = `${this.project.name} is successfully assigned to ${this.user.firstName}.`;
+            this.successMessage =
+              response.response && response.response.message;
           } else {
-            this.successMessage = response.message;
+            this.errorMessage =
+              response.message || 'An unexpected error occurred.';
           }
           this.response = response;
+
+          setTimeout(() => {
+            this.errorMessage = null;
+          }, 6000);
         },
         error: (error: any) => {
           if (error.status >= 500) {
             this.errorMessage =
               'Server Error: Something went wrong on the server.';
           } else {
-            if (error.error && error.error.message) {
-              this.errorMessage = error.error.message;
-            } else {
-              this.errorMessage = 'An unexpected error occurred.';
-            }
+            this.errorMessage =
+              error.error && error.error.message
+                ? error.error.message
+                : 'An unexpected error occurred.';
           }
 
           setTimeout(() => {
             this.errorMessage = null;
           }, 6000);
         },
-
         complete: () => {
           this.close();
         },
@@ -95,6 +117,10 @@ export class GeneralAssignModalComponent {
   }
 
   ngOnInit(): void {
+    this.projectForm = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+    });
+
     setTimeout(() => {
       this.opening = false;
     }, 100);
@@ -107,6 +133,7 @@ export class GeneralAssignModalComponent {
   ngAfterViewInit(): void {
     console.log('View has been initialized');
     this.fetchBookableUsers(this.query);
+    this.fetchProjects();
   }
 
   onSearchChange(event: Event): void {
@@ -130,18 +157,19 @@ export class GeneralAssignModalComponent {
       },
       complete: () => {
         this.loading = false;
-        // this.cdr.detectChanges();
+        this.cdr.detectChanges();
       },
     });
   }
 
   private fetchProjects(): void {
+    // this.project.projectName;
     this.projectsService.fetchProjects().subscribe({
       next: (response: any) => {
-        this.project = response.projects || [];
-        console.log('Fetched projects:', this.project);
+        this.projects = response.projects || [];
+        console.log('Fetched projects:', this.projects);
       },
-      error: error => {
+      error: (error: any) => {
         console.error('Error fetching projects:', error);
       },
       complete: () => {},

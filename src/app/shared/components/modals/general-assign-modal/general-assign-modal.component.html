@@ -1,9 +1,9 @@
 <div [class]="modalClasses">
-  <div *ngIf="successMessage" class="validation-success-message backend">
+  <div *ngIf="successMessage" class="success-message">
     {{ successMessage }}
   </div>
 
-  <div *ngIf="errorMessage" class="validation-error-message backend">
+  <div *ngIf="errorMessage" class="error-message">
     {{ errorMessage }}
   </div>
   <header>
@@ -14,7 +14,19 @@
   </header>
   <div>
     <div>
-      <global-input [id]="'name'" [placeholder]="'Enter project'" />
+      <label for="projectName">Project</label>
+      <select
+        #projectNameInput
+        id="name"
+        name="name"
+        class="project-input"
+        formControlName="name"
+        [(ngModel)]="selectedProject">
+        <option disabled selected>Select a project</option>
+        <option *ngFor="let project of projects" [value]="project.projectName">
+          {{ project.projectName }}
+        </option>
+      </select>
     </div>
   </div>
   <input

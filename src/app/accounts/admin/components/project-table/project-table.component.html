@@ -1,3 +1,15 @@
+<div class="message-container">
+  <div class="alert-error" *ngIf="errorMessage">
+    <span class="closebtn"></span>
+    {{ errorMessage }}
+  </div>
+
+  <div class="alert-success" *ngIf="successMessage">
+    <span class="closebtn"></span>
+    {{ successMessage }}
+  </div>
+</div>
+
 <ng-container *ngIf="loading; else projectList">
   <div class="spinner-dots">
     <div class="custom-spinner">
@@ -27,9 +39,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let project of projects " (click)="openProjectDetailsModal(project)">
-          <td class="grid-item" (click)="openProjectDetailsModal(project)">{{ project.client }}</td>
-          <td class="grid-item"  >{{ project.name }}</td>
+        <tr
+          *ngFor="let project of projects"
+          (click)="openProjectDetailsModal(project)">
+          <td class="grid-item" (click)="openProjectDetailsModal(project)">
+            {{ project.client }}
+          </td>
+          <td class="grid-item">{{ project.name }}</td>
           <td class="grid-item">{{ project.projectCode }}</td>
           <td class="grid-item">
             <div class="flex -space-x-4 rtl:space-x-reverse">
@@ -38,11 +54,9 @@
                   <img
                     class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800"
                     [src]="employee.picture"
-                    alt="Employee image"
-                  />
+                    alt="Employee image" />
                   <div
-                    class="absolute bottom-0 left-0 right-0 bg-gray-700 text-xs text-white opacity-0 transition-opacity duration-300 hover:opacity-100 rounded-b-full hidden group"
-                  >
+                    class="absolute bottom-0 left-0 right-0 bg-gray-700 text-xs text-white opacity-0 transition-opacity duration-300 hover:opacity-100 rounded-b-full hidden group">
                     <p class="p-2">{{ employee.name }}</p>
                   </div>
                 </div>
@@ -64,12 +78,14 @@
               <ul class="dropdown-details-container">
                 <li>Edit</li>
                 <li>View</li>
-                <li>Archive</li>
+                <li (click)="archiveProject(project)">Archive</li>
                 <li (click)="openAssignModal(project)">Assign</li>
               </ul>
             </div>
 
-            <button class="actions-btn" (click)="toggleDropdown(project)">
+            <button
+              class="actions-btn"
+              (click)="toggleDropdown(project); $event.stopPropagation()">
               <div class="actions-dot">
                 <img src="assets/images/user/dots-v.svg" alt="dots" />
               </div>
@@ -80,7 +96,7 @@
     </table>
   </div>
   <pagination
-[currentPage]="currentPage"
-[totalPages]="totalPages"
-(pageChange)="onPageChange($event)"></pagination>
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+    (pageChange)="onPageChange($event)"></pagination>
 </ng-template>

@@ -1,4 +1,4 @@
-.project-list-container {
+.client-list-container {
   display: flex;
   grid-template-columns: repeat(6, 1fr);
   width: 100%;
@@ -222,7 +222,7 @@ main.visible > .backdrop {
   margin-top: -20px;
 }
 
-.no-project-container {
+.no-client-container {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -236,7 +236,7 @@ main.visible > .backdrop {
   font-family: 'LexendBold';
 }
 
-.no-project p {
+.no-client p {
   font-size: 32px;
   display: block;
 
@@ -428,7 +428,7 @@ main.visible > .backdrop {
     border-radius: 8px 8px 0px 0px;
   }
 
-  .no-project-container {
+  .no-client-container {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -442,7 +442,7 @@ main.visible > .backdrop {
     font-family: 'LexendBold';
   }
 
-  .no-project p {
+  .no-client p {
     font-size: 32px;
     display: block;
     color: #1a212b;

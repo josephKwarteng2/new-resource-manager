@@ -1,0 +1,104 @@
+<div class="message-container">
+  <div class="alert-error" *ngIf="errorMessage">
+    <span class="closebtn"></span>
+    {{ errorMessage }}
+  </div>
+
+  <div class="alert-success" *ngIf="successMessage">
+    <span class="closebtn"></span>
+    {{ successMessage }}
+  </div>
+</div>
+
+<ng-container *ngIf="loading; else clientTableOrNoClients">
+  <div class="spinner-dots">
+    <div class="custom-spinner">
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+      <div class="spinner-dot"></div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #clientTableOrNoClients>
+  <div class="client-list-container">
+    <ng-container *ngIf="archivedClients.length > 0; else noClientsInArchive">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Assigned People</th>
+            <th>Number of Projects</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let archivedclient of archivedClients">
+            <td style="display: flex">
+              <input
+                type="checkbox"
+                [checked]="false"
+                style="
+                  width: 20px;
+                  height: 20px;
+                  margin-right: 8px;
+                  font-family: 'LexendMedium';
+                  color: #022f54;
+                " />
+
+              {{ archivedclient.name }}
+            </td>
+            <td>
+              <!-- <div class="flex -space-x-4 rtl:space-x-reverse">
+                          <img class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="{{ client.employees}}" alt="">
+                          <a class="flex items-center justify-center w-10 h-10 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full hover:bg-gray-600 dark:border-gray-800" href="#">+99</a>
+                      </div> -->
+            </td>
+
+            <td>{{ archivedclient.totalProjects }}</td>
+            <!-- <td> {{ client.totalProjects}} </td> -->
+            <td>
+              <div
+                class="dropdown-container"
+                *ngIf="showDropdownForClient === archivedclient">
+                <ul class="dropdown-details-container">
+                  <li (click)="restoreClient(archivedclient.clientId)">
+                    Restore
+                  </li>
+                  <li>Delete</li>
+                </ul>
+              </div>
+
+              <button
+                class="actions-btn"
+                (click)="toggleDropdown(archivedclient)">
+                <div class="actions-dot">
+                  <img src="assets/images/user/dots-v.svg" alt="dots" />
+                </div>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <ng-template #noClientsInArchive>
+      <div class="no-client-container">
+        <div class="no-client">
+          <p class="nuf">
+            No Client<br />
+            Added Yet.
+          </p>
+          <p style="font-size: 12px; color: #5e718d">
+            It looks like there are no clients in your list. <br />Start
+            managing your archived clients by adding a new one.
+          </p>
+        </div>
+        <div class="image-illustration">
+          <img
+            src="assets/images/admin/add-users-illustration.svg"
+            alt="No client added" />
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</ng-template>

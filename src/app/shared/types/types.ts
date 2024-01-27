@@ -66,11 +66,12 @@ export type ProjectDetails = Pick<ClientDetails, 'name' | 'details'> & {
   client: string;
   projectCode: string;
   projectName: string;
-  billable: Boolean;
+  billable: boolean;
   projectType: string;
   employees: EmployeeDetails[];
   startDate: Date | undefined;
   endDate: Date | undefined;
+  projectId: string;
 };
 export interface EmployeeDetails {
   name: string;
