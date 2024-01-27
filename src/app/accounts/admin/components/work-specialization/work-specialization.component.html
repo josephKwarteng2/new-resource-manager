@@ -60,7 +60,10 @@
               {{ skill }}
             </option> -->
 
-          <button>Add</button>
+          <button
+            (click)="addSkill(userSpecializationForm.get('skills')?.value)">
+            Add
+          </button>
         </div>
       </div>
     </div>

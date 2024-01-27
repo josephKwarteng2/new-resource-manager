@@ -13,8 +13,9 @@ import {
   Departments,
   Specializations,
   Skills,
+  User,
+  CurrentUser,
 } from '../../../shared/types/types';
-import { GenericResponse, SkillData } from '../../../shared/types/types';
 
 export type SettingsFields = 'profile' | 'password' | 'work specialization';
 
@@ -120,6 +121,23 @@ export class SettingsService {
         catchError((error: HttpErrorResponse) => this.onError(error))
       );
   }
+
+  addUserSkills(user: CurrentUser): Observable<Skills[]> {
+    return this.http
+      .post<{ skills: [{ id: number; name: Skills }] }>(
+        `${BASE_URL}/store`,
+        user,
+        this.headers
+      )
+      .pipe(
+        map(res => {
+          const temp: Skills[] = [];
+          res.skills.forEach(skill => temp.push(skill.name));
+          return temp;
+        }),
+        catchError((error: HttpErrorResponse) => this.onError(error))
+      );
+  }
   /**
    * Gets available departments for display purposes
    * @returns An observable of @see{@link Departments}
@@ -140,11 +158,11 @@ export class SettingsService {
       );
   }
 
-  addSkill(skillData: SkillData): Observable<GenericResponse> {
-    return this.http
-      .post<GenericResponse>(`${BASE_URL}/store`, skillData, this.headers)
-      .pipe(catchError((error: HttpErrorResponse) => this.onError(error)));
-  }
+  // addSkill(): Observable<GenericResponse> {
+  //   return this.http
+  //     .post<GenericResponse>(`${BASE_URL}/store`, skillData, this.headers)
+  //     .pipe(catchError((error: HttpErrorResponse) => this.onError(error)));
+  // }
 
   /**
    * Returns standard headers like ngrok skip warnings and content type

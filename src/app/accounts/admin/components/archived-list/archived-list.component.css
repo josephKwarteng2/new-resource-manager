@@ -127,33 +127,6 @@ tbody tr td img {
   cursor: pointer;
 }
 
-/* .overlay-dropdown {
-    background: #fff;
-    border-radius: 5px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.16);
-    margin-top: 20%;
-    ul {
-      list-style: none;
-      width: 123px;
-    }
-    li {
-      padding: 1rem;
-  
-      &.dropdown-details-container {
-        cursor: pointer;
-      }
-      .dropdown-subject {
-        margin-bottom: 0.25rem;
-        font-size: 14px;
-        color: #3d4a5c;
-      }
-  
-      &:hover {
-        background: #4a72ff;
-      }
-    }
-  } */
-
 .dropdown-container {
   position: absolute;
   right: 170px;
@@ -246,7 +219,6 @@ main.visible > .backdrop {
   gap: 40px;
   justify-content: center;
   align-items: center;
-  /* border-bottom: 1px solid var(--Colors-Primary-Slate-100, #e9eff6); */
   margin-top: -20px;
 }
 

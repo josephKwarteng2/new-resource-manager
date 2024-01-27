@@ -61,6 +61,10 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.fetchUsers();
   }
 
+  toggleDropdown(user: User): void {
+    this.showDropdownForUser = this.showDropdownForUser === user ? null : user;
+  }
+
   openViewModal(user: User) {
     this.viewModalRef = this.viewModalService.open(this.viewContainerRef, {
       user,
@@ -113,6 +117,36 @@ export class UserListComponent implements OnInit, OnDestroy {
       },
       complete: () => {
         this.loading = false;
+      },
+    });
+  }
+
+  archiveUser(user: User): void {
+    console.log(user);
+    this.usersService.archiveUser(user.email).subscribe({
+      next: (response: any) => {
+        this.successMessage = response.message;
+        this.fetchUsers();
+        setTimeout(() => {
+          this.successMessage = null;
+        }, 3000);
+      },
+
+      error: (error: any) => {
+        if (error.status >= 500) {
+          this.errorMessage =
+            'Server Error: Something went wrong on the server.';
+        } else {
+          if (error.error && error.error.message) {
+            this.errorMessage = error.error.message;
+          } else {
+            this.errorMessage = 'An unexpected error occurred.';
+          }
+        }
+
+        setTimeout(() => {
+          this.errorMessage = null;
+        }, 3000);
       },
     });
   }

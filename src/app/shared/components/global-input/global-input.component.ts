@@ -5,7 +5,6 @@ import {
   AbstractControl,
   FormControl,
 } from '@angular/forms';
-
 @Component({
   selector: 'global-input',
   standalone: true,

@@ -7,5 +7,20 @@
         [isOpen]="projectCreationModalOpen"></app-project-creation-modal>
     </div>
   </header>
-  <app-project-table></app-project-table>
+  <div class="toggles">
+    <h3
+      [class]="display === 'all' ? 'active' : ''"
+      (click)="toggleDisplay('all')">
+      All
+    </h3>
+    <h3
+      [class]="display !== 'all' ? 'active' : ''"
+      (click)="toggleDisplay('archives')">
+      Archives
+    </h3>
+  </div>
+  @if (display === 'all') { <app-project-table></app-project-table>
+
+  } @else if (display === 'archives') {
+  <app-archived-projects></app-archived-projects> }
 </div>

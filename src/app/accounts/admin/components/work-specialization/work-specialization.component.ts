@@ -16,7 +16,6 @@ import {
   InitialSig,
   Specializations,
   Skills,
-  SkillData,
   GenericResponse,
 } from '../../../../shared/types/types';
 
@@ -118,6 +117,52 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
     return val;
   }
 
+  addSkill(skill: string): void {
+    if (!this.user) {
+      console.error('User details not available.');
+      return;
+    }
+
+    const updatedUser: CurrentUser = { ...this.user };
+
+    updatedUser.skills = [...this.user.skills, skill as Skills];
+    this.settingsService.addUserSkills(updatedUser).subscribe({
+      next: (response: any) => {
+        if (response && response.message) {
+          this.settingsSig.set({
+            success: response,
+            error: null,
+            pending: false,
+          });
+          setTimeout(() => {
+            this.settingsSig.set({
+              success: null,
+              error: null,
+              pending: false,
+            });
+            this.loading = false;
+          }, 3000);
+        }
+      },
+      error: (error: any) => {
+        this.settingsSig.set({
+          success: null,
+          error: error.errors,
+          pending: false,
+        });
+
+        setTimeout(() => {
+          this.settingsSig.set({
+            success: null,
+            error: null,
+            pending: false,
+          });
+          this.loading = false;
+        }, 3000);
+      },
+    });
+  }
+
   removeSkill(skill: string): void {
     const index = this.enteredSkills.indexOf(skill);
     if (index !== -1) {
@@ -148,7 +193,9 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
 
     const skill = this.userSpecializationForm.get('skills')?.value;
     if (skill && skill.trim() !== '') {
-      this.enteredSkills.push(skill.trim());
+      const trimmedSkill = skill.trim();
+      this.enteredSkills.push(trimmedSkill);
+      this.addSkill(trimmedSkill);
       this.userSpecializationForm.get('skills')?.reset();
     }
 
@@ -199,16 +246,16 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  addSkill(skillData: SkillData): void {
-    this.settingsService.addSkill(skillData).subscribe({
-      next: (response: GenericResponse) => {
-        // Handle the success response if needed
-        console.log(response);
-      },
-      error: (error: any) => {
-        // Handle the error response if needed
-        console.error(error);
-      },
-    });
-  }
+  // addSkill(skillData: SkillData): void {
+  //   this.settingsService.addSkill(skillData).subscribe({
+  //     next: (response: GenericResponse) => {
+  //       // Handle the success response if needed
+  //       console.log(response);
+  //     },
+  //     error: (error: any) => {
+  //       // Handle the error response if needed
+  //       console.error(error);
+  //     },
+  //   });
+  // }
 }

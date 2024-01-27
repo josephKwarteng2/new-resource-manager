@@ -58,36 +58,6 @@ export class DropdownComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  archiveUser(user: User): void {
-    console.log(user);
-    this.usersService.archiveUser(user.email).subscribe({
-      next: (response: any) => {
-        this.successMessage = response.message;
-
-        setTimeout(() => {
-          this.successMessage = null;
-        }, 3000);
-      },
-
-      error: (error: any) => {
-        if (error.status >= 500) {
-          this.errorMessage =
-            'Server Error: Something went wrong on the server.';
-        } else {
-          if (error.error && error.error.message) {
-            this.errorMessage = error.error.message;
-          } else {
-            this.errorMessage = 'An unexpected error occurred.';
-          }
-        }
-
-        setTimeout(() => {
-          this.errorMessage = null;
-        }, 3000);
-      },
-    });
-  }
-
   openViewModal(user: User) {
     this.viewModalRef = this.viewModalService.open(this.viewContainerRef, {
       user,

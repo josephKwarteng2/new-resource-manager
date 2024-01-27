@@ -1,11 +1,16 @@
 <!-- <p class="total-users">{{ totalUsers }}</p> -->
-<!-- <div *ngIf="successMessage" class="success-message">
-  {{ successMessage }}
-</div>
-<div *ngIf="errorMessage" class="error-message">
-  {{ errorMessage }}
-</div> -->
 
+<div class="message-container">
+  <div class="alert-error" *ngIf="errorMessage">
+    <span class="closebtn"></span>
+    {{ errorMessage }}
+  </div>
+
+  <div class="alert-success" *ngIf="successMessage">
+    <span class="closebtn"></span>
+    {{ successMessage }}
+  </div>
+</div>
 <ng-container *ngIf="loading; else userList">
   <div class="spinner-dots">
     <div class="custom-spinner">
@@ -57,9 +62,28 @@
               !user.specializations || user.specializations.length === 0
             "></td>
           <td class="grid-item">
-            <button
+            <!-- <button
               class="actions-btn"
               (click)="openDropdown($event, user); $event.stopPropagation()">
+              <div class="actions-dot">
+                <img src="assets/images/user/dots-v.svg" alt="dots" />
+              </div>
+            </button> -->
+
+            <div
+              class="dropdown-container"
+              *ngIf="showDropdownForUser === user">
+              <ul class="dropdown-details-container">
+                <li>Edit</li>
+                <li>View</li>
+                <li (click)="archiveUser(user)">Archive</li>
+                <li>Assign</li>
+              </ul>
+            </div>
+
+            <button
+              class="actions-btn"
+              (click)="toggleDropdown(user); $event.stopPropagation()">
               <div class="actions-dot">
                 <img src="assets/images/user/dots-v.svg" alt="dots" />
               </div>

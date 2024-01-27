@@ -7,5 +7,20 @@
         [isOpen]="clientCreationModalOpen"></app-client-creation-modal>
     </div>
   </header>
-  <app-client-table></app-client-table>
+  <div class="toggles">
+    <h3
+      [class]="display === 'all' ? 'active' : ''"
+      (click)="toggleDisplay('all')">
+      All
+    </h3>
+    <h3
+      [class]="display !== 'all' ? 'active' : ''"
+      (click)="toggleDisplay('archives')">
+      Archives
+    </h3>
+  </div>
+  @if (display === 'all') { <app-client-table></app-client-table>
+
+  } @else if (display === 'archives') {
+  <app-archived-clients-list></app-archived-clients-list> }
 </div>
