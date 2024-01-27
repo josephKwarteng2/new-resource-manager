@@ -1,16 +1,15 @@
 .modal-overlay {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 20;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: var(--Background-Overlay, rgba(203, 212, 225, 0.4));
-    backdrop-filter: blur(8px);
-  }
-  
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--Background-Overlay, rgba(203, 212, 225, 0.4));
+  backdrop-filter: blur(8px);
+}
