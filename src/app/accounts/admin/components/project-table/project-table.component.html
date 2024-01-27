@@ -41,7 +41,7 @@
       <tbody>
         <tr
           *ngFor="let project of projects"
-          (click)="openProjectDetailsModal(project)">
+        >
           <td class="grid-item" (click)="openProjectDetailsModal(project)">
             {{ project.client }}
           </td>
@@ -76,8 +76,9 @@
               class="dropdown-container"
               *ngIf="showDropdownForProject === project">
               <ul class="dropdown-details-container">
-                <li>Edit</li>
-                <li>View</li>
+                <li (click)="openEditProjectModal(project)">Edit</li>
+                <li (click)="openProjectDetailsModal(project)">View</li>
+                <li (click)="openDeleteProjectModal(project)">Delete</li>
                 <li (click)="archiveProject(project)">Archive</li>
                 <li (click)="openAssignModal(project)">Assign</li>
               </ul>

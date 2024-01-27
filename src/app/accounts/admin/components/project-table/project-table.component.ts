@@ -21,6 +21,8 @@ import { ProjectDetailsModalComponent } from '../../../../shared/components/moda
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { ProjectsService } from '../../services/projects.service';
+import { DeleteProjectModalComponent } from '../../../../shared/components/modals/delete-project-modal/delete-project-modal.component';
+import { EditProjectModalComponent } from '../../../../shared/components/modals/edit-project-modal/edit-project-modal.component';
 
 @Component({
   selector: 'app-project-table',
@@ -114,8 +116,53 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
     );
   }
 
-  deleteProject(projectCode: string): void {
-    this.projectService.deleteProject(projectCode).subscribe({
+  // deleteProject(projectCode: string): void {
+  //   this.projectService.deleteProject(projectCode).subscribe({
+  //     next: () => {
+  //       this.successMessage = 'Project deleted successfully.';
+  //       this.errorMessage = null;
+  //       this.fetchProjects();
+  //       setTimeout(() => {
+  //         this.successMessage = null;
+  //       }, 3000);
+  //     },
+  //     error: error => {
+  //       this.errorMessage = 'Error deleting project.';
+  //       this.successMessage = null;
+  //       console.error('Error deleting project:', error);
+  //       setTimeout(() => {
+  //         this.errorMessage = null;
+  //       }, 3000);
+  //     },
+  //   });
+  // }
+  openProjectDetailsModal(project: ProjectDetails): void {
+    const modalRef = this.modalService.open(ProjectDetailsModalComponent);
+    modalRef.componentInstance.project = project;
+  }
+  openDeleteProjectModal(project: ProjectDetails) {
+    const modalRef = this.modalService.open(DeleteProjectModalComponent);
+    modalRef.componentInstance.project = project; // Pass the entire project object
+
+    modalRef.result.then(
+      (result) => {
+        if (result === 'delete') {
+          this.deleteProject(project);
+        }
+      },
+      (reason) => {
+        // Handle modal dismissal/cancel
+      }
+    );
+  }
+  deleteProject(project: ProjectDetails): void {
+    const projectId = project.projectId;
+    if (!projectId) {
+      console.error('Invalid project data for deletion:', project);
+      return;
+    }
+
+    this.projectService.deleteProject(projectId).subscribe({
       next: () => {
         this.successMessage = 'Project deleted successfully.';
         this.errorMessage = null;
@@ -124,7 +171,7 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
           this.successMessage = null;
         }, 3000);
       },
-      error: error => {
+      error: (error) => {
         this.errorMessage = 'Error deleting project.';
         this.successMessage = null;
         console.error('Error deleting project:', error);
@@ -134,10 +181,12 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
       },
     });
   }
-  openProjectDetailsModal(project: ProjectDetails): void {
-    const modalRef = this.modalService.open(ProjectDetailsModalComponent);
+  
+  openEditProjectModal(project: ProjectDetails): void {
+    const modalRef = this.modalService.open(EditProjectModalComponent);
     modalRef.componentInstance.project = project;
   }
+  
 
   archiveProject(projects: ProjectDetails): void {
     this.projectsService.archiveProject(projects.projectId).subscribe({

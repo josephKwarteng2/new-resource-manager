@@ -13,9 +13,18 @@ export class ProjectCreationModalService {
   constructor(
     private http: HttpClient,
     private projectcreationmodalService: NgbModal
-  ) {}
+  ) { }
+  header!: {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': 'skip-browser-warning',
+    },
+  };
   addNewProject(data: ProjectDetails): Observable<ProjectDetails> {
-    return this.http.post<ProjectDetails>(`${BASE_URL}/project/store`, data);
+    return this.http.post<ProjectDetails>(`${BASE_URL}/project/store`, data, this.header);
+  }
+  editProject(data: ProjectDetails): Observable<ProjectDetails> {
+    return this.http.put<ProjectDetails>(`${BASE_URL}/project/update`, data, this.header);
   }
 
   getProjects(): Observable<ProjectDetails[]> {
@@ -34,15 +43,13 @@ export class ProjectCreationModalService {
       );
   }
 
-  deleteProject(projectCode: string): Observable<GenericResponse> {
-    return this.http.delete<GenericResponse>(`${BASE_URL}/projects/delete`, {
+  deleteProject(projectId: string): Observable<ProjectDetails> {
+    return this.http.delete<ProjectDetails>(`${BASE_URL}/projects/delete`, {
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': 'skip-browser-warning',
       },
-      params: {
-        projectCode: projectCode,
-      },
+
     });
   }
 
@@ -55,8 +62,36 @@ export class ProjectCreationModalService {
       }
     );
 
-    modalRef.result.finally(() => {});
+    modalRef.result.finally(() => { });
 
     return modalRef;
   }
+  openEditProjectModal(): NgbModalRef {
+    const modalRef = this.projectcreationmodalService.open(
+      ProjectCreationModalComponent,
+      {
+        centered: true,
+        backdrop: 'static',
+      }
+    );
+
+    modalRef.result.finally(() => { });
+
+    return modalRef;
+  }
+  openDeleteProjectModal(): NgbModalRef {
+    const modalRef = this.projectcreationmodalService.open(
+      ProjectCreationModalComponent,
+      {
+        centered: true,
+        backdrop: 'static',
+      }
+    );
+
+    modalRef.result.finally(() => { });
+
+    return modalRef;
+  
+  }
 }
+
