@@ -129,8 +129,6 @@ export class ProjectCreationModalComponent implements OnInit{
   }
   openClientCreationModal() {
     this.clientService.openClientCreationModal();
-  
-
   }
   
 

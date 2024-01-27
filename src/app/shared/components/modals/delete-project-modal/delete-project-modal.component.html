@@ -1,0 +1,42 @@
+<div class="modal-overlay" >
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+      <div class="bg-white shadow-lg rounded-lg mx-4 md:mx-0">
+        <div class="flex justify-between items-center p-4 border-b">
+          <div class="flex items-center">
+            <img
+              src="https://file.rendit.io/n/Jhgg0IueTaza9aCxbe3A.svg"
+              alt="NegativeSolid"
+              class="w-6 h-6 mr-2"
+            />
+            <span class="text-xl font-semibold">Delete</span>
+          </div>
+          <button >
+            <img
+              src="https://file.rendit.io/n/WHoxrhrvmpU23J5afxhK.svg"
+              alt="Close"
+              class="w-4 h-4"
+            />
+          </button>
+        </div>
+        <div class="p-4 text-center">
+          <p class="text-sm" *ngIf="project">Are you sure you want to delete ‘{{project.name}}’?</p>
+        </div>
+        <div class="flex justify-end items-center p-4 space-x-4">
+          <button
+            id="Button1"
+            class="px-5 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
+            (click)="cancelDelete()"
+          >
+            Cancel
+          </button>
+          <button
+            id="Button2"
+            class="px-5 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none"
+        
+          (click)="confirmDelete()">
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+</div>

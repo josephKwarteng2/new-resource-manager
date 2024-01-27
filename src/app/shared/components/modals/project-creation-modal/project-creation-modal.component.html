@@ -47,9 +47,9 @@
               stroke-width="2"
               d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
           </svg>
-          <span class="whitespace-nowrap">{{ errorMessages }}</span>
+          <span class="whitespace-nowrap">{{ errorMessages.serverError }}</span>
         </li>
-1
+        
         <li *ngIf="loading" class="flex items-center">
           <div role="status">
             <svg
@@ -100,14 +100,13 @@
             name="name"
             placeholder="Enter the name to the Client"
             class="text-slate-500 text-base leading-6 grow shrink basis-auto w-full py-1 focus:border-white" />
-            <!-- <global-input
+          <!-- <global-input
           [id]="'email'"
           [control]="loginForm.get('email')"
           [placeholder]="'something@example.com'"
           [type]="'email'"
           [errorMessage]="'Email field is required'"
         /> -->
-
         </div>
         <div
           class="text-red-500 text-xs leading-5 self-stretch py-2 w-full mr-2.5 mt-2 max-md:max-w-full">
@@ -155,8 +154,6 @@
                 {{ client.name }}
                 <input type="hidden" formControlName="clientId" />
               </li>
-
-
             </ul>
           </div>
         </div>
@@ -186,7 +183,6 @@
         </div>
 
         <div class="flex">
-      
           <div class="flex flex-col mr-2.5 mt-2 max-md:max-w-full">
             <div
               class="text-red-500 text-xs leading-5 self-stretch py-2 w-full">
@@ -203,7 +199,6 @@
             </div>
           </div>
 
-     
           <div class="flex flex-col mr-2.5 mt-2 max-md:max-w-full">
             <div
               class="text-red-500 text-xs leading-5 self-stretch py-2 w-full">
@@ -291,7 +286,7 @@
         </div>
       </div>
     </form>
-    <app-client-creation-modal [isOpen]="clientCreationModalOpen"
-    ></app-client-creation-modal>
+    <app-client-creation-modal
+      [isOpen]="clientCreationModalOpen"></app-client-creation-modal>
   </div>
 </div>
