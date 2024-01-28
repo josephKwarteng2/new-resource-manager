@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, ReactiveFormsModule, } from '@angular/forms';
 import { ProjectCreationModalService } from '../../../../accounts/admin/services/project-creation-modal.service';
 import { ClientCreationModalService } from '../../../../accounts/admin/services/client-creation-modal.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ClientDetails, ProjectDetails } from '../../../types/types';
+import { ClientDetails, ProjectDetails, FormDataValue } from '../../../types/types';
 import { GlobalInputComponent } from '../../global-input/global-input.component';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { from } from 'rxjs';
@@ -13,7 +13,7 @@ import { ClientCreationModalComponent } from '../client-creation-modal/client-cr
 @Component({
   selector: 'app-edit-project-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,ClientCreationModalComponent, GlobalInputComponent],
+  imports: [CommonModule, ReactiveFormsModule, ClientCreationModalComponent, GlobalInputComponent],
   templateUrl: './edit-project-modal.component.html',
   styleUrls: ['./edit-project-modal.component.css'],
 })
@@ -44,12 +44,13 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
       details: [''],
       name: [''],
       clientId: [''],
-      date: [''],
+     
       clientSearch: [''],
       startDate: [''],
       endDate: [''],
       projectType: [''],
       billable: [''],
+      projectId: [''],
     });
   }
 
@@ -72,7 +73,7 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
       this.populateForm();
     }
   }
-  
+
 
   populateForm(): void {
     if (this.project) {
@@ -83,6 +84,7 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
         endDate: this.project.endDate,
         projectType: this.project.projectType,
         billable: this.project.billable ? 'on' : 'off',
+        projectId: this.project.projectId
       });
     }
   }
@@ -92,32 +94,32 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
     this.success = false;
     this.error = false;
     this.errorMessages = {};
-
+  
     if (this.formData.valid) {
       const formDataValue = this.formData.value;
+
       const startDate = formDataValue['startDate'];
       const endDate = formDataValue['endDate'];
-      const projectStatus = formDataValue['projectType'];
+      const projectStatus = formDataValue['project-status'];
       const billable = formDataValue['billable'];
 
       const isBillable = billable === 'on';
+  
+      this.loading = true;
+  
 
       const projectData = {
         details: formDataValue['details'],
         name: formDataValue['name'],
-        clientId: formDataValue['clientId'],
+        client: formDataValue['client'],
         date: formDataValue['date'],
         startDate: startDate,
         endDate: endDate,
         projectStatus: projectStatus,
         billable: isBillable,
       };
-
-      this.loading = true;
-
-      // Assuming this.projectcreationService.editProject is correct, please verify
-      // Also, you may need to pass the project ID or other necessary information
-      this.projectcreationService.editProject(this.formData.value).pipe(
+  
+      this.projectcreationService.editProject(formDataValue).pipe(
         finalize(() => {
           this.loading = false;
         })
@@ -130,6 +132,7 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
         },
         (error) => {
           this.error = true;
+          console.error('Error editing project:', error);
           if (error.status === 400) {
             this.errorMessages.serverError = 'Invalid inputs. Please check your input.';
           } else if (error.status === 401) {
@@ -150,7 +153,9 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
       this.errorMessages.serverError = 'Please enter valid inputs or complete the form';
     }
   }
-
+  
+  
+  
   closeEditProjectModal(): void {
     this.isOpen = false;
   }
@@ -196,6 +201,6 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
     }
   }
 
-  // Add other methods as needed
+
 
 }

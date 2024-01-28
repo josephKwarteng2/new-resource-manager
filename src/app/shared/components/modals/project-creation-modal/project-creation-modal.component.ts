@@ -28,6 +28,7 @@ export class ProjectCreationModalComponent implements OnInit{
   @Input() isOpen = true;
   clientCreationModalOpen = false;
   showClientDropdown = false;
+  showClientCreationModal: boolean = false;
   formData: FormGroup;
   loading = false;
   success = false;
@@ -37,7 +38,7 @@ export class ProjectCreationModalComponent implements OnInit{
   clients: ClientDetails[] = [];
   filteredClients: ClientDetails[] = [];
   date: Date | undefined;
-  newClientDetails: ClientDetails = {} as ClientDetails;
+  newClient: ClientDetails = {} as ClientDetails;
   constructor(
     private projectcreationService: ProjectCreationModalService,
     private clientService: ClientCreationModalService,
@@ -59,7 +60,7 @@ export class ProjectCreationModalComponent implements OnInit{
     });
   }
 
-  OnCreateProject(){
+  onCreateProject(){
     this.loading = true;
     this.success = false;
     this.error = false;
@@ -101,6 +102,7 @@ export class ProjectCreationModalComponent implements OnInit{
             this.successMessage = 'Project created successfully!';
           },
           error => {
+            
 
             this.error = true;
             if (error.status === 400) {
@@ -132,8 +134,11 @@ export class ProjectCreationModalComponent implements OnInit{
   }
   
 
-  handleClientCreated(clientDetails: ClientDetails): void {
-     this.newClientDetails = clientDetails;
+  onClientCreated(newClient: ClientDetails) {
+    this.formData.get('clientSearch')!.setValue(newClient.name);
+  
+
+    this.showClientCreationModal = false;
   }
   
   ngOnInit(): void {
@@ -146,7 +151,7 @@ export class ProjectCreationModalComponent implements OnInit{
     ).subscribe(value => this.filterClients());
 
     this.clientService.clientCreated.subscribe((newClient: ClientDetails) => {
-      this.handleClientCreated(newClient);
+      this.onClientCreated(newClient);
     });
 
   }

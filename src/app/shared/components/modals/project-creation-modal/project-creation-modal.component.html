@@ -152,6 +152,7 @@
                 *ngFor="let client of filteredClients"
                 (click)="selectClient(client)">
                 {{ client.name }}
+                {{newClient.name}}
                 <input type="hidden" formControlName="clientId" />
               </li>
             </ul>
@@ -279,7 +280,7 @@
               type="button"
               class="text-white text-xs font-medium leading-6 whitespace-nowrap justify-center items-stretch bg-indigo-800 aspect-[1.3333333333333333] px-2 py-1 rounded-xl"
               [disabled]="loading"
-              (click)="OnCreateProject()">
+              (click)="onCreateProject()">
               Add
             </button>
           </div>
@@ -287,6 +288,6 @@
       </div>
     </form>
     <app-client-creation-modal
-      [isOpen]="clientCreationModalOpen"></app-client-creation-modal>
+      [isOpen]="clientCreationModalOpen"   (clientCreated)="onClientCreated($event)"></app-client-creation-modal>
   </div>
 </div>

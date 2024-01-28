@@ -68,6 +68,7 @@ export type ProjectDetails = Pick<ClientDetails, 'name' | 'details'> & {
   projectName: string;
   billable: boolean;
   projectType: string;
+  date: Date;
   employees: EmployeeDetails[];
   startDate: Date | undefined;
   endDate: Date | undefined;
@@ -82,6 +83,18 @@ export interface UserNotifications {
   time: string;
   message: string;
 }
+export interface FormDataValue {
+  details: string;  
+  name: string;     
+  clientId: string; 
+  date: Date;       
+  startDate: Date;  
+  endDate: Date;    
+  projectType: string; 
+  billable: string; 
+  projectId: string; 
+}
+
 
 export type Permisions = {
   can_add_manager: boolean;

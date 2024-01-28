@@ -24,9 +24,9 @@ export class ClientCreationModalComponent implements OnInit {
   loading = false;
   success = false;
   error = false;
-  errorMessage: string = '' ;
-  successMessage: string = '' ;
-  nullFormControlMessage: string = '' ;
+  errorMessage: string = '';
+  successMessage: string = '';
+  nullFormControlMessage: string = '';
   formInvalidMessage: string = '';
 
   constructor(
@@ -49,7 +49,7 @@ export class ClientCreationModalComponent implements OnInit {
       this.errorMessage = '';
       this.formInvalidMessage = '';
       this.nullFormControlMessage = '';
-    }, 3000); 
+    }, 3000);
   }
 
   OnCreateClient() {
@@ -95,6 +95,11 @@ export class ClientCreationModalComponent implements OnInit {
       this.formInvalidMessage = 'Please complete the form or enter valid inputs';
       this.clearErrorMessagesAfterDelay();
     }
+  }
+
+  handleNewClientCreation(newClient: ClientDetails) {
+
+    this.clientCreated.emit(newClient);
   }
   closeClientcreationModal() {
     this.isOpen = false;

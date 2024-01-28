@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError } from 'rxjs';
+import { Observable, catchError, tap } from 'rxjs';
 import { BASE_URL } from '../../../../environment/config';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ClientDetails, GenericResponse } from '../../../shared/types/types';
@@ -17,9 +17,14 @@ export class ClientCreationModalService {
   clientCreated: EventEmitter<ClientDetails> =
     new EventEmitter<ClientDetails>();
 
-  addNewClient(data: ClientDetails): Observable<ClientDetails> {
-    return this.http.post<ClientDetails>(`${BASE_URL}/client/store`, data);
-  }
+    addNewClient(data: ClientDetails): Observable<ClientDetails> {
+      return this.http.post<ClientDetails>(`${BASE_URL}/client/store`, data)
+        .pipe(
+          tap((newClient: ClientDetails) => {
+            this.clientCreated.next(newClient); 
+          })
+        );
+    }
 
   getClients(): Observable<{ clients: ClientDetails[] }> {
     return this.http
