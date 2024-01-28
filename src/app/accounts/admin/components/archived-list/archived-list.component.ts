@@ -12,7 +12,7 @@ import { GenericResponse, User } from '../../../../shared/types/types';
 })
 export class ArchivedListComponent implements OnInit {
   archivedUsers: User[] = [];
-  loading: boolean = true;
+  loading: boolean = false;
   showDropdownForUser: User | null = null;
   totalUsers: number = 0;
   successMessage: string | null = null;
@@ -50,6 +50,7 @@ export class ArchivedListComponent implements OnInit {
   }
 
   restoreUser(email: string): void {
+    this.loading = true;
     this.usersService.restoreUser(email).subscribe({
       next: (response: any) => {
         this.successMessage = response.message;
@@ -73,7 +74,7 @@ export class ArchivedListComponent implements OnInit {
 
         setTimeout(() => {
           this.errorMessage = null;
-        }, 6000);
+        }, 3000);
       },
     });
   }

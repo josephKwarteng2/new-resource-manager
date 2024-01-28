@@ -63,6 +63,7 @@ export class ClientTableComponent implements OnInit {
   }
 
   archiveClient(clients: ClientDetails): void {
+    this.loading = true;
     this.clientCreationModalService.archiveClient(clients.clientId).subscribe({
       next: (response: GenericResponse) => {
         this.successMessage = response.message;

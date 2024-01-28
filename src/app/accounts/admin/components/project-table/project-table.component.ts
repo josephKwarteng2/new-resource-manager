@@ -140,17 +140,18 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(ProjectDetailsModalComponent);
     modalRef.componentInstance.project = project;
   }
+
   openDeleteProjectModal(project: ProjectDetails) {
     const modalRef = this.modalService.open(DeleteProjectModalComponent);
-    modalRef.componentInstance.project = project; // Pass the entire project object
+    modalRef.componentInstance.project = project;
 
     modalRef.result.then(
-      (result) => {
+      result => {
         if (result === 'delete') {
           this.deleteProject(project);
         }
       },
-      (reason) => {
+      reason => {
         // Handle modal dismissal/cancel
       }
     );
@@ -171,7 +172,7 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
           this.successMessage = null;
         }, 3000);
       },
-      error: (error) => {
+      error: error => {
         this.errorMessage = 'Error deleting project.';
         this.successMessage = null;
         console.error('Error deleting project:', error);
@@ -181,12 +182,11 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
       },
     });
   }
-  
+
   openEditProjectModal(project: ProjectDetails): void {
     const modalRef = this.modalService.open(EditProjectModalComponent);
     modalRef.componentInstance.project = project;
   }
-  
 
   archiveProject(projects: ProjectDetails): void {
     this.projectsService.archiveProject(projects.projectId).subscribe({

@@ -122,6 +122,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   archiveUser(user: User): void {
+    this.loading = true;
     console.log(user);
     this.usersService.archiveUser(user.email).subscribe({
       next: (response: any) => {

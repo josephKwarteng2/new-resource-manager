@@ -125,7 +125,7 @@ export class SettingsService {
   addUserSkills(user: CurrentUser): Observable<Skills[]> {
     return this.http
       .post<{ skills: [{ id: number; name: Skills }] }>(
-        `${BASE_URL}/store`,
+        `${BASE_URL}/skills/store`,
         user,
         this.headers
       )

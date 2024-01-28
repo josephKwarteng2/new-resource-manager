@@ -28,7 +28,7 @@ import {
   templateUrl: './work-specialization.component.html',
   styleUrls: [
     './work-specialization.component.css',
-    '../../pages/setting/setting.component.css',
+    // '../../pages/setting/setting.component.css',
   ],
 })
 export class WorkSpecializationComponent implements OnInit, OnDestroy {
@@ -36,7 +36,9 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
   specializations!: Specializations[];
   departments!: Departments[];
-  userSkills: Skills[] = [];
+  skills: Skills[] = [];
+  loading: Boolean = false;
+  enteredSkills: string[] = [];
   user!: CurrentUser;
   settingsSig = signal<InitialSig>({
     success: null,
@@ -44,42 +46,32 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
     pending: false,
   });
 
-  constructor(
-    private store: Store,
-    private settingsService: SettingsService,
-    private fb: FormBuilder
-  ) {}
+  constructor(private store: Store, private settingsService: SettingsService) {}
 
   ngOnInit(): void {
-    this.userSpecializationForm = this.fb.group({
-      department: ['', Validators.required],
-      specialization: ['', Validators.required],
-      skills: this.fb.array([
-        this.fb.control('', Validators.required),
-        this.fb.control('', Validators.required),
-        this.fb.control('', Validators.required),
-      ]),
+    this.userSpecializationForm = new FormGroup({
+      department: new FormControl('', [Validators.required]),
+      specialization: new FormControl('', [Validators.required]),
+      skills: new FormControl('', [Validators.required]),
     });
 
     const specSub = this.settingsService.getSpecializations().subscribe({
-      next: res => {
+      next: (res: any) => {
         this.specializations = res;
       },
     });
 
     const departmentSub = this.settingsService.getDepartments().subscribe({
-      next: res => {
+      next: (res: any) => {
         this.departments = res;
       },
     });
 
-    const skillsSub = this.settingsService.getUserSkills().subscribe({
-      next: (res: Skills[]) => {
-        this.userSkills = res;
-        this.updateSkillsFormArray();
-      },
-    });
-
+    // const skillsSub = this.settingsService.getUserSkills().subscribe({
+    //   next: res => {
+    //     this.skills = res;
+    //   },
+    // });
     const storeSub = this.store.select(selectCurrentUser).subscribe({
       next: user => {
         if (user) {
@@ -89,7 +81,7 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
       },
     });
 
-    this.subscriptions.push(specSub, departmentSub, storeSub, skillsSub);
+    this.subscriptions.push(specSub, departmentSub, storeSub);
   }
 
   getSpecializationErrors(): string {
@@ -117,32 +109,67 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
       this.userSpecializationForm.patchValue({
         department: this.user.department || '',
         specialization: this.user.specializations[0] || '',
-        skills: this.user.skills || '',
+        // skills: this.user.skills || '',
       });
     }
-  }
-
-  getSkillsFormArray(): FormArray {
-    return this.userSpecializationForm.get('skills') as FormArray;
-  }
-
-  updateSkillsFormArray() {
-    const skillControls = this.userSkills.map(skill =>
-      this.fb.control(skill, Validators.required)
-    );
-    this.userSpecializationForm.setControl(
-      'skills',
-      this.fb.array(skillControls)
-    );
-  }
-
-  addSkill() {
-    this.getSkillsFormArray().push(this.fb.control('', Validators.required));
   }
 
   get signalValues() {
     const val = this.settingsSig();
     return val;
+  }
+
+  addSkill(skill: string): void {
+    if (!this.user) {
+      console.error('User details not available.');
+      return;
+    }
+
+    const updatedUser: CurrentUser = { ...this.user };
+
+    updatedUser.skills = [...this.user.skills, skill as Skills];
+    this.settingsService.addUserSkills(updatedUser).subscribe({
+      next: (response: any) => {
+        if (response && response.message) {
+          this.settingsSig.set({
+            success: response,
+            error: null,
+            pending: false,
+          });
+          setTimeout(() => {
+            this.settingsSig.set({
+              success: null,
+              error: null,
+              pending: false,
+            });
+            this.loading = false;
+          }, 3000);
+        }
+      },
+      error: (error: any) => {
+        this.settingsSig.set({
+          success: null,
+          error: error.errors,
+          pending: false,
+        });
+
+        setTimeout(() => {
+          this.settingsSig.set({
+            success: null,
+            error: null,
+            pending: false,
+          });
+          this.loading = false;
+        }, 3000);
+      },
+    });
+  }
+
+  removeSkill(skill: string): void {
+    const index = this.enteredSkills.indexOf(skill);
+    if (index !== -1) {
+      this.enteredSkills.splice(index, 1);
+    }
   }
 
   submitForm(event: Event) {
@@ -154,19 +181,30 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
     });
 
     if (!this.user) {
+      console.error('User details not available.');
       return;
     }
 
     const reqBody = {
       userId: this.user.userId,
-      department: this.user.department,
-      specialization: this.user.specializations[0],
-      skills: this.user.skills,
+      department: this.userSpecializationForm.get('department')?.value || '',
+      specialization:
+        this.userSpecializationForm.get('specialization')?.value || '',
+      skills: this.userSpecializationForm.get('skills')?.value || [],
     };
 
+    const skill = this.userSpecializationForm.get('skills')?.value;
+    if (skill && skill.trim() !== '') {
+      const trimmedSkill = skill.trim();
+      this.enteredSkills.push(trimmedSkill);
+      this.addSkill(trimmedSkill);
+      this.userSpecializationForm.get('skills')?.reset();
+    }
+
     if (this.userSpecializationForm.valid) {
-      this.settingsService.updateDetails(reqBody).subscribe({
-        next: response => {
+      this.loading = true;
+      this.settingsService.updateAdminSpecialization(reqBody).subscribe({
+        next: (response: any) => {
           if (response && response.message) {
             this.settingsSig.set({
               success: response,
@@ -179,10 +217,11 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
                 error: null,
                 pending: false,
               });
+              this.loading = false;
             }, 3000);
           }
         },
-        error: error => {
+        error: (error: any) => {
           this.settingsSig.set({
             success: null,
             error: error.errors,
@@ -195,7 +234,11 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
               error: null,
               pending: false,
             });
+            this.loading = false;
           }, 3000);
+        },
+        complete: () => {
+          this.loading = false;
         },
       });
     }
@@ -204,4 +247,17 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
+
+  // addSkill(skillData: SkillData): void {
+  //   this.settingsService.addSkill(skillData).subscribe({
+  //     next: (response: GenericResponse) => {
+  //       // Handle the success response if needed
+  //       console.log(response);
+  //     },
+  //     error: (error: any) => {
+  //       // Handle the error response if needed
+  //       console.error(error);
+  //     },
+  //   });
+  // }
 }

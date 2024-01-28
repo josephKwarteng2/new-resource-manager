@@ -77,4 +77,8 @@
       </tbody>
     </table>
   </div>
+  <pagination
+    [currentPage]="currentPage"
+    [totalPages]="totalPages"
+    (pageChange)="onPageChange($event)"></pagination>
 </ng-template>

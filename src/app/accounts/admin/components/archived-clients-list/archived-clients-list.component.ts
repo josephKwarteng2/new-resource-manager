@@ -51,6 +51,7 @@ export class ArchivedClientsListComponent implements OnInit {
   }
 
   restoreClient(clientId: string): void {
+    this.loading = true;
     this.clientCreationModalService.restoreClient(clientId).subscribe({
       next: (response: GenericResponse) => {
         this.successMessage = response.message;
