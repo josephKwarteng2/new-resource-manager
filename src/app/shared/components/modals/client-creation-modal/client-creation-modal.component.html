@@ -15,7 +15,7 @@
             <path
               d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
           </svg>
-          <span class="whitespace-nowrap">User Created Successfully </span>
+          <span class="whitespace-nowrap">{{successMessage}}</span>
         </li>
         <li *ngIf="error" class="flex items-center mt-4">
           <svg
@@ -31,7 +31,7 @@
               stroke-width="2"
               d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
           </svg>
-          <span class="whitespace-nowrap">Error Creating User </span>
+          <span class="whitespace-nowrap">{{errorMessage}} </span>
         </li>
         <li *ngIf="loading" class="flex items-center">
           <div role="status">

@@ -47,7 +47,7 @@
 
   height: 35px;
   background: #fff;
-  padding: 10px;
+  padding: 15px;
 
   font-size: 12px;
 
@@ -57,6 +57,9 @@
 }
 .custom-dropdown input:focus {
   outline: 1px solid #4a72ff;
+}
+::ng-deep .custom-dropdown input#clientSearch {
+  padding: 20px; 
 }
 
 .custom-dropdown textarea {
@@ -84,9 +87,9 @@
 .custom-dropdown .search-icon {
   position: absolute;
   top: 50%;
-  left: 12px;
+  left: 7px;
   transform: translateY(-50%);
-  width: 14px;
+  width: 12px;
 }
 .custom-dropdown .dropdown-list {
   position: absolute;

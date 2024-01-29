@@ -81,8 +81,9 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
         details: this.project.details,
         name: this.project.name,
         startDate: this.project.startDate,
+        clientSearch: this.project.client,
         endDate: this.project.endDate,
-        projectType: this.project.projectType,
+        projectType: this.project.projectType ? 'internal' : 'external',
         billable: this.project.billable ? 'on' : 'off',
         projectId: this.project.projectId
       });

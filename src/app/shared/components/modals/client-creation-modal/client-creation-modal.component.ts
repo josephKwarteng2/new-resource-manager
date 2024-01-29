@@ -72,6 +72,7 @@ export class ClientCreationModalComponent implements OnInit {
             this.success = true;
             this.successMessage = 'Client created successfully!';
             this.clientCreated.emit(response);
+            this.formData.reset();
           },
           error => {
             this.error = true;
@@ -98,7 +99,7 @@ export class ClientCreationModalComponent implements OnInit {
   }
 
   handleNewClientCreation(newClient: ClientDetails) {
-
+  console.log('New client created:', newClient);
     this.clientCreated.emit(newClient);
   }
   closeClientcreationModal() {

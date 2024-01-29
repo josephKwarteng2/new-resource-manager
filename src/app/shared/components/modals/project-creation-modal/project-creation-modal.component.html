@@ -33,7 +33,7 @@
           </svg>
           <span class="whitespace-nowrap">{{ errorMessages.serverError }}</span>
         </li>
-        <li *ngIf="error" class="flex items-center">
+        <!-- <li *ngIf="error" class="flex items-center">
           <svg
             class="w-6 h-10 mt-2 me-1 text-red-800 dark:text-red"
             aria-hidden="true"
@@ -48,7 +48,7 @@
               d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
           </svg>
           <span class="whitespace-nowrap">{{ errorMessages.serverError }}</span>
-        </li>
+        </li> -->
         
         <li *ngIf="loading" class="flex items-center">
           <div role="status">
@@ -112,7 +112,8 @@
           class="text-red-500 text-xs leading-5 self-stretch py-2 w-full mr-2.5 mt-2 max-md:max-w-full">
           <label for="name" class="text-slate-700">Client</label>
         </div>
-        <div class="custom-dropdown">
+       
+        <div class="custom-dropdown flex">
           <span class="search-icon">
             <img
               src="../../../../../assets/images/admin/Search.svg"
@@ -123,10 +124,10 @@
             autocomplete="off"
             type="text"
             id="clientSearch"
-            placeholder="Search..."
+            placeholder="Search or create a new client"
             (click)="showClientDropdown = true"
             (input)="filterClients()"
-            class="placeholder:pl-5 text-slate-500 text-base leading-6 grow shrink basis-auto w-full p-6" />
+            class="placeholder text-slate-500 text-base leading-6 grow shrink basis-auto w-full p-6" />
           <span class="dropdown-sign"
             ><img src="../../../../../assets/images/admin/Chevron Down.svg"
           /></span>
@@ -152,9 +153,11 @@
                 *ngFor="let client of filteredClients"
                 (click)="selectClient(client)">
                 {{ client.name }}
-                {{newClient.name}}
+
+                
                 <input type="hidden" formControlName="clientId" />
               </li>
+     
             </ul>
           </div>
         </div>

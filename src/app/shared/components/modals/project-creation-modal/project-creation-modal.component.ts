@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, } from '@angular/core';
 import {
   FormGroup,
 
@@ -24,7 +24,7 @@ import { GlobalInputComponent } from '../../global-input/global-input.component'
   templateUrl: './project-creation-modal.component.html',
   styleUrl: './project-creation-modal.component.css'
 })
-export class ProjectCreationModalComponent implements OnInit{
+export class ProjectCreationModalComponent implements OnInit {
   @Input() isOpen = true;
   clientCreationModalOpen = false;
   showClientDropdown = false;
@@ -44,6 +44,7 @@ export class ProjectCreationModalComponent implements OnInit{
     private clientService: ClientCreationModalService,
     private fb: FormBuilder,
     private modalService: NgbModal,
+    private cdr: ChangeDetectorRef
 
   ){
     this.formData = this.fb.group({
@@ -135,26 +136,45 @@ export class ProjectCreationModalComponent implements OnInit{
   
 
   onClientCreated(newClient: ClientDetails) {
-    this.formData.get('clientSearch')!.setValue(newClient.name);
-  
+    const clientSearchControl = this.formData.get('clientSearch');
+    console.log('Client created:', newClient);
 
-    this.showClientCreationModal = false;
+    if (clientSearchControl) {
+      clientSearchControl.setValue(newClient.name);
+      this.showClientDropdown = false;
+    }
   }
   
   ngOnInit(): void {
     this.fetchClients();
-
-    
+  
+    // Subscribe to changes in the clientSearch form control
     this.formData.get('clientSearch')?.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
     ).subscribe(value => this.filterClients());
-
+  
+    // Subscribe to the clientCreated event from the service
     this.clientService.clientCreated.subscribe((newClient: ClientDetails) => {
       this.onClientCreated(newClient);
     });
-
+  
+    // Subscribe to another event or observable for when a new client is added directly
+    // For example, assuming you have an event emitter in your ClientCreationModalComponent
+    this.clientService.newClientAdded$.subscribe((newClient: ClientDetails) => {
+      this.onClientAdded(newClient);
+    });
   }
+
+  onClientAdded(newClient: ClientDetails) {
+    const clientSearchControl = this.formData.get('clientSearch');
+  
+    if (clientSearchControl) {
+      clientSearchControl.setValue(newClient.name);
+      this.showClientDropdown = false;
+    }
+  }
+    
   fetchClients(): void {
     this.clientService.getClients()
       .subscribe(
