@@ -65,7 +65,7 @@ export class ProjectCreationModalService {
   }
 
   deleteProject(projectId: string): Observable<GenericResponse> {
-    const url = `${BASE_URL}/project/delete`;
+    const url = `${BASE_URL}/project/archives/store`;
     const params = { projectId: projectId };
     return this.http.delete<GenericResponse>(url, { params: params });
     // .pipe(
@@ -80,6 +80,12 @@ export class ProjectCreationModalService {
     //     throw error;
     //   })
     // );
+  }
+
+  archivedProjectDelete(projectId: string): Observable<GenericResponse> {
+    const url = `${BASE_URL}/project/archives/delete`;
+    const params = { projectId: projectId };
+    return this.http.delete<GenericResponse>(url, { params: params });
   }
 
   openProjectCreationModal(): NgbModalRef {

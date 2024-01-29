@@ -17,14 +17,13 @@ export class ClientCreationModalService {
   clientCreated: EventEmitter<ClientDetails> =
     new EventEmitter<ClientDetails>();
 
-    addNewClient(data: ClientDetails): Observable<ClientDetails> {
-      return this.http.post<ClientDetails>(`${BASE_URL}/client/store`, data)
-        .pipe(
-          tap((newClient: ClientDetails) => {
-            this.clientCreated.next(newClient); 
-          })
-        );
-    }
+  addNewClient(data: ClientDetails): Observable<ClientDetails> {
+    return this.http.post<ClientDetails>(`${BASE_URL}/client/store`, data).pipe(
+      tap((newClient: ClientDetails) => {
+        this.clientCreated.next(newClient);
+      })
+    );
+  }
 
   getClients(): Observable<{ clients: ClientDetails[] }> {
     return this.http
@@ -84,5 +83,20 @@ export class ClientCreationModalService {
     modalRef.result.finally(() => {});
 
     return modalRef;
+  }
+
+  deleteClient(clientId: string): Observable<GenericResponse> {
+    return this.http.delete<GenericResponse>(
+      `${BASE_URL}/client/archives/delete`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'skip-browser-warning',
+        },
+        params: {
+          clientId: clientId,
+        },
+      }
+    );
   }
 }

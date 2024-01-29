@@ -4,20 +4,20 @@
   <div class="profile-picture">
     <img [src]="imgUrl" alt="profile picture" />
     <label for="image" class="visibly-hidden">Profile picture</label>
-    <global-input
-      [type]="'file'"
-      [id]="'image'"
-      [name]="'image'"
+    <input
+      type="file"
+      id="image"
+      name="image"
       (change)="onFileChange($event)"
       accept=".jpg,.jpeg,.png" />
   </div>
 
   <label for="email" class="form-label">Email</label>
-  <global-input
-    [id]="'email'"
-    [type]="'email'"
+  <input
+    id="email"
+    type="'email'"
     class="global-input-auth {{ getEmailErrors() ? 'error' : '' }}"
-    [placeholder]="'something@example.com'"
+    placeholder="something@example.com"
     [ngModel]="email"
     formControlName="email" />
   @if(getEmailErrors()){
@@ -27,12 +27,12 @@
   }
 
   <label for="firsName" class="form-label">First Name</label>
-  <global-input
-    [id]="'firsName'"
-    [type]="'text'"
+  <input
+    id="firstName"
+    type="text"
     class="global-input-auth {{ getNameErrors('firstName') ? 'error' : '' }}"
-    [placeholder]="'Enter FirstName'"
-    [control]="userDetails.get('firstName')" />
+    placeholder="Enter FirstName"
+    formControlName="firstName" />
   @if(getNameErrors('firstName')){
   <div class="validation-error-message">
     {{ getNameErrors('firstName') }}
@@ -40,12 +40,12 @@
   }
 
   <label for="lastName" class="form-label">Last Name</label>
-  <global-input
-    [id]="'lastName'"
-    [type]="'text'"
+  <input
+    id="lastName"
+    type="text"
     class="global-input-auth {{ getNameErrors('lastName') ? 'error' : '' }}"
-    [placeholder]="'Enter LastName'"
-    [control]="userDetails.get('lastName')" />
+    placeholder="Enter LastName"
+    formControlName="lastName" />
   @if(getNameErrors('lastName')){
   <div class="validation-error-message">
     {{ getNameErrors('lastName') }}
@@ -53,18 +53,48 @@
   }
 
   <label for="phoneNumber" class="form-label">Phone number</label>
-  <global-input
-    [id]="'phoneNumber'"
-    [type]="'tel'"
+  <input
+    id="'phoneNumber'"
+    type="'tel'"
     class="global-input-auth {{ getNumberErrors() ? 'error' : '' }}"
     pattern="[0-9]{10}"
     maxlength="10"
-    [placeholder]="'0512345678'"
-    [control]="userDetails.get('phoneNumber')" />
+    placeholder="051234567"
+    formControlName="phoneNumber" />
   @if(getNumberErrors()){
   <div class="validation-error-message">
     {{ getNumberErrors() }}
   </div>
   }
+
+  <div class="flex-container">
+    <div class="flex-item">
+      <label for="phoneNumber" class="form-label">Location</label>
+      <input
+        id="'location"
+        type="text"
+        class="global-input-auth"
+        placeholder="Enter Location"
+        formControlName="location" />
+      @if(getLocationErrors()){
+      <div class="validation-error-message">
+        {{ getLocationErrors() }}
+      </div>
+      }
+    </div>
+
+    <div class="flex-item">
+      <label class="form-label" for="location">Time Zone</label>
+      <select
+        id="timeZone"
+        formControlName="timeZone"
+        class="global-input-auth">
+        <option disabled selected>Select Time Zone</option>
+        <option *ngFor="let timeZone of timeZones" [value]="timeZone">
+          {{ timeZone }}
+        </option>
+      </select>
+    </div>
+  </div>
   <button type="submit" class="global-button-auth">GET STARTED</button>
 </form>

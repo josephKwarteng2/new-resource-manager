@@ -1,12 +1,12 @@
 .new-button {
   display: flex;
   font-family: 'LexendMedium';
-  width: 120px;
+  width: 100px;
   height: 47px;
   justify-content: center;
   align-items: center;
   gap: 8px;
-  border-radius: 10px;
+  border-radius: 20px;
   border: 1px solid #1f26a8;
   background: #1f26a8;
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);

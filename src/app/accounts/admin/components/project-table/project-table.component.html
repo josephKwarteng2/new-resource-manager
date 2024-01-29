@@ -19,12 +19,7 @@
     </div>
   </div>
 </ng-container>
-<div *ngIf="successMessage" class="success-message">
-  {{ successMessage }}
-</div>
-<div *ngIf="errorMessage" class="error-message">
-  {{ errorMessage }}
-</div>
+
 <ng-template #projectList>
   <div class="project-list-container">
     <table class="project-table">
@@ -39,9 +34,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          *ngFor="let project of projects"
-        >
+        <tr *ngFor="let project of projects">
           <td class="grid-item" (click)="openProjectDetailsModal(project)">
             {{ project.client }}
           </td>
@@ -78,7 +71,7 @@
               <ul class="dropdown-details-container">
                 <li (click)="openEditProjectModal(project)">Edit</li>
                 <li (click)="openProjectDetailsModal(project)">View</li>
-                <li (click)="openDeleteProjectModal(project)">Delete</li>
+                <!-- <li (click)="openDeleteProjectModal(project)">Delete</li> -->
                 <li (click)="archiveProject(project)">Archive</li>
                 <li (click)="openAssignModal(project)">Assign</li>
               </ul>

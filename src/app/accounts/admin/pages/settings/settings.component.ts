@@ -6,10 +6,10 @@ import {
   SettingsFields,
   SettingsService,
 } from '../../../user/services/settings.service';
-import { UserProfileComponent } from '../../../user/components/user-profile/user-profile.component';
 import { UserPasswordComponent } from '../../../user/components/user-password/user-password.component';
 import { Subscription } from 'rxjs';
 import { WorkSpecializationComponent } from '../../components/work-specialization/work-specialization.component';
+import { AdminProfileComponent } from '../../components/admin-profile/admin-profile.component';
 
 @Component({
   selector: 'app-settings',
@@ -18,7 +18,7 @@ import { WorkSpecializationComponent } from '../../components/work-specializatio
     CommonModule,
     SideNavComponent,
     HeaderComponent,
-    UserProfileComponent,
+    AdminProfileComponent,
     UserPasswordComponent,
     WorkSpecializationComponent,
   ],

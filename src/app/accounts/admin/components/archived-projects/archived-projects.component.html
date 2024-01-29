@@ -51,7 +51,9 @@
                   <li (click)="restoreProject(archivedproject.projectId)">
                     Restore
                   </li>
-                  <li>Delete</li>
+                  <li (click)="openDeleteProjectModal(archivedproject)">
+                    Delete
+                  </li>
                 </ul>
               </div>
 

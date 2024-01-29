@@ -109,7 +109,7 @@ export class SettingsService {
   getUserSkills(): Observable<Skills[]> {
     return this.http
       .get<{ skills: [{ id: number; name: Skills }] }>(
-        `${BASE_URL}/skills/fetch`,
+        `${BASE_URL}/skills/fetch/by/auth`,
         this.headers
       )
       .pipe(
@@ -123,10 +123,12 @@ export class SettingsService {
   }
 
   addUserSkills(user: CurrentUser): Observable<Skills[]> {
+    const requestBody = { name: 'user.skills' };
     return this.http
       .post<{ skills: [{ id: number; name: Skills }] }>(
         `${BASE_URL}/skills/store`,
-        user,
+        requestBody,
+        // user,
         this.headers
       )
       .pipe(
