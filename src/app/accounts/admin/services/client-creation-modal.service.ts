@@ -28,7 +28,7 @@ export class ClientCreationModalService {
     return this.http.post<ClientDetails>(`${BASE_URL}/client/store`, data).pipe(
       tap((newClient: ClientDetails) => {
         this.clientCreated.next(newClient);
-        this.newClientAddedSource.next(newClient); // Move this line here
+
       })
     );
   }
