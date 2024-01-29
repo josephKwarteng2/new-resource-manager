@@ -1,23 +1,24 @@
-<div *ngIf="successMessage" class="success-message">
+<!-- <div *ngIf="successMessage" class="success-message">
   {{ successMessage }}
 </div>
 <div *ngIf="errorMessage" class="error-message">
   {{ errorMessage }}
-</div>
+</div> -->
 
 <div [class]="modalClasses">
   <header>
     <div>
-      <h2>Confirm Archive</h2>
+      <h2>Delete</h2>
       <span (click)="close()">
         <img src="assets/images/user/x-close.svg" alt="close icon" />
       </span>
     </div>
   </header>
   <div class="delete-content">
-    <p>
-      Are you sure you want to delete {{ user?.firstName }}
-      {{ user?.lastName }} ?
+    <p *ngIf="user">
+      <!-- Are you sure you want to delete {{ user?.firstName }}
+      {{ user?.lastName }} ? -->
+      Are you sure you want to delete {{ user.firstName }} {{ user.lastName }}?
     </p>
   </div>
 

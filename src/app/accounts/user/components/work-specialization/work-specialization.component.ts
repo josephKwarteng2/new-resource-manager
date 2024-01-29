@@ -67,11 +67,13 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
       },
     });
 
-    // const skillsSub = this.settingsService.getUserSkills().subscribe({
-    //   next: res => {
-    //     this.skills = res;
-    //   },
-    // });
+    const skillsSub = this.settingsService.getUserSkills().subscribe({
+      next: res => {
+        this.skills = res;
+        this.enteredSkills = res.map(skill => skill);
+      },
+    });
+
     const storeSub = this.store.select(selectCurrentUser).subscribe({
       next: user => {
         if (user) {
@@ -81,7 +83,7 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
       },
     });
 
-    this.subscriptions.push(specSub, departmentSub, storeSub);
+    this.subscriptions.push(specSub, departmentSub, storeSub, skillsSub);
   }
 
   getSpecializationErrors(): string {
@@ -109,7 +111,7 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
       this.userSpecializationForm.patchValue({
         department: this.user.department || '',
         specialization: this.user.specializations[0] || '',
-        // skills: this.user.skills || '',
+        skills: '',
       });
     }
   }
@@ -119,51 +121,51 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
     return val;
   }
 
-  addSkill(skill: string): void {
-    if (!this.user) {
-      console.error('User details not available.');
-      return;
-    }
+  // addSkill(skill: string): void {
+  //   if (!this.user) {
+  //     console.error('User details not available.');
+  //     return;
+  //   }
 
-    const updatedUser: CurrentUser = { ...this.user };
+  //   const updatedUser: CurrentUser = { ...this.user };
 
-    updatedUser.skills = [...this.user.skills, skill as Skills];
-    this.settingsService.addUserSkills(updatedUser).subscribe({
-      next: (response: any) => {
-        if (response && response.message) {
-          this.settingsSig.set({
-            success: response,
-            error: null,
-            pending: false,
-          });
-          setTimeout(() => {
-            this.settingsSig.set({
-              success: null,
-              error: null,
-              pending: false,
-            });
-            this.loading = false;
-          }, 3000);
-        }
-      },
-      error: (error: any) => {
-        this.settingsSig.set({
-          success: null,
-          error: error.errors,
-          pending: false,
-        });
+  //   updatedUser.skills = [...this.user.skills, skill as Skills];
+  //   this.settingsService.addUserSkills(updatedUser).subscribe({
+  //     next: (response: any) => {
+  //       if (response && response.message) {
+  //         this.settingsSig.set({
+  //           success: response,
+  //           error: null,
+  //           pending: false,
+  //         });
+  //         setTimeout(() => {
+  //           this.settingsSig.set({
+  //             success: null,
+  //             error: null,
+  //             pending: false,
+  //           });
+  //           this.loading = false;
+  //         }, 3000);
+  //       }
+  //     },
+  //     error: (error: any) => {
+  //       this.settingsSig.set({
+  //         success: null,
+  //         error: error.errors,
+  //         pending: false,
+  //       });
 
-        setTimeout(() => {
-          this.settingsSig.set({
-            success: null,
-            error: null,
-            pending: false,
-          });
-          this.loading = false;
-        }, 3000);
-      },
-    });
-  }
+  //       setTimeout(() => {
+  //         this.settingsSig.set({
+  //           success: null,
+  //           error: null,
+  //           pending: false,
+  //         });
+  //         this.loading = false;
+  //       }, 3000);
+  //     },
+  //   });
+  // }
 
   removeSkill(skill: string): void {
     const index = this.enteredSkills.indexOf(skill);
@@ -185,21 +187,22 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const skill = this.userSpecializationForm.get('skills')?.value;
+    if (skill && skill.trim() !== '') {
+      const trimmedSkill = skill.trim();
+      this.enteredSkills.push(trimmedSkill);
+      this.userSpecializationForm.get('skills')?.reset();
+    }
+
     const reqBody = {
       userId: this.user.userId,
       department: this.userSpecializationForm.get('department')?.value || '',
       specialization:
         this.userSpecializationForm.get('specialization')?.value || '',
-      skills: this.userSpecializationForm.get('skills')?.value || [],
+      skills: this.enteredSkills,
     };
 
-    const skill = this.userSpecializationForm.get('skills')?.value;
-    if (skill && skill.trim() !== '') {
-      const trimmedSkill = skill.trim();
-      this.enteredSkills.push(trimmedSkill);
-      this.addSkill(trimmedSkill);
-      this.userSpecializationForm.get('skills')?.reset();
-    }
+    this.enteredSkills = [];
 
     if (this.userSpecializationForm.valid) {
       this.loading = true;

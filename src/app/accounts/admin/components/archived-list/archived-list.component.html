@@ -91,7 +91,7 @@
                 *ngIf="showDropdownForUser === archiveduser">
                 <ul class="dropdown-details-container">
                   <li (click)="restoreUser(archiveduser.email)">Restore</li>
-                  <li>Delete</li>
+                  <li (click)="openDeleteUserModal(archiveduser)">Delete</li>
                 </ul>
               </div>
 

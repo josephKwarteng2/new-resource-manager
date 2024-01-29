@@ -36,6 +36,15 @@ input[type='file'] {
   height: 100%;
   pointer-events: all;
 }
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-item {
+  flex: 1;
+  margin-right: 10px;
+}
 
 @media only screen and (max-height: 700px) {
   h2,

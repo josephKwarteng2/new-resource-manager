@@ -52,4 +52,19 @@ export class ProjectsService {
       { projectId }
     );
   }
+
+  deleteProject(projectId: string): Observable<GenericResponse> {
+    return this.http.delete<GenericResponse>(
+      `${BASE_URL}/project/archives/delete`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'skip-browser-warning',
+        },
+        params: {
+          projectId: projectId,
+        },
+      }
+    );
+  }
 }

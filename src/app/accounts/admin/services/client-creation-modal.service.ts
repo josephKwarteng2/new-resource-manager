@@ -89,4 +89,19 @@ export class ClientCreationModalService {
 
     return modalRef;
   }
+
+  deleteClient(clientId: string): Observable<GenericResponse> {
+    return this.http.delete<GenericResponse>(
+      `${BASE_URL}/client/archives/delete`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'skip-browser-warning',
+        },
+        params: {
+          clientId: clientId,
+        },
+      }
+    );
+  }
 }

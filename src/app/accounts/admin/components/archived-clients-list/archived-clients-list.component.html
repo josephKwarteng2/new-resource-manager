@@ -65,7 +65,9 @@
                   <li (click)="restoreClient(archivedclient.clientId)">
                     Restore
                   </li>
-                  <li>Delete</li>
+                  <li (click)="openDeleteClientModal(archivedclient)">
+                    Delete
+                  </li>
                 </ul>
               </div>
 

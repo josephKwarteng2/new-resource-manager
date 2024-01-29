@@ -19,15 +19,18 @@ export class UsersService {
     });
   }
   deleteUser(email: string): Observable<GenericResponse> {
-    return this.http.delete<GenericResponse>(`${BASE_URL}/users/delete`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': 'skip-browser-warning',
-      },
-      params: {
-        email: email,
-      },
-    });
+    return this.http.delete<GenericResponse>(
+      `${BASE_URL}/users/archives/delete`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'skip-browser-warning',
+        },
+        params: {
+          email: email,
+        },
+      }
+    );
   }
 
   getBookableUsers(query: string): Observable<User[]> {

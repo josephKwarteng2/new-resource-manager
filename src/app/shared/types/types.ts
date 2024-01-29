@@ -32,6 +32,7 @@ export type CurrentUser = {
   client: string;
   timeZone: string;
   project: string;
+  location: string;
 };
 
 export type AdminUser = Pick<CurrentUser, 'email' | 'department' | 'roles'> & {
@@ -84,17 +85,16 @@ export interface UserNotifications {
   message: string;
 }
 export interface FormDataValue {
-  details: string;  
-  name: string;     
-  clientId: string; 
-  date: Date;       
-  startDate: Date;  
-  endDate: Date;    
-  projectType: string; 
-  billable: string; 
-  projectId: string; 
+  details: string;
+  name: string;
+  clientId: string;
+  date: Date;
+  startDate: Date;
+  endDate: Date;
+  projectType: string;
+  billable: string;
+  projectId: string;
 }
-
 
 export type Permisions = {
   can_add_manager: boolean;

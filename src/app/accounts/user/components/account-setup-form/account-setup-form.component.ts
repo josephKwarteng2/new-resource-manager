@@ -18,6 +18,7 @@ import { Store } from '@ngrx/store';
 import { AuthActions } from '../../../../auth/store/authorization/AuthActions';
 import { Input } from '@angular/core';
 import { GlobalInputComponent } from '../../../../shared/components/global-input/global-input.component';
+import * as momentTimeZone from 'moment-timezone';
 
 @Component({
   selector: 'account-setup-form',
@@ -42,6 +43,7 @@ export class AccountSetupFormComponent implements OnInit, OnDestroy {
   storeData!: LoginState;
   @Input() email!: string;
   @Input() userId!: string;
+  timeZones = momentTimeZone.tz.names(); // Moved to the class level
 
   constructor(private store: Store, private router: Router) {}
 
@@ -58,6 +60,8 @@ export class AccountSetupFormComponent implements OnInit, OnDestroy {
         Validators.pattern('^[a-zA-Z]+( [a-zA-Z]+)*$'),
       ]),
       phoneNumber: new FormControl('', [Validators.required, validPhoneNumber]),
+      location: new FormControl('', [Validators.required]),
+      timeZone: new FormControl('', [Validators.required]),
     });
 
     const storeSubscription = this.store.select(selectLogin).subscribe({
@@ -66,6 +70,11 @@ export class AccountSetupFormComponent implements OnInit, OnDestroy {
       },
     });
     this.subscriptions.push(storeSubscription);
+
+    // Set time zones to the location dropdown
+    this.userDetails.patchValue({
+      // location: this.timeZones[0], // Set a default value if needed
+    });
   }
 
   getEmailErrors(): string {
@@ -107,6 +116,16 @@ export class AccountSetupFormComponent implements OnInit, OnDestroy {
     return '';
   }
 
+  getLocationErrors() {
+    const control = this.userDetails.get('location');
+    if (control?.invalid && (control.dirty || control.touched)) {
+      if (control.hasError('required')) {
+        return 'This field is required';
+      }
+    }
+    return '';
+  }
+
   onFileChange(event: any) {
     if (event.target?.files.length > 0) {
       let reader = new FileReader();
@@ -127,15 +146,15 @@ export class AccountSetupFormComponent implements OnInit, OnDestroy {
     event.preventDefault();
     const userDetails = this.userDetails.value;
     const userId = this.userId;
+    console.log(userDetails);
+    // if (this.userDetails.valid) {
+    const reqBody = {
+      ...userDetails,
+      userId,
+    };
 
-    if (this.userDetails.valid) {
-      const reqBody = {
-        ...userDetails,
-        userId,
-      };
-
-      this.store.dispatch(AuthActions.updateUserDetails(reqBody));
-    }
+    this.store.dispatch(AuthActions.updateUserDetails(reqBody));
+    // }
   }
 
   ngOnDestroy(): void {

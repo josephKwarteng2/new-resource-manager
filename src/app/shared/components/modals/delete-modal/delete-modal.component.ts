@@ -10,7 +10,7 @@ import { UsersService } from '../../../../accounts/admin/services/users.service'
   styleUrl: './delete-modal.component.css',
 })
 export class DeleteModalComponent {
-  @Input() user!: User | undefined;
+  @Input() user: User | null = null;
   users: User[] = [];
   closed: boolean = false;
   opening: boolean = true;

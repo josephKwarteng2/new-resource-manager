@@ -5,6 +5,9 @@ import {
   ProjectDetails,
 } from '../../../../shared/types/types';
 import { ProjectsService } from '../../services/projects.service';
+import { DeleteProjectModalComponent } from '../../../../shared/components/modals/delete-project-modal/delete-project-modal.component';
+import { ProjectCreationModalService } from '../../services/project-creation-modal.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-archived-projects',
@@ -20,7 +23,11 @@ export class ArchivedProjectsComponent implements OnInit {
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
-  constructor(private projectsService: ProjectsService) {}
+  constructor(
+    private projectsService: ProjectsService,
+    // private projectService: ProjectCreationModalService,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
     this.fetchArchivedProjects();
@@ -76,6 +83,50 @@ export class ArchivedProjectsComponent implements OnInit {
           }
         }
 
+        setTimeout(() => {
+          this.errorMessage = null;
+        }, 3000);
+      },
+    });
+  }
+
+  openDeleteProjectModal(archivedproject: ProjectDetails) {
+    const modalRef = this.modalService.open(DeleteProjectModalComponent);
+    modalRef.componentInstance.archivedProjects = archivedproject;
+
+    modalRef.result.then(
+      result => {
+        if (result === 'delete') {
+          this.deleteProject(archivedproject);
+        }
+      },
+      reason => {
+        // Handle modal dismissal/cancel
+      }
+    );
+  }
+
+  deleteProject(project: ProjectDetails): void {
+    console.log(project.projectId);
+    // const projectId = project.projectId;
+    if (!project) {
+      console.error('Invalid project data for deletion:', project);
+      return;
+    }
+
+    this.projectsService.deleteProject(project.projectId).subscribe({
+      next: () => {
+        this.successMessage = 'Project deleted successfully.';
+        this.errorMessage = null;
+        this.fetchArchivedProjects();
+        setTimeout(() => {
+          this.successMessage = null;
+        }, 3000);
+      },
+      error: error => {
+        this.errorMessage = 'Error deleting project.';
+        this.successMessage = null;
+        console.error('Error deleting project:', error);
         setTimeout(() => {
           this.errorMessage = null;
         }, 3000);

@@ -57,8 +57,9 @@
             formControlName="skills"
             placeholder="Enter skill, rate and add" />
           <!-- <option *ngFor="let skill of skills" [value]="skill">
-              {{ skill }}
-            </option> -->
+            {{ skill }}
+          </option> -->
+          <!-- (click)="addSkill(userSpecializationForm.get('skills')?.value)" -->
 
           <button
             (click)="addSkill(userSpecializationForm.get('skills')?.value)">
