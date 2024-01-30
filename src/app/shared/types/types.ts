@@ -74,6 +74,7 @@ export type ProjectDetails = Pick<ClientDetails, 'name' | 'details'> & {
   startDate: Date | undefined;
   endDate: Date | undefined;
   projectId: string;
+  clientId: string;
 };
 export interface EmployeeDetails {
   name: string;
@@ -92,7 +93,7 @@ export interface FormDataValue {
   startDate: Date;
   endDate: Date;
   projectType: string;
-  billable: string;
+  billable: boolean;
   projectId: string;
 }
 
