@@ -45,11 +45,12 @@ export class GeneralAssignModalComponent implements AfterViewInit, OnInit {
   selectedProject: string = '';
   projects: ProjectDetails[] = [];
   projectForm!: FormGroup;
+  // @Input() selectedUsers: User[] = [];
 
-  @Output() closeAssignEvent = new EventEmitter<void>();
+  @Output() closeEvent = new EventEmitter<void>();
   @Output() submitEvent = new EventEmitter<void>();
+  @Output() closeAssignEvent = new EventEmitter<void>();
   selectedUsersEvent = new EventEmitter<User[]>();
-  selectedUsers: any;
 
   constructor(
     private usersService: UsersService,
@@ -73,47 +74,43 @@ export class GeneralAssignModalComponent implements AfterViewInit, OnInit {
   edit() {}
 
   submit(): void {
-    this.usersService
-      .assignUser(
-        this.project.name,
-        this.bookableUsers
-          .filter(user => user.selected)
-          .map(user => user.userId)
-      )
-      .subscribe({
-        next: (response: any) => {
-          if (response.status === 201) {
-            this.successMessage =
-              response.response && response.response.message;
-          } else {
-            this.errorMessage =
-              response.message || 'An unexpected error occurred.';
-          }
-          this.response = response;
-
-          setTimeout(() => {
-            this.errorMessage = null;
-          }, 6000);
-        },
-        error: (error: any) => {
-          if (error.status >= 500) {
-            this.errorMessage =
-              'Server Error: Something went wrong on the server.';
-          } else {
-            this.errorMessage =
-              error.error && error.error.message
-                ? error.error.message
-                : 'An unexpected error occurred.';
-          }
-
-          setTimeout(() => {
-            this.errorMessage = null;
-          }, 6000);
-        },
-        complete: () => {
-          this.close();
-        },
-      });
+    // this.usersService
+    //   .assignUser(
+    //     this.project.name,
+    //     this.selectedUsers.map(user => user.userId)
+    //   )
+    //   .subscribe({
+    //     next: (response: any) => {
+    //       if (response.status === 201) {
+    //         this.successMessage =
+    //           response.response && response.response.message;
+    //       } else {
+    //         this.errorMessage =
+    //           response.message || 'An unexpected error occurred.';
+    //       }
+    //       this.response = response;
+    //       setTimeout(() => {
+    //         this.errorMessage = null;
+    //       }, 6000);
+    //     },
+    //     error: (error: any) => {
+    //       if (error.status >= 500) {
+    //         this.errorMessage =
+    //           'Server Error: Something went wrong on the server.';
+    //       } else {
+    //         this.errorMessage =
+    //           error.error && error.error.message
+    //             ? error.error.message
+    //             : 'An unexpected error occurred.';
+    //       }
+    //       setTimeout(() => {
+    //         this.errorMessage = null;
+    //       }, 6000);
+    //     },
+    //     complete: () => {
+    //       this.close();
+    //     },
+    //   });
   }
 
   ngOnInit(): void {
@@ -126,41 +123,45 @@ export class GeneralAssignModalComponent implements AfterViewInit, OnInit {
     }, 100);
     console.log(this.user);
 
-    this.fetchBookableUsers(this.query);
+    // this.fetchBookableUsers(this.query);
     this.fetchProjects();
+
+    // this.selectedUsersEvent.subscribe(users => {
+    //   this.selectedUsers = users;
+    // });
   }
 
   ngAfterViewInit(): void {
     console.log('View has been initialized');
-    this.fetchBookableUsers(this.query);
+    // this.fetchBookableUsers(this.query);
     this.fetchProjects();
   }
 
   onSearchChange(event: Event): void {
     const query = (event.target as HTMLInputElement).value;
-    this.fetchBookableUsers(query);
+    // this.fetchBookableUsers(query);
   }
 
-  fetchBookableUsers(query: string): void {
-    this.loading = true;
-    this.usersService.getBookableUsers(query).subscribe({
-      next: (response: any) => {
-        const bookableUsers = response.users || response.data;
-        if (Array.isArray(bookableUsers)) {
-          this.bookableUsers = bookableUsers as User[];
-        } else {
-          console.log('Invalid bookable users format:', bookableUsers);
-        }
-      },
-      error: error => {
-        console.log('Error fetching users:', error);
-      },
-      complete: () => {
-        this.loading = false;
-        this.cdr.detectChanges();
-      },
-    });
-  }
+  // fetchBookableUsers(query: string): void {
+  //   this.loading = true;
+  //   this.usersService.getBookableUsers(query).subscribe({
+  //     next: (response: any) => {
+  //       const bookableUsers = response.users || response.data;
+  //       if (Array.isArray(bookableUsers)) {
+  //         this.bookableUsers = bookableUsers as User[];
+  //       } else {
+  //         console.log('Invalid bookable users format:', bookableUsers);
+  //       }
+  //     },
+  //     error: error => {
+  //       console.log('Error fetching users:', error);
+  //     },
+  //     complete: () => {
+  //       this.loading = false;
+  //       this.cdr.detectChanges();
+  //     },
+  //   });
+  // }
 
   private fetchProjects(): void {
     // this.project.projectName;

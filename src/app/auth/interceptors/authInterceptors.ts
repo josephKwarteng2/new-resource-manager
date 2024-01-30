@@ -5,7 +5,7 @@ import { AccesstokenService } from '../../shared/services/accesstoken.service';
 export const authInterceptor: HttpInterceptorFn = (request, next) => {
   const persistenceService = inject(AccesstokenService);
   const token = persistenceService.get();
-  console.log(token);
+  // console.log(token);
   request = request.clone({
     setHeaders: {
       Authorization: token ? `Bearer ${token}` : '',

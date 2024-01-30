@@ -53,10 +53,10 @@ export class ButtonAssignComponent {
       }
     );
 
-    modalComponentRef.instance.selectedUsersEvent.subscribe(
-      (selectedUsers: User[]) => {
-        this.selectedUsers.emit(selectedUsers);
-      }
-    );
+    // modalComponentRef.instance.selectedUsersEvent.subscribe(
+    //   (selectedUsers: User[]) => {
+    //     this.selectedUsers.emit(selectedUsers);
+    //   }
+    // );
   }
 }

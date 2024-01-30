@@ -4,6 +4,8 @@ import {
   OnDestroy,
   ViewContainerRef,
   ComponentRef,
+  EventEmitter,
+  Output,
   Input,
 } from '@angular/core';
 import { GenericResponse, User } from '../../../../shared/types/types';
@@ -18,6 +20,8 @@ import { AssignModalService } from '../../../../shared/components/modals/assign-
 import { DropdownService } from '../../../../shared/components/dropdown/dropdown.service';
 import { DropdownComponent } from '../../../../shared/components/dropdown/dropdown.component';
 import { ViewModalService } from '../../../../shared/components/modals/view-modal/view-modal.service';
+import { GeneralAssignModalService } from '../../../../shared/components/modals/general-assign-modal/general-assign-modal.service';
+import { GeneralAssignModalComponent } from '../../../../shared/components/modals/general-assign-modal/general-assign-modal.component';
 
 @Component({
   selector: 'user-list',
@@ -33,7 +37,7 @@ import { ViewModalService } from '../../../../shared/components/modals/view-moda
 })
 export class UserListComponent implements OnInit, OnDestroy {
   users: User[] = [];
-  @Input() user!: User;
+  // @Input() user!: User;
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalPages: number = 0;
@@ -43,10 +47,11 @@ export class UserListComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
   totalUsers: number = 0;
   selectedUsers: User[] = [];
+  @Output() selectedUsersEvent = new EventEmitter<User[]>();
 
   private dataSubscription: Subscription | undefined;
   private viewModalRef?: ComponentRef<ViewModalComponent>;
-  private assignModalRef?: ComponentRef<AssignModalComponent>;
+  private assignModalRef?: ComponentRef<GeneralAssignModalComponent>;
   private dropdownRef?: ComponentRef<DropdownComponent>;
 
   constructor(
@@ -54,7 +59,8 @@ export class UserListComponent implements OnInit, OnDestroy {
     private dropdownService: DropdownService,
     private viewContainerRef: ViewContainerRef,
     private assignModalService: AssignModalService,
-    private viewModalService: ViewModalService
+    private viewModalService: ViewModalService,
+    private generalAssignModalService: GeneralAssignModalService
   ) {}
 
   ngOnInit(): void {
@@ -69,6 +75,31 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.viewModalRef = this.viewModalService.open(this.viewContainerRef, {
       user,
     });
+  }
+
+  openGeneralAssignModal(user: User) {
+    this.assignModalRef = this.generalAssignModalService.open(
+      this.viewContainerRef,
+      {
+        user,
+      }
+    );
+  }
+
+  toggleUserSelection(user: User): void {
+    if (this.isSelected(user)) {
+      this.selectedUsers = this.selectedUsers.filter(u => u !== user);
+    } else {
+      this.selectedUsers.push(user);
+    }
+
+    console.log('Selected Users:', this.selectedUsers);
+
+    this.selectedUsersEvent.emit(this.selectedUsers);
+  }
+
+  isSelected(user: User): boolean {
+    return this.selectedUsers.includes(user);
   }
 
   openDropdown(event: MouseEvent, user: User) {
@@ -150,17 +181,5 @@ export class UserListComponent implements OnInit, OnDestroy {
         }, 3000);
       },
     });
-  }
-
-  toggleUserSelection(user: User): void {
-    if (this.isSelected(user)) {
-      this.selectedUsers = this.selectedUsers.filter(u => u !== user);
-    } else {
-      this.selectedUsers.push(user);
-    }
-  }
-
-  isSelected(user: User): boolean {
-    return this.selectedUsers.includes(user);
   }
 }
