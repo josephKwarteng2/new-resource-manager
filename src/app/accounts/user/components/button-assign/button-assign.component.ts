@@ -45,18 +45,17 @@ export class ButtonAssignComponent {
     );
   }
 
-  openGeneralAssignModal(user: User) {
-    const modalComponentRef = this.generalAssignModalService.open(
-      this.viewContainerRef,
-      {
-        user,
-      }
-    );
+  // openGeneralAssignModal(user: User) {
+  //   const modalComponentRef = this.generalAssignModalService.open(
+  //     this.viewContainerRef,
+  //     {
+  //       user,
+  //     }
+  //   );
 
-    // modalComponentRef.instance.selectedUsersEvent.subscribe(
-    //   (selectedUsers: User[]) => {
-    //     this.selectedUsers.emit(selectedUsers);
-    //   }
-    // );
-  }
+  // modalComponentRef.instance.selectedUsersEvent.subscribe(
+  //   (selectedUsers: User[]) => {
+  //     this.selectedUsers.emit(selectedUsers);
+  //   }
+  // );
 }

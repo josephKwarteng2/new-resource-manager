@@ -41,6 +41,7 @@
               type="checkbox"
               (change)="toggleUserSelection(user)"
               class="checkbox-input" />
+
             {{ user.firstName }} {{ user.lastName }}
           </td>
           <td class="grid-item" (click)="openViewModal(user)">
@@ -98,3 +99,12 @@
     [totalPages]="totalPages"
     (pageChange)="onPageChange($event)"></pagination>
 </ng-template>
+<div class="buttons-wrapper">
+  <button
+    type="button"
+    (click)="openGeneralAssignModal()"
+    [disabled]="selectedUsers.length === 0"
+    class="button bg-[#1F26A8] text-white hover:bg-[#353cb1]">
+    Assign
+  </button>
+</div>

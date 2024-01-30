@@ -46,6 +46,37 @@
   }
 }
 
+.group-item {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #f5f6f7;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.group-item.selected {
+  background-color: #f2f5ff;
+}
+
+.info {
+  flex-grow: 1;
+}
+
+.name {
+  font-size: 14px;
+  color: #344054;
+}
+
+.position {
+  font-size: 14px;
+  color: #667085;
+}
+
 header {
   display: flex;
   gap: 190px;

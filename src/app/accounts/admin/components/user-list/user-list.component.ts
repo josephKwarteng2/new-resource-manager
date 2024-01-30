@@ -38,6 +38,7 @@ import { GeneralAssignModalComponent } from '../../../../shared/components/modal
 export class UserListComponent implements OnInit, OnDestroy {
   users: User[] = [];
   // @Input() user!: User;
+  @Input() user: User[] = [];
   currentPage: number = 1;
   itemsPerPage: number = 10;
   totalPages: number = 0;
@@ -77,11 +78,20 @@ export class UserListComponent implements OnInit, OnDestroy {
     });
   }
 
-  openGeneralAssignModal(user: User) {
+  // openGeneralAssignModal(user: User) {
+  //   this.assignModalRef = this.generalAssignModalService.open(
+  //     this.viewContainerRef,
+  //     {
+  //       user,
+  //     }
+  //   );
+  // }
+
+  openGeneralAssignModal() {
     this.assignModalRef = this.generalAssignModalService.open(
       this.viewContainerRef,
       {
-        user,
+        users: this.selectedUsers,
       }
     );
   }
