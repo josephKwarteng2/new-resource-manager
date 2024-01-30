@@ -78,7 +78,7 @@
           class="self-stretch flex justify-between gap-5 px-px items-start max-md:max-w-full max-md:flex-wrap">
           <div
             class="text-slate-700 text-1xl font-semibold leading-6 grow shrink basis-auto">
-            Edit Project Project
+            Edit Project 
           </div>
           <button>
             <img
@@ -263,12 +263,14 @@
             <input
               type="checkbox"
               formControlName="billable"
-              value="on"
+              [checked]="formData.get('billable')?.value === true"
               name="billable"
               class="sr-only peer"
-              checked />
+
+                
+            />
             <div
-              class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              class="w-11 h-6 bg-gray-200 rounded-full peer outline-none dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300  after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
           </label>
         </div>
 
