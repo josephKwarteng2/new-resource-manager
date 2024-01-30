@@ -49,8 +49,9 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
       startDate: [''],
       endDate: [''],
       projectType: [''],
-      billable: [''],
+      billable: [false],
       projectId: [''],
+      
     });
   }
 
@@ -80,14 +81,17 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
       this.formData.patchValue({
         details: this.project.details,
         name: this.project.name,
-        startDate: this.project.startDate,
+      
         clientSearch: this.project.client,
-        endDate: this.project.endDate,
+        clientId: this.project.clientId,
+        startDate: this.project.startDate ? new Date(this.project.startDate).toISOString().split('T')[0] : null,
+        endDate: this.project.endDate ? new Date(this.project.endDate).toISOString().split('T')[0] : null,
         projectType: this.project.projectType ? 'internal' : 'external',
-        billable: this.project.billable ? 'on' : 'off',
+        billable: this.project.billable === true, 
         projectId: this.project.projectId
       });
     }
+    console.log('After patchValue:', this.formData.value);
   }
 
   OnEditProject(): void {
@@ -104,7 +108,7 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
       const projectStatus = formDataValue['project-status'];
       const billable = formDataValue['billable'];
 
-      const isBillable = billable === 'on';
+      const isBillable = billable === true;
   
       this.loading = true;
   
