@@ -136,6 +136,10 @@ div.user-details {
   }
 }
 
+.valuee {
+  color: red;
+}
+
 .toggles {
   font-size: 1rem;
   display: grid;
@@ -166,6 +170,14 @@ h5 {
   overflow: hidden;
   max-width: 300px;
   /* margin-left: 15px; */
+}
+
+.elipse {
+  display: -webkit-box;
+  max-width: 8.5px;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .item:not(:first-child) {

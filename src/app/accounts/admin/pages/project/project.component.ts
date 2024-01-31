@@ -3,7 +3,6 @@ import { ButtonNewComponent } from '../../../user/components/button-new/button-n
 import { ProjectCreationModalComponent } from '../../../../shared/components/modals/project-creation-modal/project-creation-modal.component';
 import { ProjectTableComponent } from '../../components/project-table/project-table.component';
 import { ArchivedProjectsComponent } from '../../components/archived-projects/archived-projects.component';
-
 @Component({
   selector: 'app-project',
   standalone: true,

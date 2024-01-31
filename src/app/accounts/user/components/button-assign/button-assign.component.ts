@@ -20,7 +20,6 @@ import { GeneralAssignModalService } from '../../../../shared/components/modals/
   styleUrl: './button-assign.component.css',
 })
 export class ButtonAssignComponent {
-  // @Output() selectedUsers = new EventEmitter<User[]>();
   @Input() user!: User;
   @Input() selectedUsers: User[] = [];
   @Output() selectedUsersEvent = new EventEmitter<User[]>();
@@ -54,6 +53,22 @@ export class ButtonAssignComponent {
         users: this.selectedUsers,
       }
     );
+  }
+
+  toggleUserSelection(user: User): void {
+    if (this.isSelected(user)) {
+      this.selectedUsers = this.selectedUsers.filter(u => u !== user);
+    } else {
+      this.selectedUsers.push(user);
+    }
+
+    console.log('Selected Users:', this.selectedUsers);
+
+    this.selectedUsersEvent.emit(this.selectedUsers);
+  }
+
+  isSelected(user: User): boolean {
+    return this.selectedUsers.includes(user);
   }
 
   // openGeneralAssignModal(user: User) {

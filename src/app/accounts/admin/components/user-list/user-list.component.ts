@@ -22,6 +22,8 @@ import { DropdownComponent } from '../../../../shared/components/dropdown/dropdo
 import { ViewModalService } from '../../../../shared/components/modals/view-modal/view-modal.service';
 import { GeneralAssignModalService } from '../../../../shared/components/modals/general-assign-modal/general-assign-modal.service';
 import { GeneralAssignModalComponent } from '../../../../shared/components/modals/general-assign-modal/general-assign-modal.component';
+import { ButtonAssignComponent } from '../../../user/components/button-assign/button-assign.component';
+import { ButtonNewComponent } from '../../../user/components/button-new/button-new.component';
 
 @Component({
   selector: 'user-list',
@@ -31,6 +33,8 @@ import { GeneralAssignModalComponent } from '../../../../shared/components/modal
     ViewModalComponent,
     PaginationComponent,
     AssignModalComponent,
+    ButtonAssignComponent,
+    ButtonNewComponent,
   ],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
