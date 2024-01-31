@@ -39,15 +39,26 @@
       </div>
       <div class="px-6 py-4">
         <h4 class="font-normal text-sm text-gray-700 mb-3">Assigned people</h4>
-        <div class="flex gap-4">
+        <div class="flex -space-x-2 mb-4">
+        
           <div *ngFor="let employee of project.employees">
-            <img
-              [src]="employee.picture"
-              alt="{{ employee.name }}"
-              class="w-12 h-12 rounded-full" />
-            <div>
-              <p class="text-sm font-semibold">{{ employee.name }}</p>
+            <div class="relative">
+              <img
+                *ngIf="employee.picture  ; else defaultAvatar"
+                [src]="employee.picture"
+                alt="Employee Picture"
+                class="w-8 h-8 rounded-full border-2 border-white"
+                title="{{ employee.name }}" />
+              
+              <ng-template #defaultAvatar>
+                <img
+                  src="../../../../../assets/images/user/avatar-2.svg"
+                  alt="Default Avatar"
+                  class="w-8 h-8 rounded-full border-2 border-white"
+                  title="{{ employee.name }}" />
+              </ng-template>
             </div>
+
           </div>
         </div>
       </div>
