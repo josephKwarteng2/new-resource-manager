@@ -217,3 +217,31 @@
 .radio {
   padding: 5px;
 }
+.message-container {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 35%;
+  z-index: 1000;
+  padding: 20px;
+  text-align: center;
+}
+
+.alert-success {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1.5px solid #2b641e;
+  background-color: #84d65a;
+  color: #2b641e;
+  border-radius: 10px;
+}
+
+.alert-error {
+  padding: 10px;
+  border: 1.5px solid #71192f;
+  background-color: #fce8db;
+  color: #71192f;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
