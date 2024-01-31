@@ -3,36 +3,18 @@
     *ngIf="isOpen"
     class="items-center form-size flex flex-col justify-center px-16 py-10 max-md:px-5">
     <div class="messages-container mt-1 flex items-center">
-      <ul
-        class="max-w-md space-y-2 text-gray-500 list-inside dark:text-gray-400">
-        <li *ngIf="success" class="flex items-center">
-          <svg
-            class="w-4 h-8 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 20 20">
-            <path
-              d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-          </svg>
-          <span class="whitespace-nowrap">{{successMessage}}</span>
-        </li>
-        <li *ngIf="error" class="flex items-center mt-4">
-          <svg
-            class="w-4 h-8 text-red-800 dark:text-red"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 18">
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
-          </svg>
-          <span class="whitespace-nowrap">{{errorMessage}} </span>
-        </li>
+      <div class="message-container">
+        <div class="alert-error" *ngIf="errorMessage">
+          <span class="closebtn"></span>
+          {{ errorMessage }}
+        </div>
+      
+        <div class="alert-success" *ngIf="successMessage">
+          <span class="closebtn"></span>
+          {{ successMessage }}
+        </div>
+      </div>
+      <ul  class="max-w-md space-y-3 text-lg text-gray-500 list-inside dark:text-gray-400">
         <li *ngIf="loading" class="flex items-center">
           <div role="status">
             <svg
@@ -50,10 +32,11 @@
             </svg>
             <span class="sr-only">Loading...</span>
           </div>
-          <span class="whitespace-nowrap">Creating Client </span>
+          <span class="whitespace-nowrap text-base">Creating Client</span>
         </li>
       </ul>
     </div>
+
 
     <form [formGroup]="formData">
       <div
