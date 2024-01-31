@@ -38,10 +38,10 @@
           <td class="grid-item" (click)="openProjectDetailsModal(project)">
             {{ project.client }}
           </td>
-          <td class="grid-item">{{ project.name }}</td>
-          <td class="grid-item">{{ project.projectCode }}</td>
+          <td class="grid-item" (click)="openProjectDetailsModal(project)">{{ project.name }} </td>
+          <td class="grid-item" (click)="openProjectDetailsModal(project)">{{ project.projectCode }}</td>
 
-          <td class="grid-item">
+          <td class="grid-item" (click)="openProjectDetailsModal(project)">
             <div class="flex -space-x-4 rtl:space-x-reverse">
               <ng-container *ngFor="let employee of project.employees">
                 <div
@@ -49,23 +49,22 @@
                   (mouseover)="showTooltip = true"
                   (mouseout)="showTooltip = false">
                   <img
-                    class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800"
+                
                     *ngIf="employee.picture; else defaultAvatar"
                     [src]="employee.picture"
-                    alt="Employee Picture" />
+                    alt="Employee Picture" 
+                    class="border-2 border-white rounded-full dark:border-gray-800"
+                    title="{{ employee.name }}"/>
 
                   <ng-template #defaultAvatar>
                     <img
                       src="../../../../../assets/images/user/avatar-2.svg"
-                      alt="Default Avatar" />
+                      alt="Default Avatar"
+                      class="w-8 h-8 rounded-full border-2 border-white"
+                      title="{{ employee.name }}" />
                   </ng-template>
 
-                  <div
-                    class="absolute bottom-0 left-0 right-0 bg-gray-700 text-xs text-white opacity-0 transition-opacity duration-300 hover:opacity-100 rounded-b-full hidden group"
-                    [class.opacity-100]="showTooltip">
-                    <p class="p-2">{{ employee.name }}</p>
-                  </div>
-                </div>
+               </div>
               </ng-container>
             </div>
           </td>

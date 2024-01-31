@@ -14,6 +14,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './client-table.component.css',
 })
 export class ClientTableComponent implements OnInit {
+
   totalPages: number = 0;
   currentPage: number = 1;
   itemsPerPage: number = 10;

@@ -32,7 +32,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let client of clients">
-          <td style="display: flex" (click)="openClientsDetails(client)">
+          <td class="grid-item"  (click)="openClientsDetails(client)">
             <input
               type="checkbox"
               [checked]="false"
@@ -46,16 +46,36 @@
 
             {{ client.name }}
           </td>
-          <td>
-            <!-- <div class="flex -space-x-4 rtl:space-x-reverse">
-                  <img class="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800" src="{{ client.employees}}" alt="">
-                  <a class="flex items-center justify-center w-10 h-10 text-xs font-medium text-white bg-gray-700 border-2 border-white rounded-full hover:bg-gray-600 dark:border-gray-800" href="#">+99</a>
-              </div> -->
-          </td>
 
-          <td (click)="openClientsDetails(client)">{{ client.totalProjects }}</td>
-          <!-- <td> {{ client.totalProjects}} </td> -->
-          <td>
+          <td class="grid-item" (click)="openClientsDetails(client)">
+            <div class="flex -space-x-4 rtl:space-x-reverse">
+            
+                <ng-container *ngFor="let employee of client.employees">
+                  
+                  
+                  <img
+                    *ngIf="employee.picture; else defaultAvatar"
+                    [src]="employee.picture"
+                    alt="Employee Picture"
+                    class="rounded-full border-2 border-white  dark:border-gray-800"
+                    title="{{ employee.name }}" />
+          
+                  <ng-template #defaultAvatar>
+                    <img
+                      src="path/to/default/avatar.jpg"
+                      alt="Default Avatar"
+                      class="w-8 h-8 rounded-full border-2 border-white"
+                      title="{{ employee.name }}" />
+                  </ng-template>
+               
+                
+              </ng-container>
+            </div>
+         
+          </td>
+          <td class="grid-item" (click)="openClientsDetails(client)">{{ client.totalProjects }}</td>
+          
+          <td class="grid-item">
             <div
               class="dropdown-container"
               *ngIf="showDropdownForClient === client">
