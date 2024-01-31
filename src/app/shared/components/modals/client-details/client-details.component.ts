@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ClientDetails, } from '../../../types/types';
+import { ClientDetails, ProjectDetails } from '../../../types/types';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 })
 export class ClientDetailsComponent {
   @Input() client?: ClientDetails | null = null;
+  @Input() project?: ProjectDetails | null = null;
+  @Input() employee?: { picture: string | null | undefined };
   constructor(public activeModal: NgbActiveModal) { }
   
   closeModal(): void {

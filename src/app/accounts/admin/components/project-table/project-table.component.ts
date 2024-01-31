@@ -43,6 +43,7 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
   users: User[] = [];
   isMenuOpen: boolean = false;
   showDropdownForProject: ProjectDetails | null = null;
+  showTooltip: boolean = false;
 
   private dataSubscription: Subscription | undefined;
   private dropdownRef?: ComponentRef<DropdownComponent>;
@@ -139,6 +140,7 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
   openProjectDetailsModal(project: ProjectDetails): void {
     const modalRef = this.modalService.open(ProjectDetailsModalComponent);
     modalRef.componentInstance.project = project;
+    console.log(project)
   }
 
   openDeleteProjectModal(project: ProjectDetails) {

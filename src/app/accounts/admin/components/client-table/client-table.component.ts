@@ -120,5 +120,6 @@ export class ClientTableComponent implements OnInit {
   openClientsDetails(client: ClientDetails): void {
     const modalRef = this.modalService.open(ClientDetailsComponent);
     modalRef.componentInstance.client = client;
+    console.log(client)
   }
 }

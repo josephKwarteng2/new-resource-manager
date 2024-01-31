@@ -40,7 +40,7 @@
           }}</span>
         </div>
         <ul class="list-disc text-sm list-inside text-gray-400">
-          <p>{{ client.projects }}</p>
+          
 
           <ng-container *ngFor="let project of client.projects">
             <li class="p-2">{{ project.name }}</li>
@@ -50,9 +50,37 @@
       <!-- 
       {/* Assigned People */} -->
       <div>
-        <h4 class="font-normal text-sm mb-2">Assigned people</h4>
-        <div class="flex -space-x-2 mb-4">
-          <img
+ <!-- Assigned People -->
+
+ <h4 class="font-normal text-sm mb-2">Assigned people</h4>
+ <div class="flex -space-x-2 mb-4">
+   <ng-container *ngIf="client && client.employees">
+     <ng-container *ngFor="let employee of client.employees">
+       <div class="relative">
+         <img
+           *ngIf="employee.picture  ; else defaultAvatar"
+           [src]="employee.picture"
+           alt="Employee Picture"
+           class="w-8 h-8 rounded-full border-2 border-white"
+           title="{{ employee.name }}" />
+         
+         <ng-template #defaultAvatar>
+           <img
+             src="../../../../../assets/images/user/avatar-2.svg"
+             alt="Default Avatar"
+             class="w-8 h-8 rounded-full border-2 border-white"
+             title="{{ employee.name }}" />
+         </ng-template>
+       </div>
+       <!-- Additional employee details... -->
+     </ng-container>
+   </ng-container>
+ 
+  
+
+
+          
+          <!-- <img
             src="https://file.rendit.io/n/jacXxVuz5795PVZoyo80.png"
             alt="Person 1"
             class="w-8 h-8 rounded-full border-2 border-white" />
@@ -71,14 +99,15 @@
           <img
             src="https://file.rendit.io/n/MD7UYXXXaYNn0vlSQF13.png"
             alt="Person 5"
-            class="w-8 h-8 rounded-full border-2 border-white" />
-          <button
+            class="w-8 h-8 rounded-full border-2 border-white" /> -->
+          <!-- <button
             class="w-8 h-8 bg-gray-200 rounded-full flex justify-center items-center border-2 border-white">
             <img
               src="https://file.rendit.io/n/352lQjPyRPRU9WybuCJC.svg"
               alt="Add Person"
               class="w-4 h-4" />
-          </button>
+          </button> -->
+        <!-- </ng-container> -->
         </div>
       </div>
     </div>

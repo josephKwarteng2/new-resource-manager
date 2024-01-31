@@ -59,9 +59,11 @@ export type ClientDetails = {
   clientId: string;
   details: string;
   projects: Projects[];
-  employees: string[];
+  employees: EmployeeDetails[];
   totalProjects: number;
   created_at: Date;
+  client: ClientDetails
+   projectName: string;
 };
 export type ProjectDetails = Pick<ClientDetails, 'name' | 'details'> & {
   client: string;

@@ -14,13 +14,9 @@ export class ProjectCreationModalService {
     private http: HttpClient,
     private projectcreationmodalService: NgbModal
   ) {}
-  header!: {
-    headers: {
-      'Content-Type': 'application/json';
-      'ngrok-skip-browser-warning': 'skip-browser-warning';
-    };
-  };
+
   addNewProject(data: ProjectDetails): Observable<ProjectDetails> {
+    
     return this.http.post<ProjectDetails>(`${BASE_URL}/project/store`, data, {
       headers: {
         'Content-Type': 'application/json',

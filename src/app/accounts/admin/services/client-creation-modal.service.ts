@@ -15,17 +15,16 @@ export class ClientCreationModalService {
     private clientcreationmodalService: NgbModal
   ) {}
 
-  private newClientAddedSource = new Subject<ClientDetails>();
-  newClientAdded$ = this.newClientAddedSource.asObservable();
+ 
   clientCreated: EventEmitter<ClientDetails> = new EventEmitter<ClientDetails>();
 
-  getClient(clientId: string): Observable<{ client: ClientDetails }> {
-    const url = `${BASE_URL}/client/${clientId}`;
-    return this.http.get<{ client: ClientDetails }>(url);
-  }
-
-  addNewClient(data: ClientDetails): Observable<ClientDetails> {
-    return this.http.post<ClientDetails>(`${BASE_URL}/client/store`, data).pipe(
+  addNewClient(data: ClientDetails | null): Observable<ClientDetails> {
+    return this.http.post<ClientDetails>(`${BASE_URL}/client/store`, data,{
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'skip-browser-warning',
+      },
+    }).pipe(
       tap((newClient: ClientDetails) => {
         this.clientCreated.next(newClient);
 
@@ -48,9 +47,6 @@ export class ClientCreationModalService {
       );
   }
 
-  getNewlyCreatedClient(clientId: string): Observable<ClientDetails> {
-    return this.http.get<ClientDetails>(`${BASE_URL}/client/${clientId}`);
-  }
 
   archiveClient(clientId: string): Observable<GenericResponse> {
     return this.http.delete<GenericResponse>(`${BASE_URL}/client/archives/store`, {

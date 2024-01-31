@@ -32,7 +32,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let client of clients">
-          <td style="display: flex">
+          <td style="display: flex" (click)="openClientsDetails(client)">
             <input
               type="checkbox"
               [checked]="false"
@@ -53,7 +53,7 @@
               </div> -->
           </td>
 
-          <td>{{ client.totalProjects }}</td>
+          <td (click)="openClientsDetails(client)">{{ client.totalProjects }}</td>
           <!-- <td> {{ client.totalProjects}} </td> -->
           <td>
             <div
