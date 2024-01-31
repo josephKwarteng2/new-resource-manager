@@ -116,6 +116,11 @@ td {
   animation: spin 0.8s infinite ease-in-out;
 }
 
+.assign-button-container {
+  position: absolute;
+  margin: -77px 67%;
+}
+
 @keyframes spin {
   0%,
   100% {
@@ -151,6 +156,10 @@ tbody tr td img {
   width: 100px;
   cursor: pointer;
 }
+
+/* .buttons-wrapper {
+  justify-content: flex-end;
+} */
 
 .success-message {
   color: green;
@@ -316,6 +325,17 @@ main.visible > .backdrop {
 .buttons-wrapper {
   display: flex;
   gap: 30px;
+  display: flex;
+  font-family: 'LexendMedium';
+  width: 120px;
+  height: 47px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 20px;
+  border: 1px solid #1f26a8;
+  cursor: pointer;
+  flex-direction: flex-end;
 }
 
 .toggles {
@@ -457,5 +477,10 @@ main.visible > .backdrop {
   li:hover {
     background: #4a72ff;
     color: #fff;
+  }
+
+  .assign-button-container {
+    position: absolute;
+    margin: -79px 59%;
   }
 }

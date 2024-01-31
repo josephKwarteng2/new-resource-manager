@@ -23,7 +23,6 @@ import { ViewModalService } from '../../../../shared/components/modals/view-moda
 import { GeneralAssignModalService } from '../../../../shared/components/modals/general-assign-modal/general-assign-modal.service';
 import { GeneralAssignModalComponent } from '../../../../shared/components/modals/general-assign-modal/general-assign-modal.component';
 import { ButtonAssignComponent } from '../../../user/components/button-assign/button-assign.component';
-import { ButtonNewComponent } from '../../../user/components/button-new/button-new.component';
 
 @Component({
   selector: 'user-list',
@@ -34,7 +33,6 @@ import { ButtonNewComponent } from '../../../user/components/button-new/button-n
     PaginationComponent,
     AssignModalComponent,
     ButtonAssignComponent,
-    ButtonNewComponent,
   ],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
