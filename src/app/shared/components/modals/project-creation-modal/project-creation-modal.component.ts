@@ -108,18 +108,15 @@ export class ProjectCreationModalComponent implements OnInit {
             
 
             this.error = true;
-            if (error.status === 400) {
-              this.errorMessages.serverError = 'Invalid inputs. Please check your input.';
-            } else if (error.status === 401) {
-              this.errorMessages.serverError = 'Unauthorized. Please log in as Admin or Manager.';
-            } else if (error.status === 403) {
-              this.errorMessages.serverError = 'You do not have the necessary permission to perform this task.';
-            } else if (error.status === 404) {
-              this.errorMessages.serverError = 'Resource not found. Please try again or contact IT support';
-            } else if (error.status >= 500) {
-              this.errorMessages.serverError = 'Server error. Please try again later.';
+            if (error.status >= 500) {
+              this.errorMessages.serverError =
+                'Server Error" Something went wrong on the server.';
             } else {
-              this.errorMessages.serverError = 'An error occurred. Please try again.';
+              if (error.error && error.error.message) {
+                this.errorMessages.serverError = error.error.message;
+              } else {
+                this.errorMessages.serverError = 'An unexpected error occured.';
+              }
             }
             this.formData.markAsTouched();
           }
