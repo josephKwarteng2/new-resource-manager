@@ -73,16 +73,6 @@ export class SpecializationModalComponent implements OnInit {
     this.clearErrorMessagesAfterDelay();
   }
 
-  fetchSpecializations() {
-    this.specializationService.getSpecializations().subscribe({
-      next: (specializations: string[]) => {
-
-      },
-      error: err => {
-      },
-      complete: () => {},
-    });
-  }
 
   closeModal() {
     this.isOpen = false;
