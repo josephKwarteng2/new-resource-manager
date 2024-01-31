@@ -34,6 +34,20 @@
   margin-bottom: 15px;
 }
 
+.total-archived-users {
+  font-size: 12px;
+  margin-top: -38px;
+  padding-bottom: 20px;
+  color: #fff;
+  margin-left: 150px;
+}
+
+.total-archived-users span {
+  background: #0f3cd9;
+  padding: 0px 8px;
+  border-radius: 12px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

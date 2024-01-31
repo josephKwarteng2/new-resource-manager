@@ -32,7 +32,7 @@ export class ViewModalComponent implements OnInit {
 
   close() {
     this.closed = true;
-    // this.closeEvent.emit();
+    this.closeEvent.emit();
   }
 
   // toggleDisplay(view: 'general' | 'normal-available'): void {

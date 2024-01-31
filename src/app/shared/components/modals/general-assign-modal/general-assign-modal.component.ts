@@ -73,46 +73,6 @@ export class GeneralAssignModalComponent implements AfterViewInit, OnInit {
 
   edit() {}
 
-  submit(): void {
-    // this.usersService
-    //   .assignUser(
-    //     this.project.name,
-    //     this.selectedUsers.map(user => user.userId)
-    //   )
-    //   .subscribe({
-    //     next: (response: any) => {
-    //       if (response.status === 201) {
-    //         this.successMessage =
-    //           response.response && response.response.message;
-    //       } else {
-    //         this.errorMessage =
-    //           response.message || 'An unexpected error occurred.';
-    //       }
-    //       this.response = response;
-    //       setTimeout(() => {
-    //         this.errorMessage = null;
-    //       }, 6000);
-    //     },
-    //     error: (error: any) => {
-    //       if (error.status >= 500) {
-    //         this.errorMessage =
-    //           'Server Error: Something went wrong on the server.';
-    //       } else {
-    //         this.errorMessage =
-    //           error.error && error.error.message
-    //             ? error.error.message
-    //             : 'An unexpected error occurred.';
-    //       }
-    //       setTimeout(() => {
-    //         this.errorMessage = null;
-    //       }, 6000);
-    //     },
-    //     complete: () => {
-    //       this.close();
-    //     },
-    //   });
-  }
-
   ngOnInit(): void {
     this.projectForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
@@ -125,10 +85,6 @@ export class GeneralAssignModalComponent implements AfterViewInit, OnInit {
 
     // this.fetchBookableUsers(this.query);
     this.fetchProjects();
-
-    // this.selectedUsersEvent.subscribe(users => {
-    //   this.selectedUsers = users;
-    // });
   }
 
   ngAfterViewInit(): void {
@@ -141,27 +97,6 @@ export class GeneralAssignModalComponent implements AfterViewInit, OnInit {
     const query = (event.target as HTMLInputElement).value;
     // this.fetchBookableUsers(query);
   }
-
-  // fetchBookableUsers(query: string): void {
-  //   this.loading = true;
-  //   this.usersService.getBookableUsers(query).subscribe({
-  //     next: (response: any) => {
-  //       const bookableUsers = response.users || response.data;
-  //       if (Array.isArray(bookableUsers)) {
-  //         this.bookableUsers = bookableUsers as User[];
-  //       } else {
-  //         console.log('Invalid bookable users format:', bookableUsers);
-  //       }
-  //     },
-  //     error: error => {
-  //       console.log('Error fetching users:', error);
-  //     },
-  //     complete: () => {
-  //       this.loading = false;
-  //       this.cdr.detectChanges();
-  //     },
-  //   });
-  // }
 
   private fetchProjects(): void {
     // this.project.projectName;
@@ -191,5 +126,49 @@ export class GeneralAssignModalComponent implements AfterViewInit, OnInit {
       [`opening`]: this.opening,
       [`closed`]: this.closed,
     };
+  }
+
+  submit(): void {
+    if (this.projectForm.invalid) {
+      // If the form is invalid, display an error message or handle it as needed
+      console.log('Form is invalid. Please fill out the required fields.');
+      return;
+    }
+
+    const projectName = this.projectForm.get('name')?.value;
+    this.usersService
+      .assignUser(
+        projectName,
+        // this.selectedUsers.map(user => user.userId)
+        this.users.map(user => user.userId)
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.successMessage = response.message;
+          setTimeout(() => {
+            this.successMessage = null;
+          }, 10000);
+        },
+
+        error: (error: any) => {
+          if (error.status >= 500) {
+            this.errorMessage =
+              'Server Error" Something went wrong on the server.';
+          } else {
+            if (error.error && error.error.message) {
+              this.errorMessage = error.error.message;
+            } else {
+              this.errorMessage = 'An unexpected error occured.';
+            }
+          }
+
+          setTimeout(() => {
+            this.errorMessage = null;
+          }, 10000);
+        },
+        complete: () => {
+          this.close();
+        },
+      });
   }
 }

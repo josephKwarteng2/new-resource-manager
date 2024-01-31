@@ -36,11 +36,14 @@ export class AssignModalComponent implements AfterViewInit {
   successMessage: string | null = null;
   errorMessage: string | null = null;
   response: string | null = null;
+  isSubmitting: boolean = false;
+  checkedUsers: { [userId: string]: boolean } = {};
 
-  @Output() closeAssignEvent = new EventEmitter<void>();
+  @Output() closeEvent = new EventEmitter<void>();
   @Output() submitEvent = new EventEmitter<void>();
   selectedUsersEvent = new EventEmitter<User[]>();
-  selectedUsers: any;
+  // selectedUsers: any;
+  selectedUsers: User[] = [];
 
   constructor(
     private usersService: UsersService,
@@ -57,10 +60,14 @@ export class AssignModalComponent implements AfterViewInit {
 
   close() {
     this.closed = true;
-    this.closeAssignEvent.emit();
+    this.closeEvent.emit();
   }
 
   edit() {}
+
+  handleCheck(user: User): void {
+    this.checkedUsers[user.userId] = !this.checkedUsers[user.userId];
+  }
 
   submit(): void {
     this.usersService
@@ -72,36 +79,30 @@ export class AssignModalComponent implements AfterViewInit {
       )
       .subscribe({
         next: (response: any) => {
-          if (response.status === 201) {
-            this.successMessage =
-              response.response && response.response.message;
-          } else {
-            this.errorMessage =
-              response.message || 'An unexpected error occurred.';
-          }
-          this.response = response;
-
+          this.successMessage = response.message;
           setTimeout(() => {
-            this.errorMessage = null;
-          }, 6000);
+            this.successMessage = null;
+          }, 3000);
         },
         error: (error: any) => {
           if (error.status >= 500) {
             this.errorMessage =
-              'Server Error: Something went wrong on the server.';
+              'Server Error" Something went wrong on the server.';
           } else {
-            this.errorMessage =
-              error.error && error.error.message
-                ? error.error.message
-                : 'An unexpected error occurred.';
+            if (error.error && error.error.message) {
+              this.errorMessage = error.error.message;
+            } else {
+              this.errorMessage = 'An unexpected error occured.';
+            }
           }
 
           setTimeout(() => {
             this.errorMessage = null;
-          }, 6000);
+          }, 3000);
         },
         complete: () => {
           this.close();
+          this.isSubmitting = false;
         },
       });
   }
@@ -133,6 +134,11 @@ export class AssignModalComponent implements AfterViewInit {
         const bookableUsers = response.users || response.data;
         if (Array.isArray(bookableUsers)) {
           this.bookableUsers = bookableUsers as User[];
+
+          // Set selected state based on checkedUsers dictionary
+          this.bookableUsers.forEach(user => {
+            user.selected = this.checkedUsers[user.userId] || false;
+          });
         } else {
           console.log('Invalid bookable users format:', bookableUsers);
         }

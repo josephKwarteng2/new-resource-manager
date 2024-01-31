@@ -20,11 +20,13 @@ import { GeneralAssignModalService } from '../../../../shared/components/modals/
   styleUrl: './button-assign.component.css',
 })
 export class ButtonAssignComponent {
-  @Output() selectedUsers = new EventEmitter<User[]>();
+  // @Output() selectedUsers = new EventEmitter<User[]>();
   @Input() user!: User;
+  @Input() selectedUsers: User[] = [];
+  @Output() selectedUsersEvent = new EventEmitter<User[]>();
 
-  private assignModalRef?: ComponentRef<AssignModalComponent>;
-  private generalAssignModalRef?: ComponentRef<GeneralAssignModalComponent>;
+  private assignModalRef?: ComponentRef<GeneralAssignModalComponent>;
+  // private generalAssignModalRef?: ComponentRef<GeneralAssignModalComponent>;
 
   constructor(
     private assignModalService: AssignModalService,
@@ -32,15 +34,24 @@ export class ButtonAssignComponent {
     private generalAssignModalService: GeneralAssignModalService
   ) {}
 
-  openAssignModal(user: User) {
-    const modalComponentRef = this.assignModalService.open(
-      this.viewContainerRef,
-      { user }
-    );
+  // openAssignModal(user: User) {
+  //   const modalComponentRef = this.assignModalService.open(
+  //     this.viewContainerRef,
+  //     { user }
+  //   );
 
-    modalComponentRef.instance.selectedUsersEvent.subscribe(
-      (selectedUsers: User[]) => {
-        this.selectedUsers.emit(selectedUsers);
+  //   modalComponentRef.instance.selectedUsersEvent.subscribe(
+  //     (selectedUsers: User[]) => {
+  //       this.selectedUsers.emit(selectedUsers);
+  //     }
+  //   );
+  // }
+
+  openGeneralAssignModal() {
+    this.assignModalRef = this.generalAssignModalService.open(
+      this.viewContainerRef,
+      {
+        users: this.selectedUsers,
       }
     );
   }

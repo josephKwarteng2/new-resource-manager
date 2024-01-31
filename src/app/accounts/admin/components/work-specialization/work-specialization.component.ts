@@ -119,58 +119,69 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
     return val;
   }
 
-  addSkill(skill: string): void {
-    if (!this.user) {
-      console.error('User details not available.');
-      return;
+  // addSkill(skill: string): void {
+  //   if (!this.user) {
+  //     console.error('User details not available.');
+  //     return;
+  //   }
+
+  //   const updatedUser: CurrentUser = { ...this.user };
+
+  //   updatedUser.skills = [...this.user.skills];
+
+  //   this.settingsService.addUserSkills(updatedUser).subscribe({
+  //     next: (response: Skills[]) => {
+  //       this.skills = response;
+  //       this.enteredSkills = response.map(skill => skill);
+
+  //       this.user.skills = response;
+
+  //       this.settingsSig.set({
+  //         success: { message: 'Skill added successfully' },
+  //         error: null,
+  //         pending: false,
+  //       });
+
+  //       setTimeout(() => {
+  //         this.settingsSig.set({
+  //           success: null,
+  //           error: null,
+  //           pending: false,
+  //         });
+  //         this.loading = false;
+  //       }, 3000);
+  //     },
+  //     error: (error: any) => {
+  //       this.settingsSig.set({
+  //         success: null,
+  //         error: error.errors,
+  //         pending: false,
+  //       });
+
+  //       setTimeout(() => {
+  //         this.settingsSig.set({
+  //           success: null,
+  //           error: null,
+  //           pending: false,
+  //         });
+  //         this.loading = false;
+  //       }, 3000);
+  //     },
+  //   });
+  // }
+
+  addSkill(): void {
+    const enteredSkill = this.userSpecializationForm.get('skills')?.value;
+    // const rating = this.userSpecializationForm.get('rating')?.value;
+
+    if (enteredSkill) {
+      const newSkill = { skill: enteredSkill };
+      this.enteredSkills.push(enteredSkill);
+
+      // Optionally, clear the input fields after adding a skill
+      this.userSpecializationForm.get('skills')?.reset('');
+      this.userSpecializationForm.get('rating')?.reset('');
     }
-
-    const updatedUser: CurrentUser = { ...this.user };
-
-    // Assuming `skills` property in the user is an array of objects with a 'name' property
-    updatedUser.skills = [...this.user.skills];
-
-    this.settingsService.addUserSkills(updatedUser).subscribe({
-      next: (response: Skills[]) => {
-        // Update the skills array with the response from the server
-        this.skills = response;
-        this.enteredSkills = response.map(skill => skill);
-
-        // You can also update the user object if needed
-        this.user.skills = response;
-
-        this.settingsSig.set({
-          success: { message: 'Skill added successfully' },
-          error: null,
-          pending: false,
-        });
-
-        setTimeout(() => {
-          this.settingsSig.set({
-            success: null,
-            error: null,
-            pending: false,
-          });
-          this.loading = false;
-        }, 3000);
-      },
-      error: (error: any) => {
-        this.settingsSig.set({
-          success: null,
-          error: error.errors,
-          pending: false,
-        });
-
-        setTimeout(() => {
-          this.settingsSig.set({
-            success: null,
-            error: null,
-            pending: false,
-          });
-          this.loading = false;
-        }, 3000);
-      },
-    });
   }
 
   removeSkill(skill: string): void {
@@ -191,13 +202,6 @@ export class WorkSpecializationComponent implements OnInit, OnDestroy {
     if (!this.user) {
       console.error('User details not available.');
       return;
-    }
-
-    const skill = this.userSpecializationForm.get('skills')?.value;
-    if (skill && skill.trim() !== '') {
-      const trimmedSkill = skill.trim();
-      this.addSkill(trimmedSkill);
-      this.userSpecializationForm.get('skills')?.reset();
     }
 
     const reqBody = {

@@ -31,7 +31,7 @@ export class AssignModalService {
     if (options?.user) {
       modalComponentRef.instance.user = options.user;
     }
-    modalComponentRef.instance.closeAssignEvent.subscribe(() =>
+    modalComponentRef.instance.closeEvent.subscribe(() =>
       this.closeModal(modalComponentRef)
     );
     modalComponentRef.instance.submitEvent.subscribe(() =>

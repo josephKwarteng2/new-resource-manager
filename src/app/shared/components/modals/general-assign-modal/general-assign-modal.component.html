@@ -1,11 +1,16 @@
-<div [class]="modalClasses">
-  <div *ngIf="successMessage" class="success-message">
-    {{ successMessage }}
-  </div>
-
-  <div *ngIf="errorMessage" class="error-message">
+<div class="message-container">
+  <div class="alert-error" *ngIf="errorMessage">
+    <span class="closebtn"></span>
     {{ errorMessage }}
   </div>
+
+  <div class="alert-success" *ngIf="successMessage">
+    <span class="closebtn"></span>
+    {{ successMessage }}
+  </div>
+</div>
+
+<div [class]="modalClasses">
   <header>
     <h2>Assign Resources</h2>
     <span (click)="close()">
@@ -13,50 +18,63 @@
     </span>
   </header>
   <div>
-    <div>
+    <div [formGroup]="projectForm">
       <label for="projectName">Project</label>
       <select
-        #projectNameInput
         id="name"
         name="name"
         class="project-input"
         formControlName="name"
         [(ngModel)]="selectedProject">
-        <option disabled selected>Select a project</option>
-        <option *ngFor="let project of projects" [value]="project.projectName">
-          {{ project.projectName }}
+        <option value="" disabled selected>Select a project</option>
+        <option *ngFor="let project of projects" [value]="project.name">
+          {{ project.name }}
         </option>
       </select>
     </div>
   </div>
-  <input
+  <!-- <input
     type="search"
     class="search-input"
     id="search"
     placeholder="Search for individuals or specialization"
     [(ngModel)]="searchQuery"
-    (input)="onSearchChange($event)" />
-  <div class="dropdown-list-item" *ngIf="user">
-    <div class="group-item">
-      <img
-        src="assets/images/user/avatar.svg"
-        class="profile-picture"
-        alt="profile" />
-      <div>
-        <p class="name">{{ user.firstName }} {{ user.lastName }}</p>
-        <p class="position">
-          <span
-            *ngFor="let specialization of user.specializations[0] | keyvalue">
-            {{ specialization.value }}
-          </span>
-        </p>
+    (input)="onSearchChange($event)" /> -->
+  <div class="selected-users-container">
+    <div class="dropdown-list-item" *ngFor="let selectedUser of users">
+      <div class="group-item">
+        <img
+          src="assets/images/user/avatar.svg"
+          class="profile-picture"
+          alt="profile" />
+        <div>
+          <p class="name">
+            {{ selectedUser.firstName }} {{ selectedUser.lastName }}
+          </p>
+          <p class="position">
+            <span
+              *ngFor="
+                let specialization of selectedUser.specializations[0] | keyvalue
+              ">
+              {{ specialization.value }}
+            </span>
+          </p>
+        </div>
       </div>
-      <input
-        type="checkbox"
-        name="userId[]"
-        value="{{ user.userId }}"
-        [(ngModel)]="user.selected" />
     </div>
+  </div>
+  <div class="buttons-wrapper">
+    <button
+      type="reset"
+      class="button border border-[#9AA8BC] bg-[#FFFFFF] text-[#022F54] hover:bg-[#e6e6e6]">
+      Cancel
+    </button>
+    <button
+      type="submit"
+      (click)="submit()"
+      class="button bg-[#1F26A8] text-white hover:bg-[#353cb1]">
+      Assign
+    </button>
   </div>
 </div>
 <!-- <ng-template #noUsersFound>
@@ -65,19 +83,5 @@
       <p>No users found.</p>
     </div>
   </ng-template> -->
-
-<div class="buttons-wrapper">
-  <button
-    type="reset"
-    class="button bg-[#FFFFFF] text-[#022F54] hover:bg-[#e6e6e6]">
-    Cancel
-  </button>
-  <button
-    type="submit"
-    (click)="submit()"
-    class="button bg-[#1F26A8] text-white hover:bg-[#353cb1]">
-    Assign
-  </button>
-</div>
 
 <div [class]="backdropClasses" (click)="close()"></div>

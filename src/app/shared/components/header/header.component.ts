@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
     window.addEventListener('offline', () => this.updateOnlineStatus(false));
     this.fetchNotifications();
   }
+
   private updateOnlineStatus(online: boolean) {
     this.isOnline = online;
   }

@@ -63,9 +63,13 @@
             </span>
           </p>
         </div>
+        <!-- [checked]="handleCheck(user)" -->
+
         <input
           type="checkbox"
           name="userId[]"
+          [checked]="checkedUsers[user.userId]"
+          (change)="handleCheck(user)"
           value="{{ user.userId }}"
           [(ngModel)]="user.selected" />
       </div>
@@ -87,9 +91,10 @@
     </button>
     <button
       type="submit"
+      [disabled]="isSubmitting"
       (click)="submit()"
       class="button bg-[#1F26A8] text-white hover:bg-[#353cb1]">
-      Assign
+      {{ isSubmitting ? 'Assigning...' : 'Assign' }}
     </button>
   </div>
 </div>

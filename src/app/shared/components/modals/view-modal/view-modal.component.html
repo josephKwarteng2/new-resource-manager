@@ -49,16 +49,27 @@
       <div class="key">Skill</div>
 
       <div class="value" *ngFor="let skill of user.skills[0] | keyvalue">
-        {{ skill.value }}
+        <!-- {{ skill.value }} -->
+        <div class="container">
+          <div class="item">
+            S<span class="hide"> {{ skill.value }} </span>
+          </div>
+        </div>
       </div>
       <div class="key">Bookable</div>
       <div class="value" style="text-transform: capitalize">
         {{ user.bookable }}
       </div>
       <div class="key">Assigned Project</div>
-      <div class="value">{{ user.project }}</div>
+      <div
+        class="value"
+        *ngFor="let assignProject of user.project[0] | keyvalue">
+        {{ assignProject.value }}
+      </div>
       <div class="key">Assigned Client</div>
-      <div class="value">{{ user.client }}</div>
+      <div class="value" *ngFor="let assignClient of user.client[0] | keyvalue">
+        {{ assignClient.value }}
+      </div>
       <div class="key">Location</div>
       <div class="value">{{ user.location }}</div>
       <div class="key">Time Zone</div>

@@ -224,6 +224,11 @@ label:not(.visibly-hidden) {
   /* border: 1px solid #9aa8bc; */
   width: 100px;
   cursor: pointer;
+
+  &[disabled] {
+    background: #d0d2ff8a;
+    cursor: not-allowed;
+  }
 }
 
 .buttons-wrapper {

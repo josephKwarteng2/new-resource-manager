@@ -1,4 +1,6 @@
-<!-- <p class="total-users">{{ totalUsers }}</p> -->
+<p class="total-users">
+  <span>{{ totalUsers }}</span>
+</p>
 
 <div class="message-container">
   <div class="alert-error" *ngIf="errorMessage">
@@ -36,7 +38,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let user of users">
-          <td class="grid-item" (click)="openViewModal(user)">
+          <td class="grid-item">
             <input
               type="checkbox"
               (change)="toggleUserSelection(user)"
@@ -101,11 +103,10 @@
     (pageChange)="onPageChange($event)"></pagination>
 </ng-template>
 <div class="buttons-wrapper">
-  <button
+  <!-- <button
     type="button"
     (click)="openGeneralAssignModal()"
-    [disabled]="selectedUsers.length === 0"
     class="button bg-[#1F26A8] text-white hover:bg-[#353cb1]">
     Assign
-  </button>
+  </button> -->
 </div>
