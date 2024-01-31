@@ -1,3 +1,7 @@
+<div class="assign-button-container">
+  <button-assign (click)="openGeneralAssignModal()"></button-assign>
+</div>
+
 <p class="total-users">
   <span>{{ totalUsers }}</span>
 </p>
@@ -9,7 +13,7 @@
   </div>
 
   <div class="alert-success" *ngIf="successMessage">
-    <span class="closebtn"></span>
+    <span mclass="closebtn"></span>
     {{ successMessage }}
   </div>
 </div>
@@ -102,11 +106,11 @@
     [totalPages]="totalPages"
     (pageChange)="onPageChange($event)"></pagination>
 </ng-template>
-<div class="buttons-wrapper">
+<!-- <div class="buttons-wrapper">
   <button
     type="button"
     (click)="openGeneralAssignModal()"
     class="button bg-[#1F26A8] text-white hover:bg-[#353cb1]">
     Assign
   </button>
-</div>
+</div> -->
