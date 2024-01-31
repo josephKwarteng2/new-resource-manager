@@ -81,18 +81,15 @@ export class ClientCreationModalComponent implements OnInit {
           },
           error => {
             this.error = true;
-            if (error.status === 400) {
-              this.errorMessage = 'Invalid inputs, please check your inputs and try again';
-            } else if (error.status === 401) {
-              this.errorMessage = 'Unauthorized. Please log in as an Admin or Manager.';
-            } else if (error.status === 403) {
-              this.errorMessage = 'You do not have the necessary permission to perform this task.';
-            } else if (error.status === 404) {
-              this.errorMessage = 'Resource not found, please contact IT support.';
-            } else if (error.status >= 500) {
-              this.errorMessage = 'Server error. Please try again later.';
+            if (error.status >= 500) {
+              this.errorMessage =
+                'Server Error" Something went wrong on the server.';
             } else {
-              this.errorMessage = 'An error occurred. Please try again.';
+              if (error.error && error.error.message) {
+                this.errorMessage = error.error.message;
+              } else {
+                this.errorMessage = 'An unexpected error occured.';
+              }
             }
             this.clearErrorMessagesAfterDelay();
           }
