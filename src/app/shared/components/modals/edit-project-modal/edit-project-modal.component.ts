@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule, } from '@angular/forms';
 import { ProjectCreationModalService } from '../../../../accounts/admin/services/project-creation-modal.service';
 import { ClientCreationModalService } from '../../../../accounts/admin/services/client-creation-modal.service';
@@ -39,6 +39,7 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
     private clientService: ClientCreationModalService,
     private fb: FormBuilder,
     private modalService: NgbModal,
+    private cdr: ChangeDetectorRef,
   ) {
     this.formData = this.fb.group({
       details: [''],
@@ -64,9 +65,7 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
       distinctUntilChanged(),
     ).subscribe(value => this.filterClients());
 
-    this.clientService.clientCreated.subscribe((newClient: ClientDetails) => {
-      this.handleClientCreated(newClient);
-    });
+    this.cdr.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -133,7 +132,7 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
           this.formData.reset();
           this.success = true;
           this.successMessage = 'Project edited successfully!';
-          this.closeEditProjectModal();
+         
         },
         (error) => {
           this.error = true;
@@ -169,9 +168,7 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
     this.clientService.openClientCreationModal();
   }
 
-  handleClientCreated(clientDetails: ClientDetails): void {
-    this.newClientDetails = clientDetails;
-  }
+
 
   fetchClients(): void {
     this.clientService.getClients()
@@ -179,12 +176,21 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
         (response: { clients: ClientDetails[] }) => {
           if (Array.isArray(response.clients)) {
             this.clients = response.clients;
+            this.filteredClients = response.clients; 
           } else {
             this.handleError('Error retrieving clients. Please try again later.');
           }
         }
       );
+
+    this.clientService.clientCreated.subscribe((updatedClient: ClientDetails) => {
+
+      this.clients.push(updatedClient.client);
+      
+      this.filterClients();
+    });
   }
+  
 
   private handleError(errorMessage: string): void {
     this.error = true;
@@ -193,9 +199,12 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
 
   filterClients(): void {
     const searchTerm = this.formData.get('clientSearch')!.value;
-    this.filteredClients = this.clients.filter(client =>
-      client.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    if (this.clients && Array.isArray(this.clients)) {
+      this.filteredClients = this.clients.filter(client =>
+        client && client.name && typeof client.name === 'string' &&
+        client.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+          }
   }
 
   selectClient(client: ClientDetails): void {
@@ -206,6 +215,13 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
     }
   }
 
+  handleClientCreated(updatedData: { client: ClientDetails }): void {
+    console.log('Updated Clients in ProjectCreation:', updatedData.client);
+    this.clients.push(updatedData.client);
+
+    this.filterClients();
+    this.cdr.detectChanges();
+  }
 
 
 }

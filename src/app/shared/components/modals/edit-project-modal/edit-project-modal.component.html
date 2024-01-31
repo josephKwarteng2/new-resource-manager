@@ -17,25 +17,9 @@
           </svg>
           <span class="whitespace-nowrap">{{ successMessage }}</span>
         </li>
-        <!-- <li *ngIf="errorMessages.serverError" class="flex items-center">
-            <svg
-              class="w-6 h-10 mt-1 me-1 text-red-800 dark:text-red"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 18">
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
-            </svg>
-            <span class="whitespace-nowrap">{{ errorMessages.serverError }}</span>
-          </li> -->
-        <li *ngIf="error" class="flex items-center">
+        <li *ngIf="errorMessages.serverError" class="flex items-center">
           <svg
-            class="w-6 h-10 mt-2 me-1 text-red-800 dark:text-red"
+            class="w-6 h-10 mt-1 me-1 text-red-800 dark:text-red"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -78,7 +62,7 @@
           class="self-stretch flex justify-between gap-5 px-px items-start max-md:max-w-full max-md:flex-wrap">
           <div
             class="text-slate-700 text-1xl font-semibold leading-6 grow shrink basis-auto">
-            Edit Project 
+            Edit Project
           </div>
           <button>
             <img
@@ -108,10 +92,7 @@
             [type]="'email'"
             [errorMessage]="'Email field is required'"
           /> -->
-          <input
-            type="hidden"
-            formControlName="projectId"
- />
+          <input type="hidden" formControlName="projectId" />
         </div>
         <div
           class="text-red-500 text-xs leading-5 self-stretch py-2 w-full mr-2.5 mt-2 max-md:max-w-full">
@@ -166,7 +147,6 @@
         <div
           class="text-red-500 text-xs leading-5 self-stretch py-2 w-full mr-2.5 mt-2 max-md:max-w-full">
           <label for="details" class="text-slate-700">Details</label>
-          <span class="text-red-500">*</span>
         </div>
         <div class="custom-dropdown">
           <textarea
@@ -232,7 +212,7 @@
               type="radio"
               value="internal"
               name="projectType"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300" />
             <label
               for="Internal"
               class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -246,7 +226,7 @@
               type="radio"
               value="external"
               name="projectType"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300" />
             <label
               for="External"
               class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -265,12 +245,9 @@
               formControlName="billable"
               [checked]="formData.get('billable')?.value === true"
               name="billable"
-              class="sr-only peer"
-
-                
-            />
+              class="sr-only peer" />
             <div
-              class="w-11 h-6 bg-gray-200 rounded-full peer outline-none dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300  after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
           </label>
         </div>
 

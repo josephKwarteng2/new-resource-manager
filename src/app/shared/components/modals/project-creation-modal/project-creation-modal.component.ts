@@ -37,8 +37,7 @@ export class ProjectCreationModalComponent implements OnInit {
   successMessage: string = '';
   clients: ClientDetails[] = [];
   filteredClients: ClientDetails[] = [];
-  date: Date | undefined;
-  newClient: ClientDetails = {} as ClientDetails;
+
   constructor(
     private projectcreationService: ProjectCreationModalService,
     private clientService: ClientCreationModalService,
@@ -51,12 +50,12 @@ export class ProjectCreationModalComponent implements OnInit {
       details: [''],
       name: [''],
       clientId: [''],
-      date: [''],
+      
       clientSearch: [''],
       startDate: [''],
       endDate: [''],
       projectType: [''],
-      billable: [''],
+      billable: [false],
       
     });
   }
@@ -69,10 +68,12 @@ export class ProjectCreationModalComponent implements OnInit {
 
     if (this.formData.valid) {
       const formDataValue = this.formData.value;
+      formDataValue.billable = formDataValue.billable !== undefined ? formDataValue.billable : false;
+      const billable = formDataValue['billable'];
       const startDate = formDataValue['start-date'];
       const endDate = formDataValue['end_date'];
       const projectStatus = formDataValue['project-status'];
-      const billable = formDataValue['billable'];
+
 
 
       const isBillable = billable === 'on';
@@ -81,7 +82,7 @@ export class ProjectCreationModalComponent implements OnInit {
         details: formDataValue['details'],
         name: formDataValue['name'],
         client: formDataValue['client'],
-        date: formDataValue['date'],
+
         startDate: startDate,
         endDate: endDate,
         projectStatus: projectStatus,
@@ -90,7 +91,7 @@ export class ProjectCreationModalComponent implements OnInit {
       this.loading = true;
 
       this.projectcreationService
-        .addNewProject(this.formData.value)
+        .addNewProject(this.formData.value)//valid before passing
         .pipe(
           finalize(() => {
             this.loading = false;
@@ -101,6 +102,7 @@ export class ProjectCreationModalComponent implements OnInit {
             this.formData.reset();
             this.success = true;
             this.successMessage = 'Project created successfully!';
+            
           },
           error => {
             
@@ -132,75 +134,60 @@ export class ProjectCreationModalComponent implements OnInit {
   }
   openClientCreationModal() {
     this.clientService.openClientCreationModal();
+
   }
   
 
-  onClientCreated(newClient: ClientDetails) {
-    const clientSearchControl = this.formData.get('clientSearch');
-    console.log('Client created:', newClient);
-
-    if (clientSearchControl) {
-      clientSearchControl.setValue(newClient.name);
-      this.showClientDropdown = false;
-    }
-  }
+  
+  
   
   ngOnInit(): void {
     this.fetchClients();
   
-    // Subscribe to changes in the clientSearch form control
+
     this.formData.get('clientSearch')?.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged(),
     ).subscribe(value => this.filterClients());
+    this.cdr.detectChanges();
   
-    // Subscribe to the clientCreated event from the service
-    this.clientService.clientCreated.subscribe((newClient: ClientDetails) => {
-      this.onClientCreated(newClient);
-    });
-  
-    // Subscribe to another event or observable for when a new client is added directly
-    // For example, assuming you have an event emitter in your ClientCreationModalComponent
-    this.clientService.newClientAdded$.subscribe((newClient: ClientDetails) => {
-      this.onClientAdded(newClient);
-    });
   }
 
-  onClientAdded(newClient: ClientDetails) {
-    const clientSearchControl = this.formData.get('clientSearch');
-  
-    if (clientSearchControl) {
-      clientSearchControl.setValue(newClient.name);
-      this.showClientDropdown = false;
-    }
-  }
-    
   fetchClients(): void {
     this.clientService.getClients()
       .subscribe(
         (response: { clients: ClientDetails[] }) => {
           if (Array.isArray(response.clients)) {
             this.clients = response.clients;
+            this.filteredClients = response.clients; 
           } else {
-            this.handleError('Error retrieving clients. Please try again later.');
+            console.log('Error retrieving clients. Please try again later.');
           }
         }
       );
-  }
-  private handleError(errorMessage: string): void {
-    this.error = true;
-    this.errorMessages.serverError = errorMessage;
 
+    this.clientService.clientCreated.subscribe((updatedClient: ClientDetails) => {
+
+      this.clients.push(updatedClient.client);
+      
+      this.filterClients();
+    });
   }
+  
   
     
   
   filterClients(): void {
     const searchTerm = this.formData.get('clientSearch')!.value;
-    this.filteredClients = this.clients.filter(client =>
-      client.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    if (this.clients && Array.isArray(this.clients)) {
+      this.filteredClients = this.clients.filter(client =>
+        client && client.name && typeof client.name === 'string' &&
+        client.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+          }
   }
+  
+  
   selectClient(client: ClientDetails): void {
     if (this.formData.get('clientSearch')) {
    
@@ -213,4 +200,15 @@ export class ProjectCreationModalComponent implements OnInit {
     }
   }
 
+  handleClientCreated(updatedData: { client: ClientDetails }): void {
+    console.log('Updated Clients in ProjectCreation:', updatedData.client);
+    this.clients.push(updatedData.client);
+
+    this.filterClients();
+    this.cdr.detectChanges();
+  }
+  
+  
+  
+  
 }

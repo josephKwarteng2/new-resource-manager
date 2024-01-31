@@ -19,6 +19,7 @@
         </li>
         <li *ngIf="errorMessages.serverError" class="flex items-center">
           <svg
+           
             class="w-6 h-10 mt-1 me-1 text-red-800 dark:text-red"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
@@ -33,23 +34,7 @@
           </svg>
           <span class="whitespace-nowrap">{{ errorMessages.serverError }}</span>
         </li>
-        <!-- <li *ngIf="error" class="flex items-center">
-          <svg
-            class="w-6 h-10 mt-2 me-1 text-red-800 dark:text-red"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 18">
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
-          </svg>
-          <span class="whitespace-nowrap">{{ errorMessages.serverError }}</span>
-        </li> -->
-        
+      
         <li *ngIf="loading" class="flex items-center">
           <div role="status">
             <svg
@@ -67,7 +52,7 @@
             </svg>
             <span class="sr-only">Loading...</span>
           </div>
-          <span class="whitespace-nowrap text-base">Creating User </span>
+          <span class="whitespace-nowrap text-base">Creating Project </span>
         </li>
       </ul>
     </div>
@@ -165,7 +150,7 @@
         <div
           class="text-red-500 text-xs leading-5 self-stretch py-2 w-full mr-2.5 mt-2 max-md:max-w-full">
           <label for="details" class="text-slate-700">Details</label>
-          <span class="text-red-500">*</span>
+       
         </div>
         <div class="custom-dropdown">
           <textarea
@@ -179,12 +164,6 @@
           </textarea>
         </div>
 
-        <div
-          class="items-stretch flex gap-2 mt-2 pr-20 py-1 self-start max-md:max-w-full max-md:flex-wrap max-md:pr-5">
-          <div class="text-slate-700 text-xs leading-2 grow whitespace-nowrap">
-            Assign Empolyees
-          </div>
-        </div>
 
         <div class="flex">
           <div class="flex flex-col mr-2.5 mt-2 max-md:max-w-full">
@@ -231,7 +210,7 @@
               type="radio"
               value="Internal"
               name="projectType"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 " />
             <label
               for="Internal"
               class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -245,7 +224,7 @@
               type="radio"
               value="External"
               name="projectType"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300" />
             <label
               for="External"
               class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -267,7 +246,7 @@
               class="sr-only peer"
               checked />
             <div
-              class="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
           </label>
         </div>
 
@@ -291,6 +270,6 @@
       </div>
     </form>
     <app-client-creation-modal
-      [isOpen]="clientCreationModalOpen"   (clientCreated)="onClientCreated($event)"></app-client-creation-modal>
+      [isOpen]="clientCreationModalOpen"   (clientCreated)="handleClientCreated($event)"></app-client-creation-modal>
   </div>
 </div>
