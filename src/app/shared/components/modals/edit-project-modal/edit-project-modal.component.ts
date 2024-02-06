@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef,Output, EventEmitter  } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule, } from '@angular/forms';
 import { ProjectCreationModalService } from '../../../../accounts/admin/services/project-creation-modal.service';
 import { ClientCreationModalService } from '../../../../accounts/admin/services/client-creation-modal.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ClientDetails, ProjectDetails, FormDataValue } from '../../../types/types';
 import { GlobalInputComponent } from '../../global-input/global-input.component';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
@@ -18,6 +19,7 @@ import { ClientCreationModalComponent } from '../client-creation-modal/client-cr
   styleUrls: ['./edit-project-modal.component.css'],
 })
 export class EditProjectModalComponent implements OnInit, OnChanges {
+  @Output() projectEdited: EventEmitter<void> = new EventEmitter<void>();
   @Input() isOpen = true;
   @Input() project!: ProjectDetails;
 
@@ -40,6 +42,7 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private cdr: ChangeDetectorRef,
+
   ) {
     this.formData = this.fb.group({
       details: [''],
@@ -126,15 +129,20 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
       this.projectcreationService.editProject(formDataValue).pipe(
         finalize(() => {
           this.loading = false;
+          
         })
       ).subscribe(
         (response) => {
           this.formData.reset();
           this.success = true;
           this.successMessage = 'Project edited successfully!';
-         this.closeEditProjectModal();
+          this.closeEditProjectModal();
+          this.projectEdited.emit();
+
+         
         },
         (error) => {
+      
           this.error = true;
           if (error.status >= 500) {
             this.errorMessages.serverError =
@@ -152,17 +160,28 @@ export class EditProjectModalComponent implements OnInit, OnChanges {
     } else {
       this.errorMessages.serverError = 'Please enter valid inputs or complete the form';
     }
+    
   }
   
   
   
   closeEditProjectModal(): void {
+    
     this.isOpen = false;
   }
 
   openClientCreationModal(): void {
     this.clientService.openClientCreationModal();
   }
+
+  clearErrorMessagesAfterDelay() {
+    setTimeout(() => {
+      this.successMessage
+      this.errorMessages.serverError
+    }, 2500); 
+    
+  }
+
 
 
 

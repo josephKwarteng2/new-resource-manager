@@ -33,7 +33,7 @@
       <tbody>
         <tr *ngFor="let client of clients">
           <td class="grid-item" (click)="openClientsDetails(client)">
-            <input
+            <!-- <input
               type="checkbox"
               [checked]="false"
               style="
@@ -42,7 +42,7 @@
                 margin-right: 8px;
                 font-family: 'LexendMedium';
                 color: #022f54;
-              " />
+              " /> -->
 
             {{ client.name }}
           </td>
@@ -76,7 +76,7 @@
               class="dropdown-container"
               *ngIf="showDropdownForClient === client">
               <ul class="dropdown-details-container">
-                <li>Edit</li>
+                <li (click)="openEditClientModal(client)">Edit</li>
                 <li (click)="openClientsDetails(client)">View</li>
                 <li (click)="archiveClient(client)">Archive</li>
                 <li>Assign</li>

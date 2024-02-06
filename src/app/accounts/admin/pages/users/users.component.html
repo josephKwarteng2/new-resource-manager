@@ -1,10 +1,16 @@
 <div class="users page">
+  <div class="message-container">
+    <div class="alert-success" *ngIf="successMessage">
+      <span class="closebtn"></span>
+      {{ successMessage }}
+    </div>
+  </div>
   <header>
     <h1>Users</h1>
     <div class="buttons-wrapper">
       <!-- <button-assign (click)="openGeneralAssignModal()"></button-assign> -->
       <button-new (click)="openUserCreationModal()"></button-new>
-      <app-usercreation [isOpen]="userCreationModalOpen"></app-usercreation>
+      <app-usercreation [isOpen]="userCreationModalOpen" (userCreated)="updateUsers()"></app-usercreation>
     </div>
   </header>
   <div class="toggles">

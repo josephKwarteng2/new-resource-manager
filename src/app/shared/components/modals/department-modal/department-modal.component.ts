@@ -22,8 +22,8 @@ export class DepartmentModalComponent implements OnInit {
   @Output() saveDepartment = new EventEmitter<string>();
   @Input() formGroup!: FormGroup;
   @Input() isOpen = true;
- departmentStoringError: string = '';
-  modalForm: FormGroup;
+ public departmentStoringError: string = '';
+ modalForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -35,7 +35,7 @@ export class DepartmentModalComponent implements OnInit {
     });
   }
 
-  onSaveDepartment() {
+ public onSaveDepartment() {
     if (this.modalForm.valid) {
       const newDepartment: string = this.modalForm.value.newDepartment;
 
@@ -50,7 +50,7 @@ export class DepartmentModalComponent implements OnInit {
       );
     }
   }
-  clearErrorMessagesAfterDelay() {
+  public clearErrorMessagesAfterDelay() {
     setTimeout(() => {
       this.departmentStoringError= '';
     }, 3000); 
@@ -69,7 +69,7 @@ export class DepartmentModalComponent implements OnInit {
     this.clearErrorMessagesAfterDelay();
   }
 
-  fetchDepartments() {
+ public fetchDepartments() {
     this.departmentService.getDepartments().subscribe(
       (departments: string[]) => {
         
@@ -80,7 +80,7 @@ export class DepartmentModalComponent implements OnInit {
     );
   }
 
-  closeModal() {
+ public closeModal() {
     this.isOpen = false;
   }
   ngOnInit(): void {}

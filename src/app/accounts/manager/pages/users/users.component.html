@@ -6,7 +6,7 @@
       <button-assign></button-assign>
       <button-new (click)="openManagerUserCreationModal()"></button-new>
       <app-manager-usercreation
-        [isOpen]="managerUserCreationModalOpen"></app-manager-usercreation>
+        [isOpen]="managerUserCreationModalOpen" (userCreated)="updateUsers()"></app-manager-usercreation>
     </div>
   </header>
   <div class="toggles">

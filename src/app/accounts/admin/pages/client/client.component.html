@@ -1,10 +1,16 @@
 <div class="clients page">
+  <div class="message-container">
+    <div class="alert-success" *ngIf="successMessage">
+      <span class="closebtn"></span>
+      {{ successMessage }}
+    </div>
+  </div>
   <header>
     <h1>Clients</h1>
     <div class="buttons-wrapper">
       <button-new (click)="openClientCreationModal()"></button-new>
       <app-client-creation-modal
-        [isOpen]="clientCreationModalOpen"></app-client-creation-modal>
+        [isOpen]="clientCreationModalOpen" (newClientCreated)="updateClients()"></app-client-creation-modal>
     </div>
   </header>
   <div class="toggles">

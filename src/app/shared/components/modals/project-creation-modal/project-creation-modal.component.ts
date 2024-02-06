@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectorRef, } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef,Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
 
@@ -25,6 +25,7 @@ import { GlobalInputComponent } from '../../global-input/global-input.component'
   styleUrl: './project-creation-modal.component.css'
 })
 export class ProjectCreationModalComponent implements OnInit {
+  @Output() projectCreated: EventEmitter<void> = new EventEmitter<void>();
   @Input() isOpen = true;
   clientCreationModalOpen = false;
   showClientDropdown = false;
@@ -60,38 +61,42 @@ export class ProjectCreationModalComponent implements OnInit {
     });
   }
 
+
+
   onCreateProject(){
     this.loading = true;
     this.success = false;
     this.error = false;
     this.errorMessages = {};
+    
 
     if (this.formData.valid) {
-      const formDataValue = this.formData.value;
-      formDataValue.billable = formDataValue.billable !== undefined ? formDataValue.billable : false;
-      const billable = formDataValue['billable'];
-      const startDate = formDataValue['start-date'];
-      const endDate = formDataValue['end_date'];
-      const projectStatus = formDataValue['project-status'];
+      // const formDataValue = this.formData.value;
+      // formDataValue.billable = formDataValue.billable !== undefined ? formDataValue.billable : false;
+      // const billable = formDataValue['billable'];
+      // const startDate = formDataValue['start-date'];
+      // const endDate = formDataValue['end_date'];
+      // const projectStatus = formDataValue['project-status'];
 
 
 
-      const isBillable = billable === 'on';
+      // const isBillable = billable === 'on';
 
-      const projectData = {
-        details: formDataValue['details'],
-        name: formDataValue['name'],
-        client: formDataValue['client'],
+      // const projectData = {
+      //   details: formDataValue['details'],
+      //   name: formDataValue['name'],
+      //   client: formDataValue['client'],
 
-        startDate: startDate,
-        endDate: endDate,
-        projectStatus: projectStatus,
-        billable: isBillable,
-      };
+      //   startDate: startDate,
+      //   endDate: endDate,
+      //   projectStatus: projectStatus,
+      //   billable: isBillable,
+      // };
+      const isBillable = this.formData.get('billable')?.value || false;
       this.loading = true;
 
       this.projectcreationService
-        .addNewProject(this.formData.value)//valid before passing
+        .addNewProject({...this.formData.value, billable: isBillable})//valid before passing
         .pipe(
           finalize(() => {
             this.loading = false;
@@ -99,9 +104,12 @@ export class ProjectCreationModalComponent implements OnInit {
         )
         .subscribe(
           response => {
-            this.formData.reset();
+            
             this.success = true;
             this.successMessage = 'Project created successfully!';
+            this.projectCreated.emit();
+            this.formData.reset();
+            this.formData.get('clientSearch')?.setValue('');
             
           },
           error => {
@@ -118,20 +126,31 @@ export class ProjectCreationModalComponent implements OnInit {
                 this.errorMessages.serverError = 'An unexpected error occured.';
               }
             }
+            this.clearErrorMessagesAfterDelay();
             this.formData.markAsTouched();
           }
         );
     } else {
        this.errorMessages.serverError= 'Please enter valid inputs or complete the form';
     }
+   
   }
+  clearErrorMessagesAfterDelay() {
+    setTimeout(() => {
+      this.successMessage
+      this.errorMessages.serverError
+    }, 3000); 
+   
+  }
+
+
   closeProjectcreationModal() {
     this.isOpen = false;
 
   }
   openClientCreationModal() {
     this.clientService.openClientCreationModal();
-
+    
   }
   
 
@@ -146,11 +165,12 @@ export class ProjectCreationModalComponent implements OnInit {
       debounceTime(300),
       distinctUntilChanged(),
     ).subscribe(value => this.filterClients());
-    this.cdr.detectChanges();
+    
   
   }
 
   fetchClients(): void {
+    this.clientCreationModalOpen = false;
     this.clientService.getClients()
       .subscribe(
         (response: { clients: ClientDetails[] }) => {
@@ -166,6 +186,7 @@ export class ProjectCreationModalComponent implements OnInit {
     this.clientService.clientCreated.subscribe((updatedClient: ClientDetails) => {
 
       this.clients.push(updatedClient.client);
+   
       
       this.filterClients();
     });
@@ -202,7 +223,9 @@ export class ProjectCreationModalComponent implements OnInit {
     this.clients.push(updatedData.client);
 
     this.filterClients();
+
     this.cdr.detectChanges();
+    this.clientCreationModalOpen = false;
   }
   
   

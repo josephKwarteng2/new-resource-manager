@@ -19,6 +19,7 @@ import { ProjectCreationModalService } from '../../services/project-creation-mod
 import { CommonModule } from '@angular/common';
 import { ProjectDetailsModalComponent } from '../../../../shared/components/modals/project-details-modal/project-details-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { ProjectsService } from '../../services/projects.service';
 import { DeleteProjectModalComponent } from '../../../../shared/components/modals/delete-project-modal/delete-project-modal.component';
@@ -27,11 +28,12 @@ import { EditProjectModalComponent } from '../../../../shared/components/modals/
 @Component({
   selector: 'app-project-table',
   standalone: true,
-  imports: [CommonModule, AssignModalComponent, PaginationComponent],
+  imports: [CommonModule, AssignModalComponent, PaginationComponent, EditProjectModalComponent],
   templateUrl: './project-table.component.html',
   styleUrl: './project-table.component.css',
 })
 export class ProjectTableComponent implements OnInit, OnDestroy {
+
   totalPages: number = 0;
   currentPage: number = 1;
   itemsPerPage: number = 10;
@@ -54,12 +56,15 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
     private dropdownService: DropdownService,
     private viewContainerRef: ViewContainerRef,
     private modalService: NgbModal,
+
     private assignModalService: AssignModalService,
     private projectsService: ProjectsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchProjects();
+
+
   }
 
   openAssignModal(project: ProjectDetails): void {
@@ -86,6 +91,11 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
   onPageChange(page: number): void {
     this.currentPage = page;
     this.fetchProjects();
+  }
+  updateProjects(): void {
+    this.fetchProjects();
+    this.successMessage = 'Project Edited successfully!';
+
   }
 
   fetchProjects(): void {
@@ -140,7 +150,7 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
   openProjectDetailsModal(project: ProjectDetails): void {
     const modalRef = this.modalService.open(ProjectDetailsModalComponent);
     modalRef.componentInstance.project = project;
-    console.log(project)
+
   }
 
   openDeleteProjectModal(project: ProjectDetails) {
@@ -184,11 +194,25 @@ export class ProjectTableComponent implements OnInit, OnDestroy {
       },
     });
   }
+  handleProjectEdited(): void {
+    this.successMessage = 'Project edited successfully.';
+    setTimeout(() => {
+      this.successMessage = null;
+    }, 3000);
+    this.fetchProjects(); 
+    
+  }
 
   openEditProjectModal(project: ProjectDetails): void {
     const modalRef = this.modalService.open(EditProjectModalComponent);
     modalRef.componentInstance.project = project;
+    modalRef.componentInstance.projectEdited.subscribe(() => {
+      this.handleProjectEdited();
+    });
   }
+
+
+
 
   archiveProject(projects: ProjectDetails): void {
     this.projectsService.archiveProject(projects.projectId).subscribe({

@@ -6,6 +6,8 @@ import {
   EventEmitter,
   Output,
   Input,
+  ViewChild,
+  AfterViewInit
 } from '@angular/core';
 import { User } from '../../../../shared/types/types';
 
@@ -38,10 +40,11 @@ import { GeneralAssignModalService } from '../../../../shared/components/modals/
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
-export class UsersComponent {
+export class UsersComponent implements AfterViewInit{
   userCreationModalOpen = false;
   selectedUsers: User[] = [];
   @Output() selectedUsersEvent = new EventEmitter<User[]>();
+  
 
   private assignModalRef?: ComponentRef<GeneralAssignModalComponent>;
 
@@ -60,6 +63,29 @@ export class UsersComponent {
 
   openUserCreationModal() {
     this.userCreationModalOpen = true;
+  }
+
+  @ViewChild(UserListComponent) UserListComponent?: UserListComponent;
+  successMessage: string | null = null;
+  ngAfterViewInit(): void {
+   
+    if (this.UserListComponent) {
+      this.UserListComponent.fetchUsers();
+    }
+  }
+  updateUsers(): void {
+    if (this.UserListComponent) {
+      this.UserListComponent.fetchUsers();
+      console.log('new user fetch')
+      this.successMessage = 'User created successfully!';
+
+      this.userCreationModalOpen = false;
+
+    
+      setTimeout(() => {
+        this.successMessage = null;
+      }, 3000);
+    }
   }
 
   openGeneralAssignModal() {

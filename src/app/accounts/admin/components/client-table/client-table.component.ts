@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { ClientDetailsComponent } from '../../../../shared/components/modals/client-details/client-details.component';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { EditClientModalComponent } from '../../../../shared/components/modals/edit-client-modal/edit-client-modal.component';
 
 @Component({
   selector: 'app-client-table',
   standalone: true,
-  imports: [CommonModule, ClientDetailsComponent, PaginationComponent],
+  imports: [CommonModule, ClientDetailsComponent, PaginationComponent, EditClientModalComponent],
   templateUrl: './client-table.component.html',
   styleUrl: './client-table.component.css',
 })
@@ -51,8 +52,18 @@ export class ClientTableComponent implements OnInit {
     const endIndex = startIndex + this.itemsPerPage;
 
     this.clientCreationModalService.getClients().subscribe(
-      (response: any) => {
-        this.handleClientResponse(response, startIndex, endIndex);
+      (response) => {
+        const clients = response.clients || response;
+        if (Array.isArray(clients)) {
+          this.clients = clients.slice(
+            startIndex,
+            endIndex
+          ) as ClientDetails[];
+          this.totalClients = clients.length;
+          this.totalPages = Math.ceil(clients.length / this.itemsPerPage);
+        } else {
+          console.error('Invalid response format for clients:', clients);
+        }
       },
       error => {
         this.handleClientError(error);
@@ -92,20 +103,20 @@ export class ClientTableComponent implements OnInit {
     });
   }
 
-  private handleClientResponse(
-    response: any,
-    startIndex: number,
-    endIndex: number
-  ): void {
-    const clients = response.clients || response;
-    if (Array.isArray(clients)) {
-      this.clients = clients.slice(startIndex, endIndex) as ClientDetails[];
-      this.totalClients = clients.length;
-      this.totalPages = Math.ceil(clients.length / this.itemsPerPage);
-    } else {
-      this.handleError('Invalid response format for clients:', clients);
-    }
-  }
+  // private handleClientResponse(
+  //   response: any,
+  //   startIndex: number,
+  //   endIndex: number
+  // ): void {
+  //   const clients = response.clients || response;
+  //   if (Array.isArray(clients)) {
+  //     this.clients = clients.slice(startIndex, endIndex) as ClientDetails[];
+  //     this.totalClients = clients.length;
+  //     this.totalPages = Math.ceil(clients.length / this.itemsPerPage);
+  //   } else {
+  //     this.handleError('Invalid response format for clients:', clients);
+  //   }
+  // }
 
   private handleClientError(error: any): void {
     this.handleError('Error fetching clients:', error);
@@ -122,5 +133,20 @@ export class ClientTableComponent implements OnInit {
     const modalRef = this.modalService.open(ClientDetailsComponent);
     modalRef.componentInstance.client = client;
     console.log(client)
+  }
+  openEditClientModal(client: ClientDetails): void {
+    const modalRef = this.modalService.open(EditClientModalComponent);
+    modalRef.componentInstance.client = client;
+    modalRef.componentInstance.clientEdited.subscribe(() => {
+      this.handleClientEdited();
+    });
+  }
+  handleClientEdited(): void {
+    this.successMessage = 'Client edited successfully.';
+    setTimeout(() => {
+      this.successMessage = null;
+    }, 3000);
+    this.fetchClients(); 
+    
   }
 }

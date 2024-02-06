@@ -1,70 +1,39 @@
 <div class="modal-overlay" *ngIf="isOpen">
   <div
-    *ngIf="isOpen"
+  
     class="items-center form-size flex flex-col justify-center px-16 py-10 max-md:px-5">
-    <div class="messages-container flex items-center">
-      <ul
-        class="max-w-md space-y-3 text-lg text-gray-500 list-inside dark:text-gray-400">
-        <li *ngIf="success" class="flex items-center">
-          <svg
-            class="w-6 h-10 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 20 20">
-            <path
-              d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-          </svg>
-          <span class="whitespace-nowrap">{{ successMessage }}</span>
-        </li>
-        <li *ngIf="nullFormControlMessage" class="flex items-center">
-          <svg
-            class="w-6 h-10 mt-1 me-1 text-red-800 dark:text-red"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 18">
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
-          </svg>
-          <span class="whitespace-nowrap">{{ nullFormControlMessage }}</span>
-        </li>
-        <li *ngIf="error" class="flex items-center">
-          <svg
-            class="w-6 h-10 mt-2 me-1 text-red-800 dark:text-red"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 18">
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
-          </svg>
-          <span class="whitespace-nowrap">{{ errorMessage }}</span>
-        </li>
-        <li *ngIf="formInvalidMessage" class="flex items-center">
-          <svg
-            class="w-6 h-10 mt-2 me-1 text-red-800 dark:text-red"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 18">
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M7 8a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-2 3h4a4 4 0 0 1 4 4v2H1v-2a4 4 0 0 1 4-4Z" />
-          </svg>
-          <span class="whitespace-nowrap">{{ formInvalidMessage }}</span>
-        </li>
+    <div class="messages-container mt-1 flex items-center">
+      <div class="message-container">
+        <div class="alert-error" *ngIf="errorMessage">
+          <span class="closebtn"></span>
+          {{ errorMessage }}
+        </div>
+      
+        <div class="alert-success" *ngIf="success">
+          <span class="closebtn"></span>
+          {{ successMessage }}
+        </div>
+
+        <div class="alert-error" *ngIf="nullFormControlMessage">
+          <span class="closebtn"></span>
+          {{ nullFormControlMessage }}
+        </div>
+
+        <div class="alert-error" *ngIf="formInvalidMessage">
+          <span class="closebtn"></span>
+          {{ formInvalidMessage }}
+        </div>
+
+        <div class="alert-error" *ngIf="errorMessagesForRolesandEmails.roles">
+          <span class="closebtn"></span>
+          {{ errorMessagesForRolesandEmails.roles }}
+        </div>
+        <div class="alert-error" *ngIf="errorMessagesForRolesandEmails.email">
+          <span class="closebtn"></span>
+          {{ errorMessagesForRolesandEmails.email }}
+        </div>
+      </div>
+      <ul  class="max-w-md space-y-3 text-lg text-gray-500 list-inside dark:text-gray-400">
         <li *ngIf="loading" class="flex items-center">
           <div role="status">
             <svg
@@ -82,12 +51,12 @@
             </svg>
             <span class="sr-only">Loading...</span>
           </div>
-          <span class="whitespace-nowrap text-base">Creating User </span>
+          <span class="whitespace-nowrap text-base">Creating User</span>
         </li>
       </ul>
     </div>
 
-    <div
+    <!-- <div
       *ngIf="errorMessagesForRolesandEmails.roles"
       class="text-red-500 text-sm leading-5">
       {{ errorMessagesForRolesandEmails.roles }}
@@ -96,7 +65,7 @@
       *ngIf="errorMessagesForRolesandEmails.email"
       class="text-red-500 text-sm leading-5">
       {{ errorMessagesForRolesandEmails.email }}
-    </div>
+    </div> -->
     <form [formGroup]="formData">
       <div
         class="justify-center items-center shadow-lg bg-white flex max-w-full flex-col p-6 rounded-xl max-md:my-8 max-md:px-1">
@@ -153,41 +122,41 @@
             class="text-slate-500 text-base leading-6 grow shrink basis-auto w-full py-1 focus:border-white" />
         </div>
 
-        <div
-          class="items-stretch flex gap-2 mt-2 pr-20 py-1 self-start max-md:max-w-full max-md:flex-wrap max-md:pr-5">
-          <div class="flex items-center">
-            <input
-              checked
-              id="checked-checkbox"
-              type="checkbox"
-              value=""
-              class="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+        <div class="flex justify-start items-center w-full">
+          <!-- Container for Bookable label and toggle -->
+          <div class="flex flex-col justify-start items-center">
+            <span class="text-500 text-xs leading-5">Bookable</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                formControlName="bookable"
+                name="bookable"
+                class="sr-only peer"
+              />
+              <div
+                class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+              ></div>
+            </label>
           </div>
-          <div class="text-slate-700 text-xs leading-2 grow whitespace-nowrap">
-            Invite this person to join your account
-          </div>
-        </div>
-        <div class="text-slate-500 text-xs leading-4 max-md:max-w-full">
-          This person will receive an email with an invitation link. When they
-          click the link they can choose their own password. then they will be
-          able to log in to their own account
-        </div>
-
-        <div
-          class="items-stretch self-stretch flex justify-between gap-5 mt-2 max-md:max-w-full max-md:flex-wrap">
-          <div class="">
-            <div class="text-slate-700 text-xs leading-5">
-              Normal Availability
-            </div>
-            <div class="text-slate-500 text-xs leading-5">
-              Weekly total: 40h
+        
+          <!-- Container for Normal and Weekly -->
+          <div class="flex ml-24">
+            <div class="px-2 py-2">
+              <div class="text-slate-700 text-xs leading-5">Normal Availability</div>
+              <div class="text-slate-500 text-xs leading-5">Weekly total: 40h</div>
             </div>
           </div>
         </div>
+        
+        
+        
+        
+      
 
         <div
           class="text-slate-700 text-xs py-1 leading-5 self-stretch w-full mr-2.5 mt-2 max-md:max-w-full">
           <label for="department">Department</label>
+          <span class="text-red-500">*</span>
         </div>
         <div class="custom-dropdown" [class.active]="departmentDropdownOpen">
           <input
@@ -243,6 +212,7 @@
         <div
           class="text-slate-700 text-xs py-1 leading-5 self-stretch w-full mr-2.5 mt-2 max-md:max-w-full">
           <label for="specialization">Specialization</label>
+          <span class="text-red-500">*</span>
         </div>
         <div
           class="custom-dropdown"
@@ -336,7 +306,7 @@
             </button>
             <button
               type="button"
-              class="text-white text-xs font-medium leading-6 whitespace-nowrap justify-center items-stretch bg-indigo-800 aspect-[1.3333333333333333] px-2 py-1 rounded-xl"
+              class="text-white text-xs font-medium leading-6 whitespace-nowrap justify-center items-stretch bg-indigo-800 aspect-[1.3333333333333333] px-3 py-1 rounded-xl"
               [disabled]="loading"
               (click)="onUserCreate()">
               Add

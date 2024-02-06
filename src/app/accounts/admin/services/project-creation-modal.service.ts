@@ -5,6 +5,9 @@ import { BASE_URL } from '../../../../environment/config';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectDetails, GenericResponse } from '../../../shared/types/types';
 import { ProjectCreationModalComponent } from '../../../shared/components/modals/project-creation-modal/project-creation-modal.component';
+import { EditModalComponent } from '../../../shared/components/modals/edit-modal/edit-modal.component';
+import { EditProjectModalComponent } from '../../../shared/components/modals/edit-project-modal/edit-project-modal.component';
+import { DeleteProjectModalComponent } from '../../../shared/components/modals/delete-project-modal/delete-project-modal.component';
 
 @Injectable({
   providedIn: 'root',
@@ -97,14 +100,16 @@ export class ProjectCreationModalService {
 
     return modalRef;
   }
-  openEditProjectModal(): NgbModalRef {
+  openEditProjectModal(project: ProjectDetails): NgbModalRef {
     const modalRef = this.projectcreationmodalService.open(
-      ProjectCreationModalComponent,
+      EditProjectModalComponent,
       {
         centered: true,
         backdrop: 'static',
       }
     );
+
+    modalRef.componentInstance.project = project;
 
     modalRef.result.finally(() => {});
 
@@ -112,7 +117,7 @@ export class ProjectCreationModalService {
   }
   openDeleteProjectModal(): NgbModalRef {
     const modalRef = this.projectcreationmodalService.open(
-      ProjectCreationModalComponent,
+      DeleteProjectModalComponent,
       {
         centered: true,
         backdrop: 'static',

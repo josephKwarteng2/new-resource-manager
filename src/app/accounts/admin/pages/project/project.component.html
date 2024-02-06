@@ -1,10 +1,16 @@
 <div class="project page">
+  <div class="message-container">
+    <div class="alert-success" *ngIf="successMessage">
+      <span class="closebtn"></span>
+      {{ successMessage }}
+    </div>
+  </div>
   <header>
     <h1>Projects</h1>
     <div class="buttons-wrapper">
       <button-new (click)="openProjectCreationModal()"></button-new>
       <app-project-creation-modal
-        [isOpen]="projectCreationModalOpen"></app-project-creation-modal>
+        [isOpen]="projectCreationModalOpen" (projectCreated)="updateProjects()" ></app-project-creation-modal>
     </div>
   </header>
   <div class="toggles">

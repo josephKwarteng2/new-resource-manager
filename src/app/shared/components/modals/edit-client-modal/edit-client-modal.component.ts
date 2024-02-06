@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
 import {
   FormGroup,
 
@@ -10,22 +10,17 @@ import { finalize } from 'rxjs/operators';
 import { ClientCreationModalService } from '../../../../accounts/admin/services/client-creation-modal.service';
 import { ClientDetails } from '../../../types/types';
 import { ProjectCreationModalComponent } from '../project-creation-modal/project-creation-modal.component';
-import { EditClientModalComponent } from '../edit-client-modal/edit-client-modal.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
-  selector: 'app-client-creation-modal',
+  selector: 'app-edit-client-modal',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ProjectCreationModalComponent],
-  templateUrl: './client-creation-modal.component.html',
-  styleUrl: './client-creation-modal.component.css'
+  templateUrl: './edit-client-modal.component.html',
+  styleUrl: './edit-client-modal.component.css'
 })
-export class ClientCreationModalComponent implements OnInit {
+export class EditClientModalComponent implements OnInit, OnChanges {
   @Input() isOpen = true;
-  @Output() clientCreated: EventEmitter<ClientDetails> = new EventEmitter()
-  @Output() newClientCreated: EventEmitter<void> = new EventEmitter<void>();
-
-
+  @Input() client!: ClientDetails;
+  @Output() clientEdited: EventEmitter<ClientDetails> = new EventEmitter()
 
   formData: FormGroup;
   loading = false;
@@ -38,10 +33,10 @@ export class ClientCreationModalComponent implements OnInit {
 
   constructor(
 
-    private clientcreationService: ClientCreationModalService,
+    private clienteditingService: ClientCreationModalService,
 
     private fb: FormBuilder,
-    private modalService: NgbModal,
+    private cdr: ChangeDetectorRef,
 
 
 
@@ -49,6 +44,7 @@ export class ClientCreationModalComponent implements OnInit {
     this.formData = this.fb.group({
       details: [''],
       name: [''],
+      clientId: [''],
 
     });
   }
@@ -61,8 +57,7 @@ export class ClientCreationModalComponent implements OnInit {
     }, 3000);
   }
 
-  onCreateClient() {
-    console.log('Clicked create ')
+  onEditClient() {
     this.loading = false;
     this.success = false;
     this.error = false;
@@ -70,8 +65,8 @@ export class ClientCreationModalComponent implements OnInit {
     if (this.formData.valid) {
       this.loading = true;
 
-      this.clientcreationService
-        .addNewClient(this.formData.value)
+      this.clienteditingService
+        .editClient(this.formData.value)
         .pipe(
           finalize(() => {
             this.loading = false;
@@ -80,11 +75,10 @@ export class ClientCreationModalComponent implements OnInit {
         .subscribe(
           updatedClients => {
             this.success = true;
-            this.successMessage = 'Client created successfully!';
-            this.newClientCreated.emit();
-            this.clientCreated.emit(updatedClients.client);
-            this.formData.reset();
-            this.closeClientcreationModal();
+            this.successMessage = 'Client Edited successfully!';
+            this.clientEdited.emit();
+            this.closeClientEditModal
+
           },
           error => {
             this.error = true;
@@ -107,15 +101,35 @@ export class ClientCreationModalComponent implements OnInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['client']) {
+      this.populateForm();
+    }
+  }
+
+
+  populateForm(): void {
+    console.log('Before patchValue - Client:', this.client);
+    if (this.client) {
+      this.formData.patchValue({
+        details: this.client.details,
+        name: this.client.name,
+        clientId: this.client.clientId
+      });
+    }
+    console.log('After patchValue:', this.formData.value);
+  }
 
 
 
-  closeClientcreationModal() {
+  closeClientEditModal() {
     this.isOpen = false;
 
   }
 
   ngOnInit(): void {
-
+  this.populateForm();
+  
   }
+
 }

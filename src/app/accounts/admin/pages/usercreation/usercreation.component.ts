@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -28,31 +28,31 @@ import { GenericResponse } from '../../../../shared/types/types';
 })
 export class UsercreationComponent implements OnInit {
   @Input() isOpen = true;
-
-  specializationModalOpen = false;
-  departmentModalOpen = false;
-  formInvalidMessage: string = '';
-  nullFormControlMessage: string = '';
+  @Output() userCreated: EventEmitter<void>  = new EventEmitter<void>()
+ public specializationModalOpen = false;
+ public departmentModalOpen = false;
+ public formInvalidMessage: string = '';
+ public nullFormControlMessage: string = '';
   formData: FormGroup;
-  loading = false;
-  success = false;
-  error = false;
-  errorMessagesForRolesandEmails: { roles?: string; email?: string } = {};
-  selectedDepartment: string = '';
-  selectedSpecialization: string = '';
-  selectedRoles: string = '';
-  errorMessage: string = '';
-  specializationsErrorMessage: string = '';
-  deparmentsErrorMessage: string = '';
-  successMessage: string = '';
+ public loading = false;
+ public success = false;
+ public error = false;
+ public errorMessagesForRolesandEmails: { roles?: string; email?: string } = {};
+ public selectedDepartment: string = '';
+ public selectedSpecialization: string = '';
+ public selectedRoles: string = '';
+ public errorMessage: string = '';
+ public specializationsErrorMessage: string = '';
+ public deparmentsErrorMessage: string = '';
+ public successMessage: string = '';
 
 
-  specializationDropdownOpen = false;
-  rolesDropdownOpen = false;
-  departmentDropdownOpen = false;
-  specializations: string[] = [];
-  department: string[] = [];
-  roles: string[] = [];
+ public   specializationDropdownOpen = false;
+ public rolesDropdownOpen = false;
+ public departmentDropdownOpen = false;
+ public specializations: string[] = [];
+ public department: string[] = [];
+ public roles: string[] = [];
 
   constructor(
     
@@ -64,10 +64,11 @@ export class UsercreationComponent implements OnInit {
     this.formData = this.fb.group({
       roles: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      specialization: [''],
-      department: [''],
+      specialization: ['', Validators.required],
+      department: ['', Validators.required],
       role: [''],
       skills: [''],
+      bookable: [false]
     });
 
     this.specializationService.specializations$.subscribe(
@@ -177,7 +178,7 @@ export class UsercreationComponent implements OnInit {
     this.specializationService.getSpecializations().subscribe(
       (specializations: string[]) => {
    
-        specializations;
+      
       },
       err => {
         this.handleSpecializationFetchError(err);
@@ -237,6 +238,7 @@ export class UsercreationComponent implements OnInit {
       this.formInvalidMessage = '';
       this.nullFormControlMessage = '';
     }, 3000); 
+
   }
 
   private handleDepartmentFetchError(error: GenericResponse) {
@@ -287,6 +289,7 @@ export class UsercreationComponent implements OnInit {
           response => {
                  this.success = true;
                  this.successMessage = 'User created successfully!';
+                 this.userCreated.emit();
           },
           error => {
                         this.error = true;

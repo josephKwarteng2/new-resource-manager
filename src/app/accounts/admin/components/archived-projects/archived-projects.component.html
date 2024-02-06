@@ -36,12 +36,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let archivedproject of archivedProjects">
-            <td class="grid-item">{{ archivedproject.name }}</td>
+            <td class="grid-item">{{ archivedproject.client }}</td>
             <td class="grid-item">{{ archivedproject.name }}</td>
             <td class="grid-item">{{ archivedproject.projectCode }}</td>
             <td class="grid-item"></td>
             <td class="grid-item" style="text-transform: capitalize">
-              {{ archivedproject.billable }}
+              {{ archivedproject.billable ? 'Yes' : 'No' }}
             </td>
             <td>
               <div

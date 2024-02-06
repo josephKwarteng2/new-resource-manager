@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component,   EventEmitter,
+  Output,
+  Input,
+  ViewChild,
+  AfterViewInit } from '@angular/core';
 import { UserListComponent } from '../../../admin/components/user-list/user-list.component';
 import { ButtonAssignComponent } from '../../../user/components/button-assign/button-assign.component';
 import { ButtonNewComponent } from '../../../user/components/button-new/button-new.component';
@@ -23,6 +27,8 @@ import { ArchivedListComponent } from '../../../admin/components/archived-list/a
 })
 export class UsersComponent {
   managerUserCreationModalOpen = false;
+  selectedUsers: User[] = [];
+  @Output() selectedUsersEvent = new EventEmitter<User[]>();
   display: 'all' | 'archives' = 'all';
   closed: boolean = false;
   opening: boolean = true;
@@ -33,6 +39,28 @@ export class UsersComponent {
 
   toggleDisplay(view: 'all' | 'archives'): void {
     this.display = view;
+  }
+  @ViewChild(UserListComponent) UserListComponent?: UserListComponent;
+  successMessage: string | null = null;
+  ngAfterViewInit(): void {
+   
+    if (this.UserListComponent) {
+      this.UserListComponent.fetchUsers();
+    }
+  }
+  updateUsers(): void {
+    if (this.UserListComponent) {
+      this.UserListComponent.fetchUsers();
+      console.log('new user fetch')
+      this.successMessage = 'User created successfully!';
+
+      this.managerUserCreationModalOpen = false;
+
+    
+      setTimeout(() => {
+        this.successMessage = null;
+      }, 3000);
+    }
   }
 
   handleAssignModal(selectedUsers: User[]): void {
